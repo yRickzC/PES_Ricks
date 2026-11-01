@@ -1,0 +1,92 @@
+{
+  ".codex/hooks.json": {
+    "mtime": 1793568949.7924426,
+    "seen": 1793569484.4754171,
+    "ast_hash": "95abc56bf697d43bd474b517c035a00c",
+    "semantic_hash": ""
+  },
+  "astro.config.ts": {
+    "mtime": 1793569468.5150075,
+    "seen": 1793569484.475424,
+    "ast_hash": "bca9ed9f1d072d308c93e6228c6d0b0e",
+    "semantic_hash": ""
+  },
+  "package.json": {
+    "mtime": 1793569468.5130057,
+    "seen": 1793569484.4754272,
+    "ast_hash": "f8155c47ba5960ca9e94f82582903c76",
+    "semantic_hash": ""
+  },
+  "src/env.d.ts": {
+    "mtime": 1793569468.5230117,
+    "seen": 1793569484.4754288,
+    "ast_hash": "f92e18923dba8d2d9c6320850471c6ec",
+    "semantic_hash": ""
+  },
+  "src/layouts/BaseLayout.astro": {
+    "mtime": 1793569468.5290084,
+    "seen": 1793569484.4754305,
+    "ast_hash": "47514418fdce5e3418d0aff607ef5bec",
+    "semantic_hash": ""
+  },
+  "src/lib/project-status.test.ts": {
+    "mtime": 1793569468.5450065,
+    "seen": 1793569484.4754317,
+    "ast_hash": "b77bc99ef930aeddcff62f240b4f7aca",
+    "semantic_hash": ""
+  },
+  "src/lib/project-status.ts": {
+    "mtime": 1793569468.543007,
+    "seen": 1793569484.4754336,
+    "ast_hash": "9c9f1d749d356ab056f40e19575bffca",
+    "semantic_hash": ""
+  },
+  "src/pages/index.astro": {
+    "mtime": 1793569468.5300071,
+    "seen": 1793569484.4754348,
+    "ast_hash": "4e0540c1f0085b89531934ef4de69cc9",
+    "semantic_hash": ""
+  },
+  "tsconfig.json": {
+    "mtime": 1793569468.5180085,
+    "seen": 1793569484.4754362,
+    "ast_hash": "14aaf45ec9c2ffdc7ef90de5655d4d00",
+    "semantic_hash": ""
+  },
+  "vitest.config.ts": {
+    "mtime": 1793569468.516009,
+    "seen": 1793569484.4754379,
+    "ast_hash": "3b19d33ee7c59c1a4c1067379234957b",
+    "semantic_hash": ""
+  },
+  "AGENTS.md": {
+    "mtime": 1793569034.6292455,
+    "seen": 1793569484.4754393,
+    "ast_hash": "8dcd52f484c6fb27d3dbd322bdf107a3",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1793569468.5590062,
+    "seen": 1793569484.475441,
+    "ast_hash": "0d1818c2d2a5a0995b3e68be1351886a",
+    "semantic_hash": ""
+  },
+  "YT_RAW.md": {
+    "mtime": 1793569468.5660062,
+    "seen": 1793569484.4754422,
+    "ast_hash": "66bdbee30b19059f40f93390b7b344f6",
+    "semantic_hash": ""
+  },
+  "docs/DEVELOPMENT_WORKFLOWS.md": {
+    "mtime": 1793569468.5650043,
+    "seen": 1793569484.4754436,
+    "ast_hash": "dae897ea3fbd74aa8fd65f22e7fcbd82",
+    "semantic_hash": ""
+  },
+  "docs/SYSTEM_DESIGN.md": {
+    "mtime": 1793569026.3856335,
+    "seen": 1793569484.475445,
+    "ast_hash": "a1c9f614b71c1f6938e80f08c8bd2b60",
+    "semantic_hash": ""
+  }
+}
