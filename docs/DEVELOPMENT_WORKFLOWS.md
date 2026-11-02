@@ -79,3 +79,12 @@ A identidade, os tokens visuais e as regras de interface estão em [SYSTEM_DESIG
 ## Memória persistente do projeto
 
 Antes de alterar arquitetura, interface ou comportamento, leia [memory/README.md](../memory/README.md), [memory/PROJECT_STATE.md](../memory/PROJECT_STATE.md) e [memory/KNOWN_ISSUES.md](../memory/KNOWN_ISSUES.md). Registre mudanças concluídas em [memory/CHANGELOG.md](../memory/CHANGELOG.md). Para bugs, use [memory/INCIDENT_TEMPLATE.md](../memory/INCIDENT_TEMPLATE.md) e preserve a causa raiz e a validação da correção.
+
+## Internacionalização
+
+- A homepage em inglês fica na rota /; português do Brasil fica em /pt-br/.
+- astro.config.ts declara os locales, o locale padrão e a regra de prefixo.
+- src/i18n/translations.ts contém os textos e os códigos lang do documento.
+- src/components/HomePage.astro reutiliza a interface e gera os links com getRelativeLocaleUrl do Astro.
+- Para adicionar um idioma, inclua-o na configuração e no catálogo tipado, crie src/pages/<locale>/index.astro usando o componente compartilhado e acrescente casos em src/i18n/translations.test.ts.
+- Execute npm test e npm run check para validar alterações de tradução e rotas quando a execução estiver autorizada.

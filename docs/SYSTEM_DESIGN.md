@@ -315,3 +315,11 @@ Nome, uma frase, imagem ou vídeo e status.
 ### 02 — The…
 
 O trecho de system design enviado termina neste título, sem o conteúdo da seção. A continuação deve ser acrescentada quando estiver disponível.
+
+## 25. Internacionalização
+
+A homepage oferece inglês em / como idioma padrão para preservar a rota existente e português do Brasil em /pt-br/. O seletor de idioma fica acessível no cabeçalho e mantém a navegação entre as versões localizadas.
+
+Texto visível e metadados devem vir do catálogo tipado em src/i18n/translations.ts. Cada página define o locale explicitamente; o documento usa en ou pt-BR no atributo lang. A configuração de rotas fica em astro.config.ts. Uma nova língua precisa de uma entrada completa no catálogo, uma rota Astro correspondente e cobertura nos testes de internacionalização.
+
+A localização altera conteúdo e metadados, sem mudar os tokens visuais, a identidade cromática ou o comportamento de motion do laboratório. Não há redirecionamento automático por idioma do navegador.

@@ -1,0 +1,99 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import {
+  documentLanguages,
+  getMessages,
+  type Locale,
+} from "../i18n/translations";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const copy = getMessages(locale);
+const languageLinks = [
+  {
+    locale: "en" as const,
+    label: "EN",
+    name: copy.englishOption,
+    href: getRelativeLocaleUrl("en"),
+  },
+  {
+    locale: "pt-br" as const,
+    label: "PT-BR",
+    name: copy.portugueseOption,
+    href: getRelativeLocaleUrl("pt-br"),
+  },
+];
+---
+
+<BaseLayout
+  lang={documentLanguages[locale]}
+  title={copy.siteTitle}
+  description={copy.description}
+>
+  <main class="lab-atmosphere relative isolate flex min-h-screen flex-col overflow-hidden">
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-0 -z-10 opacity-40"
+      style="background-image: radial-gradient(rgba(255,255,255,.12) 0.6px, transparent .6px); background-size: 32px 32px; mask-image: linear-gradient(to bottom, black, transparent 70%);"
+    >
+    </div>
+
+    <header class="mx-auto flex w-full max-w-[1440px] items-center justify-between px-6 py-8 sm:px-10 lg:px-16">
+      <a class="font-mono text-xs tracking-[0.24em] text-text-primary" href={getRelativeLocaleUrl(locale)} aria-label={copy.homeLabel}>
+        RICK<span class="text-brand">.</span>
+      </a>
+
+      <div class="flex items-center gap-6">
+        <span class="hidden font-mono text-[10px] tracking-[0.16em] text-text-muted sm:block">
+          {copy.labName}
+        </span>
+        <nav class="flex items-center gap-3 font-mono text-[10px] tracking-[0.12em]" aria-label={copy.languageSelector}>
+          {
+            languageLinks.map((link) => (
+              <a
+                href={link.href}
+                lang={documentLanguages[link.locale]}
+                aria-label={link.name}
+                aria-current={locale === link.locale ? "page" : undefined}
+                class:list={[
+                  "transition-colors duration-200 hover:text-brand-light",
+                  locale === link.locale ? "text-text-primary" : "text-text-muted",
+                ]}
+              >
+                {link.label}
+              </a>
+            ))
+          }
+        </nav>
+      </div>
+    </header>
+
+    <section class="mx-auto flex w-full max-w-[1440px] flex-1 flex-col justify-center px-6 pb-24 pt-16 sm:px-10 lg:px-16">
+      <p class="font-mono text-[11px] tracking-[0.2em] text-brand-soft">
+        {copy.heroEyebrow}
+      </p>
+      <h1 class="mt-8 max-w-5xl text-5xl leading-[0.98] font-medium tracking-[-0.06em] text-text-primary sm:text-7xl lg:text-8xl">
+        {copy.headingLine1}<br />
+        {copy.headingLine2}
+      </h1>
+      <p class="mt-8 max-w-xl text-base leading-7 text-text-secondary sm:text-lg">
+        {copy.heroDescription}
+      </p>
+      <a
+        class="mt-12 inline-flex w-fit items-center gap-3 border-b border-white/20 pb-2 text-sm text-text-primary transition-colors duration-200 hover:border-brand-soft hover:text-brand-light"
+        href="#lab-status"
+      >
+        {copy.exploreLab}
+        <span aria-hidden="true">↘</span>
+      </a>
+
+      <p id="lab-status" class="mt-32 font-mono text-[10px] tracking-[0.16em] text-text-muted">
+        {copy.labStatus}
+      </p>
+    </section>
+  </main>
+</BaseLayout>

@@ -1,3 +1,10 @@
 nimcache/
 nimblecache/
 htmldocs/
+
+# Local development memory and raw notes
+memory/
+YT_RAW.md
+
+# Graphify generated graph, reports, and archives
+graphify-out/
