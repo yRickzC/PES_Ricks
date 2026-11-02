@@ -1,0 +1,32 @@
+---
+import SectionLayout from "../../layout/SectionLayout.astro";
+import { defaultLocale, locales } from "../../config/i18n";
+import { getMessages } from "../../utils/translations";
+import { articleDate, articleHref } from "./data/articles";
+import { readBlogContent } from "./data/public-content";
+import "./styles/blogs.css";
+
+const locale = locales.find((value) => value === Astro.currentLocale) ?? defaultLocale;
+const copy = getMessages(locale);
+const { database } = await readBlogContent();
+const articles = database.list({ kind: "article", locale });
+---
+
+<SectionLayout pageId="blogs">
+  {articles.length ? (
+    <ol class="blog-list">
+      {articles.map(({ metadata }) => (
+        <li>
+          <a class="blog-list-link" href={articleHref(metadata.id, locale)}>
+            <img src={metadata.image.src} alt={metadata.image.alt} loading="lazy" decoding="async" />
+            <div>
+              {metadata.date && <time class="blog-date" datetime={metadata.date}>{articleDate(metadata.date, locale)}</time>}
+              <h2>{metadata.title}</h2>
+              <p>{metadata.description}</p>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ol>
+  ) : <p class="section-empty">{copy.sectionEmpty}</p>}
+</SectionLayout>

@@ -1,0 +1,134 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { documentLanguages, type Locale } from "../../config/i18n";
+import { primaryNavigation, sitePages, type PageId } from "../../config/navigation";
+import { socialLinks } from "../../config/social";
+import type { Messages } from "../../utils/translations";
+import Icon from "./Icon.astro";
+
+interface Props {
+  locale: Locale;
+  pageId: PageId;
+  copy: Messages;
+  languagePaths?: Partial<Record<Locale, string>>;
+}
+
+const { locale, pageId, copy, languagePaths } = Astro.props;
+const currentPage = sitePages.find((page) => page.id === pageId)!;
+const languages = [
+  { locale: "en" as const, label: "EN", name: copy.englishOption },
+  { locale: "pt-br" as const, label: "PT-BR", name: copy.portugueseOption },
+];
+---
+
+<header class="site-header" data-site-header>
+  <div class="site-header-inner">
+    <a class="site-brand" href={getRelativeLocaleUrl(locale, "")} aria-label={copy.homeLabel}>
+      <img class="site-brand-mark" src="/images/Rick_Logo.png" width="1254" height="1254" alt="" decoding="async" />
+      <span>Rickz<span class="brand-period">.</span></span>
+    </a>
+
+    <button
+      class="icon-button menu-toggle"
+      type="button"
+      aria-controls="site-menu-panel"
+      aria-expanded="false"
+      aria-label={copy.openMenu}
+      data-menu-toggle
+      data-open-label={copy.openMenu}
+      data-close-label={copy.closeMenu}
+      hidden
+    >
+      <span class="menu-icon-open"><Icon name="menu" /></span>
+      <span class="menu-icon-close"><Icon name="close" /></span>
+    </button>
+
+    <div class="site-menu-panel" id="site-menu-panel">
+      <nav class="primary-navigation" aria-label={copy.navigationLabel}>
+        <ul>
+          {primaryNavigation.map((page) => (
+            <li>
+              <a
+                class="primary-link"
+                href={getRelativeLocaleUrl(locale, page.path)}
+                aria-current={pageId === page.id ? "page" : undefined}
+              >
+                {copy[page.titleKey]}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="site-utilities">
+        <details class="header-dropdown social-dropdown">
+          <summary class="utility-trigger" aria-label={copy.socialNetworks} title={copy.socialNetworks}>
+            <Icon name="social" size={17} />
+            <span class="utility-text">{copy.socialNetworks}</span>
+            <Icon name="chevron" size={13} />
+          </summary>
+          <div class="dropdown-panel social-panel">
+            <p class="dropdown-heading">{copy.socialNetworks}</p>
+            <ul class="social-list">
+              {socialLinks.map((link) => (
+                <li>
+                  {link.href ? (
+                    <a class="social-link" href={link.href} target="_blank" rel="noopener noreferrer">
+                      <Icon name={link.id} size={19} />
+                      <span>{link.label}</span>
+                      <span class="social-arrow" aria-hidden="true">↗</span>
+                    </a>
+                  ) : (
+                    <span class="social-link social-pending">
+                      <Icon name={link.id} size={19} />
+                      <span>{link.label}</span>
+                      <small>{copy.comingSoon}</small>
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </details>
+
+        <span class="utility-divider" aria-hidden="true"></span>
+
+        <details class="header-dropdown language-dropdown">
+          <summary class="utility-trigger" aria-label={copy.languageSelector} title={copy.languageSelector}>
+            <Icon name="globe" size={17} />
+            <span class="language-code">{locale === "en" ? "EN" : "PT-BR"}</span>
+            <Icon name="chevron" size={13} />
+          </summary>
+          <div class="dropdown-panel language-panel">
+            <p class="dropdown-heading">{copy.languageSelector}</p>
+            <ul>
+              {languages.map((language) => (
+                <li>
+                  <a
+                    class="language-link"
+                    href={languagePaths?.[language.locale] ?? getRelativeLocaleUrl(language.locale, currentPage.path)}
+                    lang={documentLanguages[language.locale]}
+                    hreflang={documentLanguages[language.locale]}
+                    aria-current={locale === language.locale ? "page" : undefined}
+                  >
+                    <span>{language.name}</span>
+                    <span class="language-code">{language.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </details>
+
+        <button class="icon-button search-trigger" type="button" aria-label={copy.searchLabel} title={copy.searchLabel} aria-haspopup="dialog" aria-controls="site-search" data-open-search>
+          <Icon name="search" size={18} />
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  import { initializeSiteHeader } from "../../utils/site-header";
+  initializeSiteHeader();
+</script>

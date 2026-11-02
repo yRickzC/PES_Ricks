@@ -1,0 +1,50 @@
+---
+import "./styles/global.css";
+import "./styles/site.css";
+import SiteHeader from "./components/site/SiteHeader.astro";
+import SiteFooter from "./components/site/SiteFooter.astro";
+import SiteSearch from "./components/site/SiteSearch.astro";
+import { defaultLocale, documentLanguages, locales, type Locale } from "./config/i18n";
+import type { PageId } from "./config/navigation";
+import { getMessages } from "./utils/translations";
+
+interface Props {
+  locale?: Locale;
+  pageId?: PageId;
+  title?: string;
+  description?: string;
+  languagePaths?: Partial<Record<Locale, string>>;
+}
+
+const {
+  locale = locales.find((locale) => locale === Astro.currentLocale) ?? defaultLocale,
+  pageId = "home",
+  title,
+  description,
+  languagePaths,
+} = Astro.props;
+const copy = getMessages(locale);
+---
+
+<!doctype html>
+<html lang={documentLanguages[locale]}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description ?? copy.description} />
+    <meta name="theme-color" content="#07070a" />
+    <title>{title ?? copy.siteTitle}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">{copy.skipToContent}</a>
+    <div class="site-frame lab-atmosphere">
+      <div class="site-grid" aria-hidden="true"></div>
+      <SiteHeader locale={locale} pageId={pageId} copy={copy} languagePaths={languagePaths} />
+      <main class="site-content" id="main-content" tabindex="-1">
+        <slot />
+      </main>
+      <SiteFooter />
+    </div>
+    <SiteSearch locale={locale} copy={copy} />
+  </body>
+</html>

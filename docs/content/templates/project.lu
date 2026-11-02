@@ -1,0 +1,26 @@
+```$Config
+kind: project
+id: meu-projeto
+title: PREENCHER
+description: PREENCHER
+imagem: /images/PREENCHER.png
+imagem-alt: PREENCHER
+tags: preencher
+idioma: pt_br
+status: IDEA
+layout: project-detail
+```
+
+# Meu projeto
+
+Descreva o problema, o experimento e o estado atual.
+
+```$Timeline
+```
+
+```$related-content
+kind: article
+```
+
+```$changelog
+```

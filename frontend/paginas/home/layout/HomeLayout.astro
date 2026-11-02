@@ -1,0 +1,23 @@
+---
+import Main from "../../../main.astro";
+import type { Locale } from "../../../config/i18n";
+import type { Messages } from "../../../utils/translations";
+
+interface Props {
+  locale: Locale;
+  copy: Messages;
+}
+
+const { locale, copy } = Astro.props;
+---
+
+<Main
+  locale={locale}
+  pageId="home"
+  title={copy.siteTitle}
+  description={copy.description}
+>
+  <div class="home-layout">
+    <slot />
+  </div>
+</Main>

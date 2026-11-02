@@ -4,7 +4,8 @@
     ".astro/types.d.ts",
     "astro.config.ts",
     "vitest.config.ts",
-    "src/**/*"
+    "frontend/**/*",
+    "backend/**/*"
   ],
   "exclude": ["dist"]
 }

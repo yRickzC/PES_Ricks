@@ -1,0 +1,15 @@
+---
+import type { GetStaticPaths } from "astro";
+import ArticleLayout from "../layout/ArticleLayout.astro";
+import { articlePages, type ArticlePageProps } from "../data/articles";
+import { readBlogContent } from "../data/public-content";
+
+export const getStaticPaths = (async ({ routePattern }) => {
+  const locale = routePattern.split("/").includes("pt-br") ? "pt-br" : "en";
+  return articlePages(await readBlogContent(), locale);
+}) satisfies GetStaticPaths;
+
+type Props = ArticlePageProps;
+---
+
+<ArticleLayout {...Astro.props} />

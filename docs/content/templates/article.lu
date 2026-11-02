@@ -1,0 +1,13 @@
+```$Config
+kind: article
+id: meu-artigo
+title: PREENCHER
+description: PREENCHER
+imagem: /images/PREENCHER.png
+imagem-alt: PREENCHER
+tags: preencher
+idioma: pt_br
+data: PREENCHER
+```
+
+Comece o texto aqui. Data, título, tags e capa vêm do Config; não repita o título no corpo.

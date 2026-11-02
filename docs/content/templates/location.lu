@@ -1,0 +1,17 @@
+```$Config
+kind: location
+id: meu-local
+title: PREENCHER
+description: PREENCHER
+imagem: /images/PREENCHER.png
+imagem-alt: PREENCHER
+tags: preencher
+idioma: pt_br
+```
+
+# Meu local
+
+Descreva o contexto físico ou virtual que pode ser publicado.
+
+```$related-content
+```

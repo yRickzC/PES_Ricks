@@ -1,0 +1,27 @@
+---
+import Main from "../main.astro";
+import { defaultLocale, locales } from "../config/i18n";
+import { sitePages, type PageId } from "../config/navigation";
+import { getMessages } from "../utils/translations";
+
+interface Props {
+  pageId: Exclude<PageId, "home">;
+}
+
+const { pageId } = Astro.props;
+const locale = locales.find((locale) => locale === Astro.currentLocale) ?? defaultLocale;
+const copy = getMessages(locale);
+const page = sitePages.find((page) => page.id === pageId)!;
+const title = copy[page.titleKey];
+const description = copy[page.descriptionKey];
+---
+
+<Main locale={locale} pageId={pageId} title={`${title} — Rickz`} description={description}>
+  <section class="section-page">
+    <h1>{title}</h1>
+    <p class="section-description">{description}</p>
+    <div class="section-body">
+      <slot><p class="section-empty">{copy.sectionEmpty}</p></slot>
+    </div>
+  </section>
+</Main>

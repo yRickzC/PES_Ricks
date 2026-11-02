@@ -1,0 +1,35 @@
+---
+import { heroFog, heroLayers, heroLayerStyle } from "../config/hero";
+---
+
+<div class="hero-scene" aria-hidden="true">
+  <div class="hero-atmosphere"></div>
+  {heroLayers.map((layer) => (
+    <div
+      class:list={["hero-layer", `hero-layer--${layer.id}`]}
+      style={heroLayerStyle(layer)}
+      data-hero-layer={layer.id}
+    >
+      <img
+        src={layer.src}
+        width={layer.width}
+        height={layer.height}
+        alt=""
+        loading="eager"
+        decoding="async"
+        fetchpriority={layer.id === "island" ? "high" : "low"}
+        draggable="false"
+      />
+    </div>
+  ))}
+  <div class="hero-fog" data-hero-layer="fog" style={`z-index:${heroFog.zIndex}`}>
+    {heroFog.layers.map((fog) => (
+      <div class="hero-fog-position" style={`left:${fog.x};top:${fog.y};width:${fog.width};height:${fog.height}`}>
+        <div
+          class="hero-fog-cloud"
+          style={`--fog-opacity:${fog.opacity};--fog-duration:${fog.duration};--fog-delay:${fog.delay};--fog-travel:${fog.travel};--fog-lift:${fog.lift}`}
+        ></div>
+      </div>
+    ))}
+  </div>
+</div>

@@ -248,35 +248,36 @@ No mobile, usar uma versão simplificada. Respeitar `prefers-reduced-motion`.
 
 ## 19. Navegação principal
 
-Opção completa:
+A navegação compartilhada segue a estrutura definida para esta etapa:
 
 ```text
-LAB
-PROJECTS
-RESEARCH
-SERVICES
-ARCHIVE
-ABOUT
-⌕
+Rickz. | Blogs · Projects · Services | Redes sociais · Idioma · Pesquisa
 ```
 
-Opção mais minimalista: **Projects, Research, Services, Archive, About**. Search é importante para permitir a navegação quando houver centenas de conteúdos.
+Os rótulos acompanham o idioma selecionado. YouTube, Instagram, X / Twitter e LinkedIn ficam em um único popup para manter o cabeçalho compacto. Os links dependem das URLs reais dos perfis.
+
+No mobile, a navegação e seus controles ficam no menu hambúrguer. O cabeçalho permanece acessível no topo; a seção ativa recebe destaque discreto em violeta. Pesquisa abre um diálogo, inicialmente limitado aos títulos e descrições das seções existentes, com atalho Ctrl/Cmd+K.
+
+O layout é compartilhado entre todas as páginas. O footer contém somente **@Rickz 2026**.
 
 ## 20. Home
 
 ### Hero
 
-Evitar a apresentação “Olá, meu nome é Rick e sou desenvolvedor...”. Preferir uma apresentação curta:
+Evitar a apresentação “Olá, meu nome é Rick e sou desenvolvedor...”. A composição atual usa texto curto centralizado, lua pequena no topo central e uma ilha flutuante menor no eixo central como foco visual:
 
 ```text
-RICK
 SYSTEMS / SOFTWARE / EXPERIMENTS
 
-Building systems,
-games and strange ideas.
+Strange worlds.
+Real systems.
+
+Software, games and controlled experimentation.
+
+Explore Projects / View Lab Notes
 ```
 
-No centro ou no fundo, pode existir um objeto ou sistema abstrato reagindo lentamente ao usuário.
+O texto acompanha o idioma selecionado. Céu cósmico, lua, ilha, base industrial e engrenagens formam camadas de profundidade, com névoa violeta procedural em CSS. Fábrica e engrenagens ocupam uma faixa inferior como transição para a próxima área. Parallax de mouse e scroll é discreto no desktop; mobile prioriza leitura acima da arte. Movimento reduzido desliga os efeitos. Os CTAs levam às seções existentes de projetos e blogs. Configuração e limites da implementação estão em [HERO.md](HERO.md).
 
 ## 21. Featured Experiments
 
@@ -318,8 +319,8 @@ O trecho de system design enviado termina neste título, sem o conteúdo da seç
 
 ## 25. Internacionalização
 
-A homepage oferece inglês em / como idioma padrão para preservar a rota existente e português do Brasil em /pt-br/. O seletor de idioma fica acessível no cabeçalho e mantém a navegação entre as versões localizadas.
+O site oferece inglês em / como idioma padrão para preservar a rota existente e português do Brasil em /pt-br/. Home, blogs, projetos e serviços têm rotas nos dois idiomas. O seletor no cabeçalho mantém a seção atual entre as versões localizadas.
 
-Texto visível e metadados devem vir do catálogo tipado em src/i18n/translations.ts. Cada página define o locale explicitamente; o documento usa en ou pt-BR no atributo lang. A configuração de rotas fica em astro.config.ts. Uma nova língua precisa de uma entrada completa no catálogo, uma rota Astro correspondente e cobertura nos testes de internacionalização.
+Texto visível e metadados devem vir do catálogo tipado em frontend/utils/translations.ts, importado dos JSON em public/i18n/. Cada página define o locale explicitamente; o documento usa en ou pt-BR no atributo lang. A configuração de rotas fica em astro.config.ts. Uma nova língua precisa de uma entrada completa no catálogo, uma rota Astro correspondente e cobertura nos testes de internacionalização.
 
 A localização altera conteúdo e metadados, sem mudar os tokens visuais, a identidade cromática ou o comportamento de motion do laboratório. Não há redirecionamento automático por idioma do navegador.

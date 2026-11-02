@@ -1,0 +1,18 @@
+```$Config
+kind: service
+id: meu-servico
+title: PREENCHER
+description: PREENCHER
+imagem: /images/PREENCHER.png
+imagem-alt: PREENCHER
+tags: preencher
+idioma: pt_br
+```
+
+# Meu serviço
+
+Descreva o serviço e o contexto público de atuação.
+
+```$related-content
+kind: article
+```

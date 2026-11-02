@@ -71,11 +71,22 @@ npm run build          # build de produção
 npm run preview        # serve localmente o build
 ~~~
 
-Testes ficam ao lado do código em src/ e usam os sufixos .test.ts ou .spec.ts. O exemplo inicial cobre o ciclo de status de projetos definido em [SYSTEM_DESIGN.md](SYSTEM_DESIGN.md).
+Testes ficam ao lado do código em frontend/ e backend/ e usam os sufixos .test.ts ou .spec.ts. O exemplo inicial cobre o ciclo de status de projetos definido em [SYSTEM_DESIGN.md](SYSTEM_DESIGN.md).
 
 ## System design
 
 A identidade, os tokens visuais e as regras de interface estão em [SYSTEM_DESIGN.md](SYSTEM_DESIGN.md). A folha global expõe os tokens da base escura, assinatura violeta e cores por categoria como cores utilitárias do Tailwind.
+
+## Conteúdo estático LU
+
+Consulte [CONTENT_SYSTEM.md](CONTENT_SYSTEM.md) para o formato completo e as APIs. Copie um template de docs/content/templates/ para uma subpasta de public/content/, preencha os campos obrigatórios e crie os destinos das relações. Tudo em public/ é público; não coloque rascunhos privados ou dados de clientes nessa pasta.
+
+```powershell
+npm run content:validate
+npm run content:prepare
+```
+
+O primeiro comando somente valida; o segundo também gera o índice de metadados. O build Astro executa automaticamente a preparação no hook astro:build:start e falha se houver conteúdo inválido. Em desenvolvimento, prepare o índice após editar conteúdo e limpe o cache do cliente ou recarregue a página. Os testes do sistema ficam em backend/content/ e backend/github/access/ e fazem parte de npm test. Nenhum desses comandos foi executado na etapa inicial do sistema, conforme CodeMode.
 ## Memória persistente do projeto
 
 Antes de alterar arquitetura, interface ou comportamento, leia [memory/README.md](../memory/README.md), [memory/PROJECT_STATE.md](../memory/PROJECT_STATE.md) e [memory/KNOWN_ISSUES.md](../memory/KNOWN_ISSUES.md). Registre mudanças concluídas em [memory/CHANGELOG.md](../memory/CHANGELOG.md). Para bugs, use [memory/INCIDENT_TEMPLATE.md](../memory/INCIDENT_TEMPLATE.md) e preserve a causa raiz e a validação da correção.
@@ -84,7 +95,19 @@ Antes de alterar arquitetura, interface ou comportamento, leia [memory/README.md
 
 - A homepage em inglês fica na rota /; português do Brasil fica em /pt-br/.
 - astro.config.ts declara os locales, o locale padrão e a regra de prefixo.
-- src/i18n/translations.ts contém os textos e os códigos lang do documento.
-- src/components/HomePage.astro reutiliza a interface e gera os links com getRelativeLocaleUrl do Astro.
-- Para adicionar um idioma, inclua-o na configuração e no catálogo tipado, crie src/pages/<locale>/index.astro usando o componente compartilhado e acrescente casos em src/i18n/translations.test.ts.
+- public/i18n/<locale>.json contém os textos; frontend/utils/translations.ts mantém o catálogo tipado e frontend/config/i18n.ts define os códigos lang do documento.
+- frontend/paginas/home/HomePage.astro compõe a home; frontend/components/site/SiteHeader.astro gera os links com getRelativeLocaleUrl do Astro e mantém a seção atual ao trocar o idioma.
+- Para adicionar um idioma, inclua-o em frontend/config/i18n.ts, adicione public/i18n/<locale>.json, registre o JSON no catálogo tipado e acrescente a opção no seletor de SiteHeader. O registro pageRoutes gera as rotas de todas as entradas de sitePages a partir dos locales configurados. Acrescente casos em frontend/utils/translations.test.ts.
 - Execute npm test e npm run check para validar alterações de tradução e rotas quando a execução estiver autorizada.
+
+## Organização do código
+
+Consulte [ARCHITECTURE.md](ARCHITECTURE.md) para criar páginas e subpáginas. O Astro usa frontend/ como srcDir. frontend/paginas/ reúne páginas, subpáginas, componentes e layouts por tela; frontend/config/navigation.ts registra as rotas públicas pela integração em astro.config.ts. A lógica fica diretamente em backend/<dominio>/, como projects/ e github/. Arquivos estáticos ficam em public/.
+
+## Layout compartilhado
+
+frontend/main.astro envolve todas as páginas com SiteHeader, conteúdo principal, SiteFooter e SiteSearch. Os componentes compartilhados ficam em frontend/components/site/; estilos responsivos em frontend/styles/site.css. O footer contém somente @Rickz 2026.
+
+Edite frontend/config/social.ts para adicionar as URLs reais de YouTube, Instagram, X / Twitter e LinkedIn. Até receberem URLs, as entradas do popup ficam como “Em breve”.
+
+A pesquisa usa sitePages e os textos traduzidos das seções. Ao adicionar artigos ou detalhes de projetos, amplie o índice explicitamente; o filtro atual não pesquisa conteúdo que ainda não está cadastrado.

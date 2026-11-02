@@ -1,0 +1,13 @@
+---
+import HomeLayout from "./layout/HomeLayout.astro";
+import HomeHero from "./components/HomeHero.astro";
+import { getMessages } from "../../utils/translations";
+import { defaultLocale, locales } from "../../config/i18n";
+
+const locale = locales.find((locale) => locale === Astro.currentLocale) ?? defaultLocale;
+const copy = getMessages(locale);
+---
+
+<HomeLayout locale={locale} copy={copy}>
+  <HomeHero copy={copy} locale={locale} />
+</HomeLayout>

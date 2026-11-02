@@ -1,0 +1,49 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import type { Locale } from "../../config/i18n";
+import { sitePages } from "../../config/navigation";
+import type { Messages } from "../../utils/translations";
+import Icon from "./Icon.astro";
+
+interface Props {
+  locale: Locale;
+  copy: Messages;
+}
+
+const { locale, copy } = Astro.props;
+---
+
+<dialog class="site-search" id="site-search" aria-labelledby="search-title" data-site-search data-result-template={copy.searchResults} data-search-hint={copy.searchHint}>
+  <div class="search-content">
+    <div class="search-heading">
+      <h2 id="search-title">{copy.searchTitle}</h2>
+      <button type="button" class="icon-button" aria-label={copy.closeSearch} data-close-search><Icon name="close" size={18} /></button>
+    </div>
+    <div class="search-field">
+      <Icon name="search" size={20} />
+      <label class="visually-hidden" for="site-search-input">{copy.searchLabel}</label>
+      <input type="search" id="site-search-input" placeholder={copy.searchPlaceholder} autocomplete="off" spellcheck="false" aria-controls="site-search-results" aria-describedby="site-search-status" />
+      <kbd aria-hidden="true">Esc</kbd>
+    </div>
+    <p class="search-status" id="site-search-status" role="status" aria-live="polite" aria-atomic="true">{copy.searchHint}</p>
+    <ul class="search-results" id="site-search-results">
+      {sitePages.map((page) => (
+        <li data-search-entry data-search-text={`${copy[page.titleKey]} ${copy[page.descriptionKey]}`}>
+          <a href={getRelativeLocaleUrl(locale, page.path)}>
+            <span>
+              <strong>{copy[page.titleKey]}</strong>
+              <span class="search-result-description">{copy[page.descriptionKey]}</span>
+            </span>
+            <Icon name="arrow" size={18} />
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="search-empty" data-search-empty hidden>{copy.searchNoResults}</p>
+  </div>
+</dialog>
+
+<script>
+  import { initializeSiteSearch } from "../../utils/site-search";
+  initializeSiteSearch();
+</script>

@@ -1,0 +1,58 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import type { Locale } from "../../../config/i18n";
+import type { Messages } from "../../../utils/translations";
+import HeroScene from "./HeroScene.astro";
+import "../styles/hero.css";
+
+interface Props {
+  copy: Messages;
+  locale: Locale;
+  id?: string;
+}
+
+const { copy, locale, id = "home-hero" } = Astro.props;
+---
+
+<section class="cinematic-hero" data-cinematic-hero aria-labelledby={`${id}-title`}>
+  <HeroScene />
+  <div class="hero-vignette" aria-hidden="true"></div>
+  <div class="hero-content">
+    <div class="hero-copy">
+      <p class="hero-eyebrow">{copy.heroEyebrow}</p>
+      <h1 id={`${id}-title`} class="hero-title">
+        <span>{copy.heroTitleLine1}</span>
+        <span class="hero-title-accent">{copy.heroTitleLine2}</span>
+      </h1>
+      <p class="hero-subtitle">{copy.heroSubtitle}</p>
+      <p class="hero-description">{copy.heroSupportingText}</p>
+      <div class="hero-actions">
+        <a class="hero-action hero-action--primary" href={getRelativeLocaleUrl(locale, "projects")}>
+          {copy.heroExploreProjects}<span aria-hidden="true">↗</span>
+        </a>
+        <a class="hero-action hero-action--secondary" href={getRelativeLocaleUrl(locale, "blogs")}>
+          {copy.heroViewNotes}<span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { mountHeroParallax } from "../utils/hero-parallax";
+
+  const mounted = new Map<HTMLElement, () => void>();
+
+  function mountHeroes() {
+    document.querySelectorAll<HTMLElement>("[data-cinematic-hero]").forEach((hero) => {
+      if (!mounted.has(hero)) mounted.set(hero, mountHeroParallax(hero));
+    });
+  }
+
+  mountHeroes();
+  document.addEventListener("astro:page-load", mountHeroes);
+  document.addEventListener("astro:before-swap", () => {
+    mounted.forEach((cleanup) => cleanup());
+    mounted.clear();
+  });
+</script>

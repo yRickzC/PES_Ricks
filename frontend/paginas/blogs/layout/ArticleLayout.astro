@@ -1,0 +1,34 @@
+---
+import Main from "../../../main.astro";
+import { articleDate, type ArticlePageProps } from "../data/articles";
+import { documentLanguages } from "../../../config/i18n";
+import { getMessages } from "../../../utils/translations";
+import "../styles/blogs.css";
+
+type Props = ArticlePageProps;
+const { document, html, locale, languagePaths } = Astro.props;
+const { metadata } = document;
+const copy = getMessages(locale);
+const date = articleDate(metadata.date, locale);
+---
+
+<Main locale={locale} pageId="blogs" title={`${metadata.title} — Rickz`} description={metadata.description} languagePaths={languagePaths}>
+  <article class="blog-article" lang={documentLanguages[metadata.locale ?? locale]} aria-labelledby="article-title">
+    <header class="blog-article-header">
+      {date && <time class="blog-date" datetime={metadata.date}>{date}</time>}
+      <div class="blog-article-heading">
+        <h1 id="article-title">{metadata.title}</h1>
+        <ul class="blog-tags" aria-label={copy.articleTags}>
+          {metadata.tags.map((tag) => <li>{tag}</li>)}
+        </ul>
+      </div>
+    </header>
+    <figure class="blog-cover">
+      <img src={metadata.image.src} alt={metadata.image.alt} loading="eager" fetchpriority="high" decoding="async" />
+    </figure>
+    <div class="blog-reading-column">
+      <p class="blog-description">{metadata.description}</p>
+      <div class="blog-prose" set:html={html} />
+    </div>
+  </article>
+</Main>

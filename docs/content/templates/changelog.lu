@@ -1,0 +1,15 @@
+```$Config
+kind: changelog
+id: minha-mudanca
+title: PREENCHER
+description: PREENCHER
+imagem: /images/PREENCHER.png
+imagem-alt: PREENCHER
+tags: preencher
+idioma: pt_br
+data: 2026-11-02
+```
+
+# Mudanças
+
+- Descreva o resultado e as limitações.

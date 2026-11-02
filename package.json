@@ -11,6 +11,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "content:validate": "node --experimental-strip-types backend/content/node/cli.ts validate",
+    "content:prepare": "node --experimental-strip-types backend/content/node/cli.ts prepare",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
