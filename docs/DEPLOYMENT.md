@@ -8,7 +8,7 @@ O site é compilado como estático pelo Astro (**output: static**) e publicado p
 - Execução manual: abra **Actions → Deploy to GitHub Pages → Run workflow**.
 - URL do repositório atual: <https://yrickzc.github.io/PES_Ricks/>.
 
-O workflow usa a action oficial do Astro e a action de deploy do GitHub Pages. Ele não versiona **dist/**; dependências e saídas locais estão no **.gitignore**.
+O workflow usa a action oficial do Astro com o CLI chamado diretamente pelo Node e a action de deploy do GitHub Pages. Ele não versiona **dist/**; dependências e saídas locais estão no **.gitignore**.
 
 ## Ativação no repositório
 
