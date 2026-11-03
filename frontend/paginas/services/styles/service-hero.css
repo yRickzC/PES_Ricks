@@ -1,0 +1,206 @@
+.service-hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-height: max(780px, calc(100svh - 84px));
+  overflow: hidden;
+  overflow: clip;
+  background: var(--color-bg-0);
+}
+
+.service-hero-scene,
+.service-hero-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.service-hero-scene {
+  z-index: 0;
+  user-select: none;
+}
+
+.service-hero-placement {
+  position: absolute;
+  left: 50%;
+  top: var(--desktop-y);
+  width: var(--desktop-width);
+  transform: translate(-50%, var(--anchor-y)) scale(var(--desktop-scale));
+}
+
+.service-hero-placement img {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+}
+
+.service-hero-layer--sky .service-hero-placement {
+  inset: -32px;
+  width: auto;
+  transform: none;
+}
+
+.service-hero-layer--sky img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The moon asset carries its own violet light; no additional halo is needed. */
+.service-hero-layer--moon img { filter: brightness(0.86) saturate(0.76); }
+.service-hero-layer--rock0 img { filter: brightness(0.78) contrast(0.86); }
+.service-hero-layer--rock1 img { filter: brightness(0.85); }
+.service-hero-layer--rock2 img { filter: brightness(0.72); }
+
+.service-hero-layer--fog img {
+  animation: service-fog-drift var(--fog-duration) ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+
+.service-hero[data-parallax-active="true"] .service-hero-layer { will-change: transform; }
+.service-hero[data-parallax-active="true"] .service-hero-layer--fog img { animation-play-state: running; }
+
+/* A short fade joins the opaque foreground to the next section. */
+.service-hero-scene::after {
+  content: "";
+  position: absolute;
+  z-index: 6;
+  inset: auto 0 0;
+  height: 96px;
+  background: linear-gradient(transparent, var(--color-bg-0));
+}
+
+.service-hero-content {
+  position: relative;
+  z-index: 1;
+  align-self: start;
+  width: min(calc(100% - 48px), 900px);
+  margin-inline: auto;
+  padding-block: clamp(48px, 7svh, 88px) clamp(360px, 48svh, 520px);
+  text-align: center;
+}
+
+.service-hero-label {
+  margin: 0 0 22px;
+  color: var(--color-text-secondary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+}
+
+.service-hero h1 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: clamp(48px, 5.5vw, 80px);
+  font-weight: 550;
+  line-height: 1.04;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+
+.service-hero h1 span { display: block; }
+
+.service-hero-description {
+  max-width: 46ch;
+  margin: 24px auto 0;
+  color: var(--color-text-secondary);
+  font-size: 17px;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
+.service-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.service-hero-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 22px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: opacity 180ms ease, border-color 180ms ease;
+}
+
+.service-hero-primary {
+  color: var(--color-bg-0);
+  background: var(--color-text-primary);
+}
+
+.service-hero-actions .service-hero-secondary {
+  border-color: rgb(255 255 255 / 0.24);
+  color: var(--color-text-primary);
+  background: transparent;
+}
+
+.service-hero-actions a:hover { opacity: 0.82; }
+.service-hero-actions a:focus-visible {
+  outline: 2px solid var(--color-text-primary);
+  outline-offset: 4px;
+}
+
+.service-index {
+  width: min(calc(100% - 48px), 1120px);
+  margin-inline: auto;
+  padding-block: 64px 96px;
+  scroll-margin-top: 110px;
+}
+
+.service-index h2 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+
+@keyframes service-fog-drift {
+  from { transform: translate3d(calc(-1 * var(--fog-travel)), 0, 0); }
+  to { transform: translate3d(var(--fog-travel), calc(-1 * var(--fog-lift)), 0); }
+}
+
+@media (max-width: 760px) {
+  .service-hero { min-height: max(760px, calc(100svh - 72px)); }
+  .service-hero-placement {
+    top: var(--mobile-y);
+    width: var(--mobile-width);
+    transform: translate(-50%, var(--anchor-y)) scale(var(--mobile-scale));
+  }
+  .service-hero-layer--sky .service-hero-placement {
+    inset: -32px;
+    width: auto;
+    transform: none;
+  }
+  .service-hero-content {
+    width: calc(100% - 32px);
+    padding-block: 40px 380px;
+  }
+  .service-hero-label { margin-bottom: 20px; font-size: 10px; }
+  .service-hero h1 { font-size: clamp(34px, 7.5vw, 52px); }
+  .service-hero-description { max-width: 34ch; font-size: 15px; margin-top: 22px; }
+  .service-hero-actions { gap: 10px; margin-top: 24px; }
+  .service-hero-actions a { padding-inline: 18px; font-size: 13px; }
+  .service-index { width: calc(100% - 32px); padding-block: 48px 64px; }
+}
+
+@media (max-width: 760px), (hover: none), (pointer: coarse) {
+  .service-hero-layer--fog img { animation: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-hero-layer { transform: none !important; will-change: auto !important; }
+  .service-hero-layer--fog img { animation: none; }
+  .service-hero-actions a { transition: none; }
+}

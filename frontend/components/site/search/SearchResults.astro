@@ -1,0 +1,31 @@
+---
+import type { SearchRecord } from "../../../../backend/search/search";
+import type { Messages } from "../../../utils/translations";
+import Icon from "../Icon.astro";
+import TaxonomyIcon from "../TaxonomyIcon.astro";
+interface Props { copy: Messages; records: SearchRecord[] }
+const { copy, records } = Astro.props;
+---
+
+<p class="search-status" id="site-search-status" role="status" aria-live="polite" aria-atomic="true">{copy.searchHint}</p>
+<ul class="search-results" id="site-search-results" aria-label={copy.searchResultsLabel}>
+  {records.map((record) => (
+    <li data-search-entry data-search-text={record.searchText} data-search-type={record.type} data-search-categories={JSON.stringify(record.categories.map(({ value, label, type }) => ({ value, label, type })))}>
+      <a href={record.href}>
+        <span class="search-result-copy">
+          <strong>{record.title}</strong>
+          <span class="search-result-description">{record.description}</span>
+          <span class="search-result-meta">
+            <span class="search-result-type">{record.typeIcon && <TaxonomyIcon icon={record.typeIcon} size={12} />}<span class="visually-hidden">{copy.searchType}: </span>{record.typeLabel}</span>
+            {record.categories.length > 0 && <span class="search-result-categories"><span class="visually-hidden">{copy.searchCategory}: </span>{record.categories.map(({ label }) => label).join(", ")}</span>}
+          </span>
+        </span>
+        <Icon name="arrow" size={18} />
+      </a>
+    </li>
+  ))}
+</ul>
+<div class="search-empty" data-search-empty hidden>
+  <strong>{copy.searchNoResults}</strong>
+  <p>{copy.searchEmptyHint}</p>
+</div>

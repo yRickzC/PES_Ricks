@@ -11,9 +11,10 @@ Crie, por exemplo, `public/content/articles/experimento.pt_br.lu`:
 id: experimento-roblox
 title: Meu experimento no Roblox
 description: O que aprendi construindo o primeiro protótipo.
-imagem: /images/Rick_Logo.png
+imagem: /images/Rick_Logo.webp
 imagem-alt: Marca do laboratório
 tags: game-design, roblox
+categories: article, dev-log
 data: 2026-11-02
 ```
 
@@ -49,6 +50,8 @@ O cabeçalho é montado automaticamente a partir do `$Config`, sem widget de lay
 
 As rotas são `/blogs/<id>/` e `/pt-br/blogs/<id>/`. A listagem `/blogs/` também lê os LU e mostra capa, data quando presente, título e descrição. Não é necessário editar uma página Astro para cada artigo. O conteúdo é validado e renderizado durante a geração estática; filesystem não é enviado ao navegador. O carregador usa `publicDir` resolvido pelo Astro.
 
+As capas usam `SiteImage.astro`, baseado em `Image` de `astro:assets`, com dimensões inferidas dos arquivos locais e variantes responsivas. Capas e miniaturas usam `loading="lazy"`, sem prioridade alta forçada; `SiteImage` também adota lazy por padrão para novos consumidores. As imagens locais publicadas ficam em `public/images/` como WebP; as origens anteriores estão preservadas em `RAW/images/`. Para capas HTTPS, autorize explicitamente os hosts em `image.domains` ou `image.remotePatterns` de `astro.config.ts`: a inferência de tamanho remoto exige autorização do Astro e acesso à origem durante a geração. Não há liberação global de hosts externos. Imagens no corpo Markdown continuam sob responsabilidade do renderizador LU.
+
 O catálogo atual permanece vazio: só serão geradas páginas de artigos realmente cadastrados. Estilos editoriais ficam em `frontend/paginas/blogs/styles/blogs.css` e a composição em `layout/ArticleLayout.astro`. O widget GitHub continua exigindo um snapshot fornecido explicitamente; essa página não busca dados remotos automaticamente.
 
 ## Configurações
@@ -63,6 +66,8 @@ Os campos usam `chave: valor`, sem chaves de objeto e sem vírgulas ao fim das l
 | `image` / `imagem` | Capa obrigatória; caminho em public ou URL HTTPS. |
 | `image-alt` / `imagem-alt` | Descrição da imagem; se omitida na forma `image: caminho`, usa o título. Prefira uma descrição própria. |
 | `tags` | Obrigatório; uma ou mais tags, slugs separados por vírgula ou lista `[game-design, roblox]`. |
+| `categories` / `categorias` | Opcional para compatibilidade; lista de IDs cadastrados no tipo, como `article, dev-log` para blog ou `systems` para projeto. Tags não criam categorias. |
+| `content-type` / `tipo-conteudo` | Opcional; ID do tipo de `backend/content/taxonomy.ts`, compatível com `kind`. Sem ele, usa-se o primeiro tipo do formato: blog para article, project para project, service para service. |
 | `kind` / `type` / `tipo` | `article`, `project`, `service`, `location` ou `changelog`. |
 | `date` / `data` | Data real `AAAA-MM-DD`; obrigatória em changelog. |
 | `locale` / `idioma` | `en`, `pt-br` ou `pt_br`; normalmente inferido do nome do arquivo. |
@@ -74,7 +79,7 @@ Os campos usam `chave: valor`, sem chaves de objeto e sem vírgulas ao fim das l
 
 Se `kind` não for informado, as pastas `articles`/`blogs`, `projects`, `services`, `locations` e `changelogs` definem o tipo. Em caminhos sem essas pastas, `changelog.lu` e suas variantes de idioma usam `changelog`; os demais usam `article`. Um `kind` explícito prevalece. Para eliminar ambiguidade, os templates trazem o tipo explícito.
 
-Também é possível escrever `image.src: /images/capa.png` e `image.alt: Descrição`. Não misture essa forma com `image-alt`. Campos desconhecidos, propriedades repetidas e aliases conflitantes geram erros. Os marcadores TODO, TBD, CHANGEME e PREENCHER em campos obrigatórios indicam presets incompletos e bloqueiam a publicação.
+Também é possível escrever `image.src: /images/capa.webp` e `image.alt: Descrição`. Não misture essa forma com `image-alt`. Campos desconhecidos, propriedades repetidas e aliases conflitantes geram erros. Os marcadores TODO, TBD, CHANGEME e PREENCHER em campos obrigatórios indicam presets incompletos e bloqueiam a publicação.
 
 Valores comuns são textos. `true`, `false`, `null` e números são convertidos para seus tipos; envolva valores literais como um ID inteiramente numérico em aspas. Aspas simples preservam texto; aspas duplas aceitam escapes como `\n`. Comentários começam com `#` em uma linha própria. Dois pontos e `#` dentro de um valor não iniciam sintaxe especial. Listas entre colchetes aceitam vírgulas dentro de valores entre aspas. Objetos e listas de objetos usam caminhos com ponto e índices sequenciais a partir de 0; não há objetos JSON, indentação YAML, expressões ou execução.
 
@@ -86,7 +91,7 @@ title: Meu projeto
 description: |
   Primeira linha da descrição.
   Outra linha, com dois pontos: assim.
-image.src: /images/Rick_Logo.png
+image.src: /images/Rick_Logo.webp
 image.alt: Marca do laboratório
 tags: [game-design, ferramenta]
 relations: service:sites, location:laboratorio
@@ -208,7 +213,9 @@ const document = await client.document("article:experimento", locale);
 const html = renderLu(document, { database, locale });
 ```
 
-Ajuste os imports ao consumidor. `get(key, locale)` e `card(key, locale)` também resolvem traduções. `card` fornece dados e URL do fonte; a interface monta a rota pública. O blog usa `articleHref` e passa `resolveHref(entry)` ao renderizador para ligar artigos entre si. Tipos sem página de detalhe continuam como spans. Busca ignora caixa/acentos e combina termos e tags com AND. Consultas ordenam por data decrescente e chave. Dados são congelados. O cliente deduplica índice e corpos por chave concreta, permite nova tentativa após erro e detecta divergência de revisão/metadados/referências. `clear()` limpa seu cache.
+Ajuste os imports ao consumidor. `get(key, locale)` e `card(key, locale)` também resolvem traduções. `card` fornece dados, tipo público, IDs de categorias e URL do fonte; a interface monta a rota pública. O blog usa `articleHref` e passa `resolveHref(entry)` ao renderizador para ligar artigos entre si. Tipos sem página de detalhe continuam como spans. Busca ignora caixa/acentos e combina termos e tags com AND. Consultas ordenam por data decrescente e chave. Dados são congelados. O cliente deduplica índice e corpos por chave concreta, permite nova tentativa após erro e detecta divergência de revisão/metadados/referências. `clear()` limpa seu cache.
+
+`database.list({ contentType: "project", categories: ["systems"] })` combina o tipo público com categorias; múltiplas categorias usam AND, junto dos demais filtros. Nomes e SVGs ficam no cadastro central, não em cada LU. Use `taxonomyCategories("project", "pt-br")` ou `contentCategories(metadata, locale)` para obter nome traduzido, ID estável e ícone. Novos artigos devem declarar categorias; arquivos antigos sem esse campo recebem o formato artigo/YouTube somente na consulta, sem alterar seus metadados serializados. `categories: []` mantém o conteúdo sem categoria. IDs desconhecidos, repetidos ou pertencentes a outro tipo são rejeitados. Consulte [SEARCH.md](SEARCH.md) para ampliar o cadastro.
 
 `basePath` ajusta a busca do catálogo e dos corpos para hospedagem em subpasta. Imagens/links continuam absolutos ao domínio e devem ser adequados pela interface se necessário. O índice não contém o corpo dos artigos; ele é buscado sob demanda. Imports de `backend/content/index.ts` são seguros para navegador; `node/` é exclusivo do build/CLI.
 

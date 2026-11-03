@@ -1,0 +1,31 @@
+---
+import type { SearchCategory } from "../../../../backend/search/search";
+import type { TaxonomyType } from "../../../../backend/content/taxonomy";
+import type { Messages } from "../../../utils/translations";
+import Icon from "../Icon.astro";
+interface Props { copy: Messages; types: TaxonomyType[]; categories: SearchCategory[] }
+const { copy, types, categories } = Astro.props;
+---
+
+<div class="search-filters">
+  <label class="search-filter" for="site-search-type">
+    <span class="visually-hidden">{copy.searchType}</span>
+    <span class="search-select-wrap">
+      <select id="site-search-type" name="type" aria-controls="site-search-results" data-search-type>
+        <option value="all">{copy.searchAllTypes}</option>
+        {types.map(({ id, label }) => <option value={id}>{label}</option>)}
+      </select>
+      <Icon name="chevron" size={15} />
+    </span>
+  </label>
+  <label class="search-filter" for="site-search-category">
+    <span class="visually-hidden">{copy.searchCategory}</span>
+    <span class="search-select-wrap">
+      <select id="site-search-category" name="category" aria-controls="site-search-results" data-search-category disabled={!categories.length}>
+        <option value="all">{copy.searchAllCategories}</option>
+        {categories.map(({ value, label, type }) => <option value={value} data-category-type={type}>{label}</option>)}
+      </select>
+      <Icon name="chevron" size={15} />
+    </span>
+  </label>
+</div>

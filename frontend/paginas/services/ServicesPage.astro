@@ -1,5 +1,18 @@
 ---
-import SectionLayout from "../../layout/SectionLayout.astro";
+import Main from "../../main.astro";
+import { defaultLocale, locales } from "../../config/i18n";
+import { getMessages } from "../../utils/translations";
+import ServiceHero from "./components/ServiceHero.astro";
+
+const locale = locales.find((locale) => locale === Astro.currentLocale) ?? defaultLocale;
+const copy = getMessages(locale);
 ---
 
-<SectionLayout pageId="services" />
+<Main locale={locale} pageId="services" title={`${copy.servicesLabel} — Rickz`} description={copy.servicesDescription}>
+  <ServiceHero locale={locale} copy={copy} />
+  <section class="service-index" id="services" aria-labelledby="service-index-title">
+    <h2 id="service-index-title">{copy.serviceHeroLabel}</h2>
+    <p class="section-description">{copy.servicesDescription}</p>
+    <p class="section-empty">{copy.sectionEmpty}</p>
+  </section>
+</Main>

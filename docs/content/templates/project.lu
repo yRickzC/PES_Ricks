@@ -3,9 +3,10 @@ kind: project
 id: meu-projeto
 title: PREENCHER
 description: PREENCHER
-imagem: /images/PREENCHER.png
+imagem: /images/PREENCHER.webp
 imagem-alt: PREENCHER
 tags: preencher
+categories: systems
 idioma: pt_br
 status: IDEA
 layout: project-detail

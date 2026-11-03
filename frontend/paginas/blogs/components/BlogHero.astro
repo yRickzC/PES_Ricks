@@ -1,0 +1,68 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import SiteImage from "../../../components/site/SiteImage.astro";
+import type { Locale } from "../../../config/i18n";
+import type { Messages } from "../../../utils/translations";
+import { blogHeroLayers } from "../config/hero";
+import "../styles/blog-hero.css";
+
+interface Props {
+  copy: Messages;
+  locale: Locale;
+}
+
+const { copy, locale } = Astro.props;
+---
+
+<section class="blog-hero" data-blog-hero aria-labelledby="blog-hero-title">
+  <div class="blog-hero-scene" aria-hidden="true">
+    {blogHeroLayers.map((layer) => (
+      <div
+        class:list={["blog-hero-layer", { "blog-hero-layer--sky": layer.id === "sky" }]}
+        data-blog-layer={layer.id}
+        style={`--layer-offset: ${layer.yOffset}%; --layer-scale: ${layer.scale}; z-index: ${layer.zIndex};`}
+      >
+        <SiteImage
+          src={layer.src}
+          alt=""
+          width={layer.id === "sky" ? 1672 : 2172}
+          widths={layer.id === "sky" ? [960, 1672] : [960, 1600, 2172]}
+          sizes="(max-width: 760px) 240svh, 300svh"
+          loading="eager"
+          fetchpriority={layer.id === "duna_3" ? "high" : "low"}
+          decoding="async"
+          draggable="false"
+        />
+      </div>
+    ))}
+  </div>
+  <div class="blog-hero-shade" aria-hidden="true"></div>
+  <div class="blog-hero-content">
+    <p class="blog-hero-label">{copy.blogHeroLabel}</p>
+    <h1 id="blog-hero-title">{copy.blogHeroTitle}</h1>
+    <p class="blog-hero-subtitle">{copy.blogHeroSubtitle}</p>
+    <div class="blog-hero-actions">
+      <a class="blog-hero-action blog-hero-action--notes" href="#lab-notes">{copy.blogExploreNotes}</a>
+      <a class="blog-hero-action" href={getRelativeLocaleUrl(locale, "projects")}>{copy.blogViewProjects}</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { mountBlogHeroParallax } from "../utils/hero-parallax";
+
+  const mounted = new Map<HTMLElement, () => void>();
+
+  function mountBlogHeroes() {
+    document.querySelectorAll<HTMLElement>("[data-blog-hero]").forEach((hero) => {
+      if (!mounted.has(hero)) mounted.set(hero, mountBlogHeroParallax(hero));
+    });
+  }
+
+  mountBlogHeroes();
+  document.addEventListener("astro:page-load", mountBlogHeroes);
+  document.addEventListener("astro:before-swap", () => {
+    mounted.forEach((cleanup) => cleanup());
+    mounted.clear();
+  });
+</script>

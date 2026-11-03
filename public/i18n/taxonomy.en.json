@@ -1,0 +1,22 @@
+{
+  "blog": "Blogs",
+  "project": "Projects",
+  "service": "Services",
+  "blogArticle": "Articles",
+  "blogYoutube": "YouTube",
+  "blogDevLog": "Development logs",
+  "blogStories": "Lab stories",
+  "blogExperiments": "Experiments",
+  "projectAI": "AI / Data",
+  "projectGames": "Game development",
+  "projectSystems": "Internal systems",
+  "projectResearch": "Research",
+  "projectProducts": "Products / Tools",
+  "projectFrontend": "Front-end",
+  "projectBackend": "Back-end",
+  "serviceSystems": "Business systems",
+  "serviceWeb": "Websites and online stores",
+  "serviceMobile": "Mobile applications",
+  "serviceAutomation": "Process automation",
+  "serviceConsulting": "Technology consulting"
+}

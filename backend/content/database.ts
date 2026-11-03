@@ -1,10 +1,13 @@
 import { matchesSearch } from "../search/search.ts";
+import { contentCategoryIds, resolveContentType, type ContentType } from "./taxonomy.ts";
 import { contentIdentity, contentKey, ContentValidationError, freezeContent, type ContentEntry, type ContentKey, type ContentKind, type ContentLocale, type ContentManifest, type ContentIssue } from "./types.ts";
 import { isContentKey, isObject, isPublicPath, parseMetadata } from "./validation.ts";
 
 export interface ContentQuery {
   kind?: ContentKind;
   tags?: readonly string[];
+  contentType?: ContentType;
+  categories?: readonly string[];
   locale?: "en" | "pt-br";
   search?: string;
   relatedTo?: ContentKey;
@@ -95,6 +98,8 @@ export function createContentDatabase(input: readonly ContentEntry[]) {
     groups.sort((a, b) => a.size - b.size);
     const candidates = groups.length ? [...groups[0]!].map((key) => byKey.get(key)!) : entries;
     return candidates.filter((entry) => groups.every((group) => group.has(entry.key))
+      && (!query.contentType || resolveContentType(entry.metadata.kind, entry.metadata.contentType) === query.contentType)
+      && (query.categories ?? []).every((category) => contentCategoryIds(entry.metadata).includes(category))
       && (!query.locale || get(contentIdentity(entry.metadata), query.locale)?.key === entry.key)
       && (!query.search || matchesSearch(`${entry.metadata.title} ${entry.metadata.description} ${entry.metadata.tags.join(" ")}`, query.search)))
       .sort((a, b) => (b.metadata.date ?? "").localeCompare(a.metadata.date ?? "") || a.key.localeCompare(b.key));
@@ -121,7 +126,8 @@ export function createContentDatabase(input: readonly ContentEntry[]) {
       const entry = get(key, preferredLocale);
       if (!entry) return undefined;
       const { title, description, image, tags, kind, date, locale } = entry.metadata;
-      return freezeContent({ key: entry.key, title, description, image, tags, kind, date, locale, sourceUrl: entry.path });
+      return freezeContent({ key: entry.key, title, description, image, tags, kind, date, locale,
+        contentType: resolveContentType(kind, entry.metadata.contentType), categories: contentCategoryIds(entry.metadata), sourceUrl: entry.path });
     },
     size: entries.length,
   });

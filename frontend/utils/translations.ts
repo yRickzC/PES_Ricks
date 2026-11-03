@@ -30,9 +30,21 @@ export interface Messages {
   projectsLabel: string;
   servicesLabel: string;
   blogsDescription: string;
+  blogHeroLabel: string;
+  blogHeroTitle: string;
+  blogHeroSubtitle: string;
+  blogExploreNotes: string;
+  blogViewProjects: string;
   articleTags: string;
   projectsDescription: string;
+  projectCategoriesLabel: string;
   servicesDescription: string;
+  serviceHeroLabel: string;
+  serviceHeroTitleLine1: string;
+  serviceHeroTitleLine2: string;
+  serviceHeroSubtitle: string;
+  serviceExploreServices: string;
+  serviceSelectedWork: string;
   sectionEmpty: string;
   socialNetworks: string;
   comingSoon: string;
@@ -46,6 +58,12 @@ export interface Messages {
   searchHint: string;
   searchNoResults: string;
   searchResults: string;
+  searchType: string;
+  searchCategory: string;
+  searchAllTypes: string;
+  searchAllCategories: string;
+  searchEmptyHint: string;
+  searchResultsLabel: string;
 }
 
 export const messages: Record<Locale, Messages> = {

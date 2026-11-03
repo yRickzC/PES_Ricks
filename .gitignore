@@ -8,3 +8,6 @@ YT_RAW.md
 
 # Graphify generated graph, reports, and archives
 graphify-out/
+
+# Local source-image backup after WebP optimization
+RAW/

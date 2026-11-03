@@ -3,9 +3,10 @@ kind: article
 id: meu-artigo
 title: PREENCHER
 description: PREENCHER
-imagem: /images/PREENCHER.png
+imagem: /images/PREENCHER.webp
 imagem-alt: PREENCHER
 tags: preencher
+categories: article
 idioma: pt_br
 data: PREENCHER
 ```

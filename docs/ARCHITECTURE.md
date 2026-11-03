@@ -91,7 +91,7 @@ O nome backend/ não cria servidor ou API. Módulos de localStorage devem execut
 - frontend/config/ centraliza configuração compartilhada, destinos e rotas.
 - frontend/utils/ contém utilitários da interface. translations.ts importa os JSON durante o processamento dos módulos, sem fetch HTTP.
 - public/i18n/ é a fonte dos textos. Os JSON também são publicados em /i18n/<locale>.json.
-- public/images/ recebe imagens estáticas, referenciadas por /images/<arquivo>.
+- public/images/ recebe imagens estáticas WebP, referenciadas por /images/<arquivo>. Os originais anteriores à otimização ficam em RAW/images/ como backup local.
 - public/content/ recebe os documentos `.lu`; o hook de build valida todos os arquivos antes de substituir index.json. Templates incompletos ficam em docs/content/templates/, fora da publicação.
 - backend/content/index.ts é a API para navegador; backend/content/node/ usa filesystem e só entra no frontmatter/geração estática através de blogs/data/public-content.ts. A listagem e o detalhe de blog já consomem o catálogo; o corpo é renderizado com os widgets registrados e estilos editoriais.
 - Testes permanecem ao lado do módulo correspondente; Vitest e TypeScript incluem frontend/ e backend/.
@@ -108,4 +108,4 @@ HomeLayout compõe o conteúdo da home dentro de main.astro. SectionLayout forne
 
 ## Cena da home
 
-HomeHero compõe HeroScene, conteúdo localizado e links de projetos e blogs. A configuração tipada fica junto à página em config/hero.ts. O controlador de parallax é comportamento visual, por isso permanece em utils/ da home; nenhuma regra de domínio é adicionada ao backend. Os cinco assets continuam em public/images/. A névoa é criada por CSS, sem imagem. Consulte [HERO.md](HERO.md) para ajustar posições, intensidades, responsividade e conhecer as limitações de validação e transferência.
+HomeHero compõe HeroScene, conteúdo localizado e links de projetos e blogs. A configuração tipada fica junto à página em config/hero.ts. O controlador de parallax é comportamento visual, por isso permanece em utils/ da home; nenhuma regra de domínio é adicionada ao backend. Os assets WebP ficam em public/images/ e os originais em RAW/images/. A névoa é criada por CSS, sem imagem. Consulte [HERO.md](HERO.md) para ajustar posições, intensidades, responsividade e conhecer as limitações de validação e transferência.

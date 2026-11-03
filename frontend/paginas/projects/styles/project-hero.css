@@ -1,0 +1,142 @@
+.project-hero {
+  position: relative;
+  isolation: isolate;
+  /* Fill the first screen without capping tall viewports. */
+  min-height: max(680px, calc(100svh - 84px));
+  overflow: hidden;
+  background: var(--color-bg-0);
+}
+
+.project-hero-scene {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.project-hero-layer {
+  position: absolute;
+  inset: auto -64px -64px;
+  height: clamp(380px, 52svh, 560px);
+}
+
+/* The transparent 3:1 canvases keep trees in the lower part of each tile.
+   Repeat at a bounded height instead of enlarging trees to fill ultrawide screens. */
+.project-hero-panorama {
+  width: 100%;
+  height: 100%;
+  background-repeat: repeat-x;
+  background-position: center bottom;
+  background-size: auto 100%;
+}
+
+.project-hero-layer--sky { inset: -32px; height: auto; }
+.project-hero-layer--sky img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.65;
+}
+
+.project-hero-layer--main { bottom: -20px; opacity: 0.85; }
+.project-hero-layer--fog { bottom: -36px; opacity: 0.16; }
+.project-hero-layer--fog .project-hero-panorama {
+  animation: project-fog-drift 110s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+.project-hero[data-parallax-active="true"] .project-hero-layer { will-change: transform; }
+.project-hero[data-parallax-active="true"] .project-hero-layer--fog .project-hero-panorama { animation-play-state: running; }
+
+.project-hero-content {
+  position: relative;
+  z-index: 4;
+  width: min(100% - 48px, 580px);
+  margin-inline: auto;
+  padding-block: clamp(24px, 3svh, 32px) 96px;
+  text-align: center;
+}
+.project-hero-orbit {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(100%, clamp(320px, 44svh, 416px));
+  aspect-ratio: 1;
+  margin: 0 auto 8px;
+}
+.project-hero-logo { display: block; width: 35%; max-width: 146px; height: auto; }
+.project-hero-content h1 {
+  margin: 0;
+  font-size: clamp(2.25rem, 4vw, 3.75rem);
+  font-weight: 550;
+  line-height: 1.05;
+  letter-spacing: -0.055em;
+}
+.project-hero-description {
+  max-width: 44ch;
+  margin: 16px auto 0;
+  color: var(--color-text-secondary);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  text-wrap: balance;
+}
+.project-categories {
+  position: absolute;
+  inset: 0;
+}
+.project-category-link {
+  position: absolute;
+  left: var(--category-x);
+  top: var(--category-y);
+  display: flex;
+  box-sizing: border-box;
+  width: 28%;
+  max-width: 112px;
+  min-height: 68px;
+  transform: translate(-50%, -50%);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 4px;
+  color: var(--color-text-primary);
+  font-size: 0.8125rem;
+  text-decoration: none;
+}
+.project-hero-orbit[data-expanded="true"] { width: 100%; aspect-ratio: auto; gap: 24px; }
+.project-hero-orbit[data-expanded="true"] .project-categories { position: static; width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.project-hero-orbit[data-expanded="true"] .project-category-link { position: static; width: 100%; max-width: none; transform: none; }
+.project-category-link svg { width: 26px; height: 26px; color: var(--color-text-primary); }
+.project-category-link:focus-visible { outline: 2px solid var(--color-text-primary); outline-offset: 4px; border-radius: 8px; }
+.project-category-link:hover span { text-decoration: underline; text-underline-offset: 6px; }
+
+.project-index { width: min(100% - 48px, 1120px); margin-inline: auto; padding-block: 64px 96px; }
+.project-index h2 { margin: 0 0 40px; font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 550; }
+.project-category-section { padding-block: 28px; border-top: 1px solid rgb(255 255 255 / 7%); scroll-margin-top: 110px; }
+.project-category-section h3 { margin: 0 0 12px; font-size: 1.125rem; font-weight: 500; }
+.project-category-section .section-empty { margin: 0; }
+
+@keyframes project-fog-drift {
+  from { transform: translate3d(-24px, 0, 0); }
+  to { transform: translate3d(24px, 0, 0); }
+}
+
+@media (max-width: 760px) {
+  .project-hero { min-height: max(580px, calc(100svh - 72px)); }
+  .project-hero-content { width: min(100% - 32px, 580px); padding-block: 24px 112px; }
+  .project-hero-orbit { width: min(100%, 320px); }
+  .project-hero-logo { width: 38%; max-width: 122px; }
+  .project-hero-content h1 { font-size: clamp(2rem, 6vw, 3rem); }
+  .project-hero-description { font-size: 1rem; }
+  .project-category-link { font-size: 0.75rem; }
+  .project-category-link svg { width: 24px; height: 24px; }
+  .project-hero-layer { height: 380px; }
+  .project-hero-layer--sky { height: auto; }
+  .project-index { width: calc(100% - 32px); padding-block: 48px 64px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-hero-layer { transform: none !important; will-change: auto !important; }
+  .project-hero-layer--fog .project-hero-panorama { animation: none; }
+}

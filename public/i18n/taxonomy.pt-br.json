@@ -1,0 +1,22 @@
+{
+  "blog": "Blogs",
+  "project": "Projetos",
+  "service": "Serviços",
+  "blogArticle": "Artigos",
+  "blogYoutube": "YouTube",
+  "blogDevLog": "Diários de desenvolvimento",
+  "blogStories": "Histórias do laboratório",
+  "blogExperiments": "Experimentos",
+  "projectAI": "IA / Dados",
+  "projectGames": "Desenvolvimento de jogos",
+  "projectSystems": "Sistemas internos",
+  "projectResearch": "Pesquisa",
+  "projectProducts": "Produtos / Ferramentas",
+  "projectFrontend": "Front-end",
+  "projectBackend": "Back-end",
+  "serviceSystems": "Sistemas para empresas",
+  "serviceWeb": "Sites e lojas virtuais",
+  "serviceMobile": "Aplicativos para celular",
+  "serviceAutomation": "Automação de processos",
+  "serviceConsulting": "Consultoria em tecnologia"
+}

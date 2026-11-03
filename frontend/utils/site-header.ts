@@ -6,8 +6,13 @@ export function initializeSiteHeader(): void {
   const desktop = window.matchMedia("(min-width: 960px)");
   const dropdowns = [...header.querySelectorAll<HTMLDetailsElement>("details")];
 
+  function setDropdownOpen(dropdown: HTMLDetailsElement, open: boolean): void {
+    dropdown.open = open;
+    dropdown.querySelector("summary")?.setAttribute("aria-expanded", String(open));
+  }
+
   function closeDropdowns(): void {
-    for (const dropdown of dropdowns) dropdown.open = false;
+    for (const dropdown of dropdowns) setDropdownOpen(dropdown, false);
   }
 
   function setMenu(open: boolean): void {
@@ -23,10 +28,12 @@ export function initializeSiteHeader(): void {
   toggle.addEventListener("click", () => setMenu(!header.hasAttribute("data-menu-open")));
 
   for (const dropdown of dropdowns) {
+    setDropdownOpen(dropdown, dropdown.open);
     dropdown.addEventListener("toggle", () => {
+      setDropdownOpen(dropdown, dropdown.open);
       if (dropdown.open) {
         for (const other of dropdowns) {
-          if (other !== dropdown) other.open = false;
+          if (other !== dropdown) setDropdownOpen(other, false);
         }
       }
     });
@@ -38,7 +45,11 @@ export function initializeSiteHeader(): void {
 
   document.addEventListener("click", (event) => {
     if (document.querySelector("#site-search[open]")) return;
-    if (event.target instanceof Node && !header.contains(event.target)) setMenu(false);
+    if (!(event.target instanceof Node)) return;
+    for (const dropdown of dropdowns) {
+      if (!dropdown.contains(event.target)) setDropdownOpen(dropdown, false);
+    }
+    if (!header.contains(event.target)) setMenu(false);
   });
 
   document.addEventListener("keydown", (event) => {
@@ -46,7 +57,7 @@ export function initializeSiteHeader(): void {
     if (document.querySelector("#site-search[open]")) return;
     const openDropdown = dropdowns.find((dropdown) => dropdown.open);
     if (openDropdown) {
-      openDropdown.open = false;
+      setDropdownOpen(openDropdown, false);
       openDropdown.querySelector("summary")?.focus();
     } else if (header.hasAttribute("data-menu-open")) {
       setMenu(false);

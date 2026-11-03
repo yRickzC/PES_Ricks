@@ -15,6 +15,8 @@ export interface ContentMetadata {
   description: string;
   image: { src: string; alt: string };
   tags: string[];
+  contentType?: string;
+  categories?: string[];
   locale?: ContentLocale;
   date?: string;
   status?: ProjectStatus;

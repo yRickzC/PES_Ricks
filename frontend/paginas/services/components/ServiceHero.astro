@@ -1,0 +1,66 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import SiteImage from "../../../components/site/SiteImage.astro";
+import type { Locale, Messages } from "../../../utils/translations";
+import { serviceHeroFog, serviceHeroLayers, serviceLayerStyle } from "../config/hero";
+import "../styles/service-hero.css";
+
+interface Props { locale: Locale; copy: Messages; }
+const { locale, copy } = Astro.props;
+---
+
+<section class="service-hero" data-service-hero aria-labelledby="service-hero-title" style={`--fog-duration: ${serviceHeroFog.duration}; --fog-travel: ${serviceHeroFog.travel}; --fog-lift: ${serviceHeroFog.lift};`}>
+  <div class="service-hero-scene" aria-hidden="true">
+    {serviceHeroLayers.map((layer) => (
+      <div class={`service-hero-layer service-hero-layer--${layer.id}`} data-service-layer={layer.id} style={serviceLayerStyle(layer)}>
+        <div class="service-hero-placement">
+          <SiteImage
+            src={layer.src}
+            alt=""
+            width={layer.id === "sky" ? 1672 : layer.id === "moon" ? 1100 : 2172}
+            widths={layer.id === "sky" ? [960, 1672] : layer.id === "moon" ? [760, 1100, 1536] : [1080, 1680, 2172]}
+            sizes={layer.sizes}
+            loading="eager"
+            fetchpriority={layer.id === "moon" ? "high" : "low"}
+            decoding="async"
+            draggable="false"
+          />
+        </div>
+      </div>
+    ))}
+  </div>
+  <div class="service-hero-content">
+    <p class="service-hero-label">{copy.serviceHeroLabel}</p>
+    <h1 id="service-hero-title">
+      <span>{copy.serviceHeroTitleLine1}</span>
+      <span>{copy.serviceHeroTitleLine2}</span>
+    </h1>
+    <p class="service-hero-description">{copy.serviceHeroSubtitle}</p>
+    <div class="service-hero-actions">
+      <a class="service-hero-primary" href="#services">{copy.serviceExploreServices}</a>
+      <a class="service-hero-secondary" href={getRelativeLocaleUrl(locale, "projects")}>{copy.serviceSelectedWork}</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { mountHeroParallax } from "../../../utils/hero-parallax";
+  import { serviceHeroLayers, serviceHeroMotion } from "../config/hero";
+
+  const mounted = new Map<HTMLElement, () => void>();
+  function mountServiceHeroes() {
+    document.querySelectorAll<HTMLElement>("[data-service-hero]").forEach((hero) => {
+      if (!mounted.has(hero)) mounted.set(hero, mountHeroParallax(hero, {
+        layers: serviceHeroLayers,
+        motion: serviceHeroMotion,
+        layerAttribute: "data-service-layer",
+      }));
+    });
+  }
+  mountServiceHeroes();
+  document.addEventListener("astro:page-load", mountServiceHeroes);
+  document.addEventListener("astro:before-swap", () => {
+    mounted.forEach((cleanup) => cleanup());
+    mounted.clear();
+  });
+</script>

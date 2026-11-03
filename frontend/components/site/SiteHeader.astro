@@ -5,6 +5,7 @@ import { primaryNavigation, sitePages, type PageId } from "../../config/navigati
 import { socialLinks } from "../../config/social";
 import type { Messages } from "../../utils/translations";
 import Icon from "./Icon.astro";
+import SiteImage from "./SiteImage.astro";
 
 interface Props {
   locale: Locale;
@@ -24,7 +25,7 @@ const languages = [
 <header class="site-header" data-site-header>
   <div class="site-header-inner">
     <a class="site-brand" href={getRelativeLocaleUrl(locale, "")} aria-label={copy.homeLabel}>
-      <img class="site-brand-mark" src="/images/Rick_Logo.png" width="1254" height="1254" alt="" decoding="async" />
+      <SiteImage class="site-brand-mark" src="/images/Rick_Logo.webp" width={44} height={44} widths={[44, 88]} sizes="44px" alt="" loading="eager" decoding="async" />
       <span>Rickz<span class="brand-period">.</span></span>
     </a>
 
@@ -62,12 +63,12 @@ const languages = [
 
       <div class="site-utilities">
         <details class="header-dropdown social-dropdown">
-          <summary class="utility-trigger" aria-label={copy.socialNetworks} title={copy.socialNetworks}>
-            <Icon name="social" size={17} />
+          <summary class="utility-trigger" aria-label={copy.socialNetworks} title={copy.socialNetworks} aria-expanded="false" aria-controls="social-networks-panel">
+            <Icon name="at-sign" size={17} />
             <span class="utility-text">{copy.socialNetworks}</span>
-            <Icon name="chevron" size={13} />
+            <span class="social-chevron"><Icon name="chevron" size={13} /></span>
           </summary>
-          <div class="dropdown-panel social-panel">
+          <div class="dropdown-panel social-panel" id="social-networks-panel">
             <p class="dropdown-heading">{copy.socialNetworks}</p>
             <ul class="social-list">
               {socialLinks.map((link) => (

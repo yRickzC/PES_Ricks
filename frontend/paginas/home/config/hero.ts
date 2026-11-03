@@ -16,6 +16,7 @@ export interface HeroLayer {
   src: string;
   width: number;
   height: number;
+  loading: "eager" | "lazy";
   zIndex: number;
   opacity: number;
   depth: HeroDepth;
@@ -34,31 +35,36 @@ export const heroMotion = {
 
 export const heroLayers = [
   {
-    id: "sky", src: "/images/Ladding_Hero_Background.png", width: 1672, height: 941,
+    id: "sky", src: "/images/Hero_Main_Background.webp", width: 1672, height: 941,
+    loading: "eager",
     zIndex: 0, opacity: 0.82, depth: { pointer: 5, scroll: 20 },
     desktop: { x: "50%", y: "50%", width: "100%" },
     mobile: { x: "50%", y: "50%", width: "100%" },
   },
   {
-    id: "moon", src: "/images/Ladding_Hero_Moon.png", width: 1536, height: 1024,
+    id: "moon", src: "/images/Ladding_Hero_Moon.webp", width: 1536, height: 1024,
+    loading: "eager",
     zIndex: 2, opacity: 1, depth: { pointer: 10, scroll: 35 },
     desktop: { x: "50%", y: "0%", width: "clamp(160px, 18vw, 240px)" },
     mobile: { x: "50%", y: "0%", width: "min(48vw, 190px)" },
   },
   {
-    id: "island", src: "/images/Ladding_Hero_Island.png", width: 1536, height: 1024,
+    id: "island", src: "/images/Ladding_Hero_Island.webp", width: 1536, height: 1024,
+    loading: "eager",
     zIndex: 3, opacity: 1, depth: { pointer: 20, scroll: 55 },
     desktop: { x: "50%", y: "48%", width: "min(50vw, 720px)" },
     mobile: { x: "50%", y: "55%", width: "min(116vw, 620px)" },
   },
   {
-    id: "factory", src: "/images/Ladding_Hero_Factory.png", width: 2172, height: 724,
+    id: "factory", src: "/images/Ladding_Hero_Factory.webp", width: 2172, height: 724,
+    loading: "lazy",
     zIndex: 5, opacity: 0.85, depth: { pointer: 8, scroll: 12 },
     desktop: { x: "50%", y: "100%", width: "100%", anchorY: "-100%" },
     mobile: { x: "50%", y: "100%", width: "max(100%, 660px)", anchorY: "-100%" },
   },
   {
-    id: "gears", src: "/images/Ladding_Hero_Gear.png", width: 2172, height: 724,
+    id: "gears", src: "/images/Ladding_Hero_Gear.webp", width: 2172, height: 724,
+    loading: "lazy",
     zIndex: 6, opacity: 0.9, depth: { pointer: 30, scroll: 22 },
     desktop: { x: "50%", y: "100%", width: "112%", anchorY: "-100%" },
     mobile: { x: "50%", y: "100%", width: "106%", anchorY: "-100%" },

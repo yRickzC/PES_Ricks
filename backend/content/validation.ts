@@ -1,5 +1,6 @@
 import { isProjectStatus } from "../projects/project-status.ts";
 import { sourceLocale } from "./locale.ts";
+import { contentTaxonomy, resolveContentType } from "./taxonomy.ts";
 import {
   contentKinds, ContentValidationError,
   type ContentKey, type ContentMetadata, type ContentIssue,
@@ -35,7 +36,7 @@ export function parseMetadata(raw: unknown, source: string): ContentMetadata {
   const issues: ContentIssue[] = [];
   const fail = (field: string, message: string) => issues.push({ source, field, message });
   if (!isObject(raw)) throw new ContentValidationError([{ source, field: "metadata", message: "Metadados inválidos." }]);
-  const allowed = new Set(["version", "kind", "id", "title", "description", "image", "tags", "locale", "date", "status", "layout", "youtube", "links", "relations"]);
+  const allowed = new Set(["version", "kind", "id", "title", "description", "image", "tags", "contentType", "categories", "locale", "date", "status", "layout", "youtube", "links", "relations"]);
   for (const field of Object.keys(raw)) if (!allowed.has(field)) fail(field, "Campo desconhecido na configuração LU.");
   const text = (field: string): string => {
     const value = raw[field];
@@ -67,6 +68,20 @@ export function parseMetadata(raw: unknown, source: string): ContentMetadata {
       || /^(todo|tbd|changeme|preencher)$/u.test(tag)) fail("tags", "Tags precisam ser slugs preenchidos, como game-design.");
     else if (tags.includes(tag)) fail("tags", `Tag repetida: ${tag}.`);
     else tags.push(tag);
+  }
+  const type = resolveContentType(raw.kind as ContentMetadata["kind"], typeof raw.contentType === "string" ? raw.contentType : undefined);
+  if (raw.contentType !== undefined && (typeof raw.contentType !== "string" || !type)) {
+    fail("contentType", "Informe um tipo cadastrado e compatível com kind.");
+  }
+  const categories: string[] = [];
+  if (raw.categories !== undefined) {
+    if (!Array.isArray(raw.categories)) fail("categories", "Informe uma lista de IDs de categorias do tipo selecionado.");
+    else for (const category of raw.categories) {
+      if (typeof category !== "string" || !type || !Object.hasOwn(contentTaxonomy[type].categories, category)) {
+        fail("categories", `Categoria não cadastrada neste tipo: ${String(category)}.`);
+      } else if (categories.includes(category)) fail("categories", `Categoria repetida: ${category}.`);
+      else categories.push(category);
+    }
   }
   const relations: ContentKey[] = [];
   if (raw.relations !== undefined) {
@@ -100,6 +115,8 @@ export function parseMetadata(raw: unknown, source: string): ContentMetadata {
   if (issues.length) throw new ContentValidationError(issues);
   return {
     version: 1, kind: raw.kind as ContentMetadata["kind"], id, title, description, image, tags, relations, links,
+    ...(raw.contentType === undefined ? {} : { contentType: raw.contentType as string }),
+    ...(raw.categories === undefined ? {} : { categories }),
     ...(raw.locale === undefined ? {} : { locale: raw.locale as ContentMetadata["locale"] }),
     ...(raw.date === undefined ? {} : { date: raw.date as string }),
     ...(raw.status === undefined ? {} : { status: raw.status as ContentMetadata["status"] }),

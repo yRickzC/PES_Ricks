@@ -1,5 +1,6 @@
 // API pública segura para navegador. Não reexportar node/ neste módulo.
 export * from "./types.ts";
+export * from "./taxonomy.ts";
 export * from "./parser.ts";
 export * from "./validation.ts";
 export * from "./database.ts";

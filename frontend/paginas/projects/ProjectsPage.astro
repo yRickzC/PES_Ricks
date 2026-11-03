@@ -1,5 +1,24 @@
 ---
-import SectionLayout from "../../layout/SectionLayout.astro";
+import Main from "../../main.astro";
+import { defaultLocale, locales } from "../../config/i18n";
+import { getMessages } from "../../utils/translations";
+import ProjectHero from "./components/ProjectHero.astro";
+import { taxonomyCategories } from "../../../backend/content/taxonomy";
+
+const locale = locales.find((value) => value === Astro.currentLocale) ?? defaultLocale;
+const copy = getMessages(locale);
+const projectCategories = taxonomyCategories("project", locale);
 ---
 
-<SectionLayout pageId="projects" />
+<Main locale={locale} pageId="projects" title={`${copy.projectsLabel} — Rickz`} description={copy.projectsDescription}>
+  <ProjectHero copy={copy} locale={locale} />
+  <section class="project-index" aria-labelledby="project-index-title">
+    <h2 id="project-index-title">{copy.heroExploreProjects}</h2>
+    {projectCategories.map((category) => (
+      <section class="project-category-section" id={`projects-${category.id}`} aria-labelledby={`projects-${category.id}-title`}>
+        <h3 id={`projects-${category.id}-title`}>{category.label}</h3>
+        <p class="section-empty">{copy.sectionEmpty}</p>
+      </section>
+    ))}
+  </section>
+</Main>

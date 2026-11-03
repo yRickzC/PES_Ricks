@@ -1,5 +1,7 @@
 ---
-import SectionLayout from "../../layout/SectionLayout.astro";
+import Main from "../../main.astro";
+import SiteImage from "../../components/site/SiteImage.astro";
+import BlogHero from "./components/BlogHero.astro";
 import { defaultLocale, locales } from "../../config/i18n";
 import { getMessages } from "../../utils/translations";
 import { articleDate, articleHref } from "./data/articles";
@@ -12,21 +14,25 @@ const { database } = await readBlogContent();
 const articles = database.list({ kind: "article", locale });
 ---
 
-<SectionLayout pageId="blogs">
-  {articles.length ? (
-    <ol class="blog-list">
-      {articles.map(({ metadata }) => (
-        <li>
-          <a class="blog-list-link" href={articleHref(metadata.id, locale)}>
-            <img src={metadata.image.src} alt={metadata.image.alt} loading="lazy" decoding="async" />
-            <div>
-              {metadata.date && <time class="blog-date" datetime={metadata.date}>{articleDate(metadata.date, locale)}</time>}
-              <h2>{metadata.title}</h2>
-              <p>{metadata.description}</p>
-            </div>
-          </a>
-        </li>
-      ))}
-    </ol>
-  ) : <p class="section-empty">{copy.sectionEmpty}</p>}
-</SectionLayout>
+<Main locale={locale} pageId="blogs" title={`${copy.blogHeroTitle} — Rickz`} description={copy.blogHeroSubtitle}>
+  <BlogHero copy={copy} locale={locale} />
+  <section class="blog-notes" id="lab-notes" aria-labelledby="lab-notes-title">
+    <h2 class="blog-notes-heading" id="lab-notes-title">{copy.blogExploreNotes}</h2>
+    {articles.length ? (
+      <ol class="blog-list">
+        {articles.map(({ metadata }) => (
+          <li>
+            <a class="blog-list-link" href={articleHref(metadata.id, locale)}>
+              <SiteImage src={metadata.image.src} alt={metadata.image.alt} width={360} widths={[180, 360, 720]} sizes="(max-width: 480px) calc(100vw - 48px), 180px" loading="lazy" decoding="async" />
+              <div>
+                {metadata.date && <time class="blog-date" datetime={metadata.date}>{articleDate(metadata.date, locale)}</time>}
+                <h3>{metadata.title}</h3>
+                <p>{metadata.description}</p>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ol>
+    ) : <p class="section-empty">{copy.sectionEmpty}</p>}
+  </section>
+</Main>

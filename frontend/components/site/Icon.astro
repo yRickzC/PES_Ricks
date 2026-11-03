@@ -1,6 +1,6 @@
 ---
 interface Props {
-  name: "mark" | "menu" | "close" | "search" | "globe" | "chevron" | "social" | "arrow" | "youtube" | "instagram" | "x" | "linkedin";
+  name: "mark" | "menu" | "at-sign" | "close" | "search" | "globe" | "chevron" | "social" | "arrow" | "youtube" | "instagram" | "x" | "linkedin";
   size?: number;
 }
 
@@ -8,6 +8,7 @@ const { name, size = 20 } = Astro.props;
 const paths: Record<Props["name"], string> = {
   mark: "m12 2 8.7 15a2 2 0 0 1-1.7 3H5a2 2 0 0 1-1.7-3L12 2Z M12 8l4.2 7.3H7.8L12 8Z",
   menu: "M4 7h16M4 12h16M4 17h16",
+  "at-sign": "M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0ZM16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8",
   close: "m6 6 12 12M18 6 6 18",
   search: "M21 21l-5-5M18 10.5a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z",
   globe: "M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM3 12h18M12 3c4 5 4 13 0 18-4-5-4-13 0-18Z",
