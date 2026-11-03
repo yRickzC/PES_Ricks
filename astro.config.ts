@@ -1,10 +1,27 @@
 import { defineConfig } from "astro/config";
+import process from "node:process";
 import tailwindcss from "@tailwindcss/vite";
 import { defaultLocale, locales } from "./frontend/config/i18n";
 import { pageRoutes } from "./frontend/config/navigation";
 import { contentIntegration } from "./backend/content/node/integration.ts";
 
+const [repositoryOwner = "yRickzC", repositoryName = "PES_Ricks"] = (
+  process.env.GITHUB_REPOSITORY ?? "yRickzC/PES_Ricks"
+).split("/");
+const isUserOrOrganizationSite = repositoryName.toLowerCase() === repositoryOwner.toLowerCase() + ".github.io";
+const defaultBasePath = process.env.GITHUB_ACTIONS === "true" && !isUserOrOrganizationSite
+  ? "/" + repositoryName
+  : "/";
+const configuredBasePath = process.env.PUBLIC_BASE_PATH?.trim() || defaultBasePath;
+const base = configuredBasePath === "/"
+  ? "/"
+  : "/" + configuredBasePath.replace(/^\/+|\/+$/gu, "");
+const site = (process.env.PUBLIC_SITE_URL?.trim() || "https://" + repositoryOwner.toLowerCase()).replace(/\/+$/u, "");
+
 export default defineConfig({
+  output: "static",
+  site,
+  base,
   srcDir: "./frontend",
   publicDir: "./public",
   i18n: {

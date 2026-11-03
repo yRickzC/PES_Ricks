@@ -13,8 +13,8 @@ export function renderLu(document: ContentDocument, context: Omit<WidgetContext,
       case "code": return `<code>${escapeHtml(item.value)}</code>`;
       case "strong": return `<strong>${escapeHtml(item.value)}</strong>`;
       case "emphasis": return `<em>${escapeHtml(item.value)}</em>`;
-      case "image": return `<img src="${safeHref(item.url)}" alt="${escapeHtml(item.label)}" loading="lazy" decoding="async">`;
-      case "link": return `<a href="${safeHref(item.url)}">${escapeHtml(item.label)}</a>`;
+      case "image": return `<img src="${safeHref(context.resolveUrl?.(item.url) ?? item.url)}" alt="${escapeHtml(item.label)}" loading="lazy" decoding="async">`;
+      case "link": return `<a href="${safeHref(context.resolveUrl?.(item.url) ?? item.url)}">${escapeHtml(item.label)}</a>`;
       case "reference": {
         const entry = context.database.get(item.target, widgetContext.locale);
         if (!entry) throw new ContentValidationError([{ source: document.source, field: "reference", message: `Destino inexistente: ${item.target}.` }]);

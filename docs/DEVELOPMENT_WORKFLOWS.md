@@ -49,6 +49,10 @@ YT-RAW não tem comando de shell: a skill do Codex mantém `YT_RAW.md` na raiz. 
 ## Estado inicial deste workspace
 
 Na configuração inicial, a pasta do projeto não continha código-fonte nem `graphify-out/graph.json`; por isso, nenhum grafo foi extraído. Rode `graphify extract . --code-only` quando houver código para indexar.
+## Publicação estática
+
+O deploy automático para GitHub Pages está descrito em [DEPLOYMENT.md](DEPLOYMENT.md). O Astro gera **dist/**; o workflow publica a cada push em **main** e também pode ser iniciado manualmente.
+
 ## Node, Astro, Tailwind e testes
 
 O projeto usa Astro com Vite, Tailwind CSS v4 e Vitest. A configuração de Astro registra o plugin do Tailwind para Vite; o Vitest usa uma configuração dedicada para testes unitários TypeScript.

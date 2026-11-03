@@ -6,7 +6,7 @@ import { readBlogContent } from "../data/public-content";
 
 export const getStaticPaths = (async ({ routePattern }) => {
   const locale = routePattern.split("/").includes("pt-br") ? "pt-br" : "en";
-  return articlePages(await readBlogContent(), locale);
+  return articlePages(await readBlogContent(), locale, import.meta.env.BASE_URL);
 }) satisfies GetStaticPaths;
 
 type Props = ArticlePageProps;

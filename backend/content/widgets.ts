@@ -9,6 +9,7 @@ export interface WidgetContext {
   current: ContentKey;
   locale?: ContentLocale;
   resolveHref?: (entry: ContentEntry) => string | undefined;
+  resolveUrl?: (url: string) => string;
   // Snapshot já carregado pelo adaptador GitHub. O renderizador não faz rede.
   githubHistory?: ReadonlyMap<string, readonly ContentDocument[]>;
   renderDocument?: (document: ContentDocument) => string;

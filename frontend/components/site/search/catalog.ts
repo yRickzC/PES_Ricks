@@ -11,7 +11,7 @@ const pageTypes: Record<PageId, SearchType> = {
   home: "home", blogs: "blog", projects: "project", services: "service",
 };
 
-export function createSearchCatalog(articles: readonly ContentEntry[], locale: Locale, copy: Messages): SearchRecord[] {
+export function createSearchCatalog(articles: readonly ContentEntry[], locale: Locale, copy: Messages, basePath = "/"): SearchRecord[] {
   const types = taxonomyTypes(locale);
   const pages = sitePages.map((page): SearchRecord => {
     const type = types.find(({ id }) => id === pageTypes[page.id]);
@@ -45,7 +45,7 @@ export function createSearchCatalog(articles: readonly ContentEntry[], locale: L
       typeIcon: type.icon,
       categories: contentCategories(metadata, locale),
       tags: metadata.tags,
-      href: articleHref(metadata.id, locale),
+      href: articleHref(metadata.id, locale, basePath),
       priority: 50,
       featured: false,
     };

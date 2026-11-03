@@ -17,7 +17,7 @@ interface Props {
 
 const { locale, copy } = Astro.props;
 const { database } = await readBlogContent();
-const records = createSearchCatalog(database.list({ kind: "article", locale }), locale, copy);
+const records = createSearchCatalog(database.list({ kind: "article", locale }), locale, copy, import.meta.env.BASE_URL);
 const types = taxonomyTypes(locale);
 const categories = searchCategories(types.flatMap(({ categories }) => categories), "all", locale);
 ---

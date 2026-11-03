@@ -11,3 +11,8 @@ graphify-out/
 
 # Local source-image backup after WebP optimization
 RAW/
+
+node_modules/
+dist/
+.astro/
+coverage/
