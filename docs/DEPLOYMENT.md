@@ -4,7 +4,7 @@
 
 O site é compilado como estático pelo Astro (**output: static**) e publicado pelo workflow **.github/workflows/deploy.yml**.
 
-- Push para **main**: instala as dependências pelo lockfile, gera **dist/**, envia o artefato e publica no GitHub Pages.
+- Push para **main** ou **deploy/github-pages**: instala as dependências pelo lockfile, gera **dist/**, envia o artefato e publica no GitHub Pages.
 - Execução manual: abra **Actions → Deploy to GitHub Pages → Run workflow**.
 - URL do repositório atual: <https://yrickzc.github.io/PES_Ricks/>.
 
@@ -12,7 +12,7 @@ O workflow usa a action oficial do Astro e a action de deploy do GitHub Pages. E
 
 ## Ativação no repositório
 
-Na primeira configuração, abra **Settings → Pages** e selecione **GitHub Actions** em **Build and deployment → Source**. Depois, um push em **main** inicia o deploy; acompanhe o resultado na aba **Actions**.
+Na primeira configuração, abra **Settings → Pages** e selecione **GitHub Actions** em **Build and deployment → Source**. Depois, um push em **main** ou **deploy/github-pages** inicia o deploy; acompanhe o resultado na aba **Actions**.
 
 ## Caminho base
 
