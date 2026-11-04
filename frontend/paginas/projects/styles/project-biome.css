@@ -1,10 +1,9 @@
 /* Category environments remain below and independent from the original Hero. */
-.project-index.project-index { width: 100%; }
-.project-index > h2, .project-index > .project-show-all, .project-category-section {
+.project-index.project-index { width: 100%; padding-top: 0; }
+.project-category-section {
   width: min(calc(100% - 48px), 1120px);
   margin-inline: auto;
 }
-.project-index > .project-show-all { display: block; }
 .project-index .project-category-section--biome {
   position: relative;
   isolation: isolate;
@@ -46,7 +45,7 @@
 }
 @media (max-width: 760px) {
   .project-index.project-index { width: 100%; }
-  .project-index > h2, .project-index > .project-show-all, .project-category-section:not(.project-category-section--biome), .project-category-section--biome > .project-category-content { width: calc(100% - 32px); }
+  .project-category-section:not(.project-category-section--biome), .project-category-section--biome > .project-category-content { width: calc(100% - 32px); }
   .project-index .project-category-section--biome { min-height: 580px; padding-block: 110px 160px; }
   .project-biome-layer { inset: -20px; }
   .project-biome-placement { left: var(--mobile-x, 50%); width: var(--mobile-width); top: var(--mobile-top); bottom: var(--mobile-bottom); transform: translateX(-50%) scale(var(--mobile-scale)); }

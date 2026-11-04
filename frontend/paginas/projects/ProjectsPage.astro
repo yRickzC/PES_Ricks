@@ -31,9 +31,7 @@ const projectCategories = projectBiomes.map((biome) => categories.find(({ id }) 
 <Main locale={locale} pageId="projects" title={`${copy.projectsLabel} — Rickz`} description={copy.projectsDescription}>
   <project-explore>
     <ProjectHero copy={copy} locale={locale} />
-    <section class="project-index" aria-labelledby="project-index-title">
-      <h2 id="project-index-title">{copy.heroExploreProjects}</h2>
-      <a id="projects-all" class="project-show-all" href="#projects-all" data-project-show-all aria-current="true">{copy.searchAllCategories}</a>
+    <section id="projects-all" class="project-index" aria-label={copy.heroExploreProjects}>
       {projectCategories.map((category) => (
         <section class:list={["project-category-section", { "project-category-section--biome": projectBiomes.some((biome) => biome.category === category.id) }]} data-project-section={category.id} id={`projects-${category.id}`} aria-labelledby={`projects-${category.id}-title`}>
           <ProjectBiome category={category.id} />

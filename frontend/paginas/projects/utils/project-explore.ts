@@ -4,19 +4,32 @@
 export class ProjectExplore extends HTMLElement {
   connectedCallback() {
     window.addEventListener("hashchange", this.update);
+    this.addEventListener("click", this.toggleSelectedCategory);
     this.update();
   }
 
   disconnectedCallback() {
     window.removeEventListener("hashchange", this.update);
+    this.removeEventListener("click", this.toggleSelectedCategory);
   }
+
+  private toggleSelectedCategory = (event: MouseEvent) => {
+    if (event.button !== 0 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+    if (!(event.target instanceof Element)) return;
+
+    const link = event.target.closest<HTMLAnchorElement>("[data-project-filter]");
+    if (!link || link.hash !== window.location.hash) return;
+
+    event.preventDefault();
+    window.location.hash = "#projects-all";
+  };
 
   private update = () => {
     const sections = [...this.querySelectorAll<HTMLElement>("[data-project-section]")];
     const selected = sections.find((section) => `#${section.id}` === window.location.hash);
     for (const section of sections) section.hidden = !!selected && section !== selected;
-    this.querySelectorAll<HTMLAnchorElement>("[data-project-filter], [data-project-show-all]").forEach((link) => {
-      const active = selected ? link.dataset.projectFilter === selected.dataset.projectSection : link.hasAttribute("data-project-show-all");
+    this.querySelectorAll<HTMLAnchorElement>("[data-project-filter]").forEach((link) => {
+      const active = link.dataset.projectFilter === selected?.dataset.projectSection;
       if (active) link.setAttribute("aria-current", "true");
       else link.removeAttribute("aria-current");
     });
