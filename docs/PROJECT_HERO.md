@@ -52,3 +52,11 @@ O Hero mantém a floresta, a logo e a órbita de categorias originais. A Crystal
 Os PNGs são solicitados quando Web é selecionada ou quando sua seção se aproxima da viewport na visualização de todas as categorias. A névoa usa transform durante 125s, amplitude de 22px e oscilação de 4px, com opacidade 0.18. O parallax utiliza o controlador compartilhado, que distribui um único listener de scroll às cenas visíveis. A caverna tem seu próprio enquadramento e limites de deslocamento; o Hero mantém os parâmetros originais. As animações pausam fora da viewport e respeitam prefers-reduced-motion.
 
 As consultas ao catálogo e os hashes de categorias permanecem os mesmos. A seleção de Web mostra somente sua seção e navega até ela. A visão de todas as categorias inclui a caverna somente dentro da seção Web. As outras seções mantêm o fundo original.
+
+## Cabeçalho e seção sem projetos
+
+Cada seção usa `TaxonomyIcon` e o nome traduzido da categoria em um cabeçalho centralizado. A seção Web usa o mesmo globo cadastrado no Hero, dentro da Crystal Cave. Quando a consulta do catálogo não encontra projetos, o componente compartilhado `ContentEmptyState.astro` mostra o cachorro `Blog_Result_Dog.webp`, também usado pelo Blog, em lugar do texto provisório. A ação “Limpar filtros” aponta para `#projects-all` e restaura todas as categorias. Projetos com conteúdo continuam usando a listagem normal. Os textos de Projects estão em `public/i18n/projects.en.json` e `projects.pt-br.json`; o Blog conserva seus próprios textos e comportamento.
+
+## Extensão para seis biomas
+
+Os cinco ambientes novos e sua configuração, assets, transições, carregamento e validação estão documentados em [PROJECT_BIOMES.md](PROJECT_BIOMES.md). A Crystal Cave mantém seus assets e parâmetros; o Hero conserva a composição original.

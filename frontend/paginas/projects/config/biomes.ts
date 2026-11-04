@@ -1,4 +1,4 @@
-import type { HeroParallaxLayer } from "../../../utils/hero-parallax";
+import type { HeroParallaxLayer, HeroParallaxMotion } from "../../../utils/hero-parallax";
 
 interface Placement {
   width: string;
@@ -8,7 +8,7 @@ interface Placement {
   x?: string;
 }
 
-interface ProjectBiomeLayer extends HeroParallaxLayer {
+export interface ProjectBiomeLayer extends HeroParallaxLayer {
   src: string;
   zIndex: number;
   className: string;
@@ -18,13 +18,14 @@ interface ProjectBiomeLayer extends HeroParallaxLayer {
   animation?: { duration: string; travel: string; lift: string };
 }
 
-interface ProjectBiome {
+export interface ProjectBiome {
   id: string;
   category: string;
   layers: readonly ProjectBiomeLayer[];
+  motion?: Partial<HeroParallaxMotion>;
 }
 
-export const projectBiomes = [
+const crystalCave = [
   {
     id: "crystal-cave",
     category: "web",
@@ -53,6 +54,50 @@ export const projectBiomes = [
     ],
   },
 ] as const satisfies readonly ProjectBiome[];
+type LayerName = "Background" | "Small" | "Fog" | "Medium" | "Top";
+interface SceneDefinition {
+  id: string;
+  category: string;
+  prefix: string;
+  depths: readonly [number, number, number, number, number];
+  mediumWidth: string;
+  smallX: string;
+  mediumX: string;
+  topWidth: string;
+  fogOpacity: number;
+  fogDuration: string;
+}
+
+// The five new scenes use the existing renderer and supply their own framing.
+function createBiome(scene: SceneDefinition): ProjectBiome {
+  const order: LayerName[] = ["Background", "Small", "Fog", "Medium", "Top"];
+  return {
+    id: scene.id, category: scene.category,
+    motion: { travelFraction: 0.1, maxTravel: 64, pointerTravel: 24, mobileMultiplier: 0.16 },
+    layers: order.map((name, index): ProjectBiomeLayer => {
+      const base = crystalCave[0].layers[index]!;
+      const mobile: Placement = { ...base.mobile };
+      if (name === "Small") mobile.x = scene.smallX;
+      if (name === "Medium") { mobile.x = scene.mediumX; mobile.width = scene.mediumWidth; }
+      if (name === "Top") mobile.width = scene.topWidth;
+      return {
+        ...base, id: `${scene.id}-${name.toLowerCase()}`,
+        src: `/images/${scene.prefix}_${name}.png`, depth: scene.depths[index]!, mobile,
+        ...(name === "Fog" ? { opacity: scene.fogOpacity, animation: { duration: scene.fogDuration, travel: "18px", lift: "3px" } } : {}),
+      };
+    }),
+  };
+}
+
+export const projectBiomes: readonly ProjectBiome[] = [
+  ...crystalCave,
+  createBiome({ id: "volcanic-cave", category: "game-dev", prefix: "Project_GameDev", depths: [0.04, 0.12, 0.18, 0.28, 0.35], mediumWidth: "max(185%, 1120px)", smallX: "0%", mediumX: "118%", topWidth: "max(210%, 1080px)", fogOpacity: 0.13, fogDuration: "135s" }),
+  createBiome({ id: "basalt-abyss", category: "low-level", prefix: "Project_LowLevel", depths: [0.04, 0.1, 0.15, 0.24, 0.32], mediumWidth: "max(170%, 1020px)", smallX: "-8%", mediumX: "118%", topWidth: "max(200%, 1040px)", fogOpacity: 0.1, fogDuration: "150s" }),
+  createBiome({ id: "subterranean-waters", category: "mobile", prefix: "Project_Mobile", depths: [0.04, 0.12, 0.17, 0.26, 0.34], mediumWidth: "max(170%, 1000px)", smallX: "-2%", mediumX: "112%", topWidth: "max(200%, 1000px)", fogOpacity: 0.13, fogDuration: "145s" }),
+  createBiome({ id: "mineral-chamber", category: "products", prefix: "Project_Products", depths: [0.04, 0.12, 0.18, 0.28, 0.36], mediumWidth: "max(180%, 1080px)", smallX: "-5%", mediumX: "122%", topWidth: "max(215%, 1060px)", fogOpacity: 0.12, fogDuration: "140s" }),
+  createBiome({ id: "bioluminescent-cave", category: "machine-learning", prefix: "Project_ML", depths: [0.04, 0.12, 0.18, 0.27, 0.34], mediumWidth: "max(180%, 1050px)", smallX: "-4%", mediumX: "120%", topWidth: "max(210%, 1040px)", fogOpacity: 0.14, fogDuration: "130s" }),
+];
+
 export function projectLayerStyle(layer: ProjectBiomeLayer): string {
   const values = [`z-index: ${layer.zIndex}`];
   if (layer.opacity !== undefined) values.push(`opacity: ${layer.opacity}`);

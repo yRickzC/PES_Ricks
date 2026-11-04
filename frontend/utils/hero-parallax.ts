@@ -32,6 +32,24 @@ function subscribeScroll(invalidate: () => void): () => void {
   };
 }
 
+// One frame batch for all visible scenes, including the Hero. Sleeping scenes
+// enqueue nothing; observers and events only wake a scene when it needs work.
+const renderQueue = new Set<(time: number) => void>();
+let sharedFrame = 0;
+function enqueueRender(render: (time: number) => void) {
+  renderQueue.add(render);
+  if (!sharedFrame) sharedFrame = requestAnimationFrame((time) => {
+    sharedFrame = 0;
+    const batch = [...renderQueue];
+    renderQueue.clear();
+    batch.forEach((callback) => callback(time));
+  });
+}
+function cancelRender(render: (time: number) => void) {
+  renderQueue.delete(render);
+  if (!renderQueue.size) { cancelAnimationFrame(sharedFrame); sharedFrame = 0; }
+}
+
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
 export function mountHeroParallax(hero: HTMLElement, options: HeroParallaxOptions): () => void {
@@ -46,7 +64,7 @@ export function mountHeroParallax(hero: HTMLElement, options: HeroParallaxOption
   const passive = { passive: true, signal: abort.signal };
   let visible = false;
   let disposed = false;
-  let frame = 0;
+  let pendingFrame = false;
   let previousTime = 0;
   let bounds = hero.getBoundingClientRect();
   let boundsDirty = true;
@@ -58,14 +76,15 @@ export function mountHeroParallax(hero: HTMLElement, options: HeroParallaxOption
 
   const enabled = () => !disposed && visible && !document.hidden && !reducedMotion.matches;
   function stop() {
-    cancelAnimationFrame(frame);
-    frame = previousTime = 0;
+    cancelRender(render);
+    pendingFrame = false;
+    previousTime = 0;
   }
   function schedule() {
-    if (enabled() && !frame) frame = requestAnimationFrame(render);
+    if (enabled() && !pendingFrame) { pendingFrame = true; enqueueRender(render); }
   }
   function render(time: number) {
-    frame = 0;
+    pendingFrame = false;
     if (!enabled()) return;
     if (boundsDirty) {
       bounds = hero.getBoundingClientRect();

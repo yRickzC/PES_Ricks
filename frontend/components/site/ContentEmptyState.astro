@@ -1,0 +1,29 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import SiteImage from "./SiteImage.astro";
+interface Props extends HTMLAttributes<"div"> {
+  title: string;
+  hint: string;
+  dogAlt: string;
+  headingLevel?: "h3" | "h4";
+}
+const { title, hint, dogAlt, headingLevel: Heading = "h3", class: className, ...attributes } = Astro.props;
+---
+<div {...attributes} class:list={["content-empty-state", className]}>
+  <SiteImage src="/images/Blog_Result_Dog.webp" alt={dogAlt} width={240} widths={[180, 240, 480]} sizes="(max-width: 700px) 170px, 220px" loading="lazy" decoding="async" />
+  <Heading>{title}</Heading>
+  <p>{hint}</p>
+  <slot />
+</div>
+
+<style is:global>
+  .content-empty-state { display: flex; flex-direction: column; align-items: center; padding: 56px 16px 96px; text-align: center; }
+  .content-empty-state[hidden] { display: none; }
+  .content-empty-state img { display: block; width: min(100%, 220px); height: auto; object-fit: contain; margin-bottom: 24px; }
+  .content-empty-state > :is(h3, h4) { margin: 0; font-size: clamp(1.375rem, 2.5vw, 1.875rem); font-weight: 500; letter-spacing: -.025em; }
+  .content-empty-state p { max-width: 36ch; margin: 16px 0 18px; color: var(--color-text-secondary); font-size: .9375rem; line-height: 1.7; }
+  @media (max-width: 700px) {
+    .content-empty-state { padding-block: 40px 64px; }
+    .content-empty-state img { width: min(100%, 170px); }
+  }
+</style>

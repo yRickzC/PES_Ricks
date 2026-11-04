@@ -14,14 +14,17 @@ export function mountProjectBiome(scene: HTMLElement): () => void {
     loading = true;
     try {
       await Promise.all([...scene.querySelectorAll<HTMLImageElement>("[data-biome-src]")].map(async (image) => {
-        if (!image.hasAttribute("src")) image.src = image.dataset.biomeSrc!;
+        if (!image.hasAttribute("src")) {
+          if (image.dataset.biomeSrcset) image.srcset = image.dataset.biomeSrcset;
+          image.src = image.dataset.biomeSrc!;
+        }
         await image.decode();
       }));
       if (disposed) return;
       scene.dataset.ready = "true";
       stop = mountHeroParallax(section!, {
         layers: biome!.layers,
-        motion: { ...projectHeroMotion, maxTravel: 64, pointerTravel: 24, mobileMultiplier: 0.18 },
+        motion: { ...projectHeroMotion, maxTravel: 64, pointerTravel: 24, mobileMultiplier: 0.18, ...biome!.motion },
         layerAttribute: "data-project-biome-layer",
       });
     } catch { /* Keep the section readable on its original dark background. */ }
@@ -29,9 +32,9 @@ export function mountProjectBiome(scene: HTMLElement): () => void {
   }
   const visible = new IntersectionObserver(([entry]) => {
     if (entry?.isIntersecting) void load();
-  });
+  }, { rootMargin: "180px 0px" });
   visible.observe(section);
-  // A selected Web section loads immediately; All categories loads it on approach.
+  // Selected categories load immediately; All categories loads each on approach.
   const selected = () => { void load(); };
   section.addEventListener("project-category-change", selected);
   if (window.location.hash === `#${section.id}`) void load();

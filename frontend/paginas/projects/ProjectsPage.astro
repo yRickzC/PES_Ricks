@@ -9,14 +9,20 @@ import ProjectHero from "./components/ProjectHero.astro";
 import { publicDir } from "astro:config/server";
 import { fileURLToPath } from "node:url";
 import { readPublicContent } from "../../../backend/content/node/pipeline";
+import ContentEmptyState from "../../components/site/ContentEmptyState.astro";
+import TaxonomyIcon from "../../components/site/TaxonomyIcon.astro";
+import projectEnglish from "../../../public/i18n/projects.en.json";
+import projectPortuguese from "../../../public/i18n/projects.pt-br.json";
 import SiteImage from "../../components/site/SiteImage.astro";
 import { withBasePath } from "../../utils/base-path";
 import { taxonomyCategories } from "../../../backend/content/taxonomy";
 
 const locale = locales.find((value) => value === Astro.currentLocale) ?? defaultLocale;
 const copy = getMessages(locale);
+const projectCopy = locale === "pt-br" ? projectPortuguese : projectEnglish;
 const { database } = await readPublicContent(fileURLToPath(publicDir));
-const projectCategories = taxonomyCategories("project", locale).map((category) => ({
+const categories = taxonomyCategories("project", locale);
+const projectCategories = projectBiomes.map((biome) => categories.find(({ id }) => id === biome.category)!).map((category) => ({
   ...category,
   projects: database.list({ contentType: "project", locale, categories: [category.id] }),
 }));
@@ -32,21 +38,32 @@ const projectCategories = taxonomyCategories("project", locale).map((category) =
         <section class:list={["project-category-section", { "project-category-section--biome": projectBiomes.some((biome) => biome.category === category.id) }]} data-project-section={category.id} id={`projects-${category.id}`} aria-labelledby={`projects-${category.id}-title`}>
           <ProjectBiome category={category.id} />
           <div class="project-category-content">
-          <h3 id={`projects-${category.id}-title`}>{category.label}</h3>
-          {category.projects.length ? (
-            <ul class="project-list">
-              {category.projects.map(({ key, metadata }) => (
-                <li data-project-key={key}>
-                  <article class="project-card">
-                    <SiteImage src={metadata.image.src} alt={metadata.image.alt} width={480} sizes="(max-width: 760px) 100vw, 480px" />
-                    <h4>{metadata.title}</h4>
-                    <p>{metadata.description}</p>
-                    {metadata.links.map((link) => <a href={withBasePath(link.url, import.meta.env.BASE_URL)}>{link.label}</a>)}
-                  </article>
-                </li>
-              ))}
-            </ul>
-          ) : <p class="section-empty">{copy.sectionEmpty}</p>}
+            <header class="project-category-header">
+              <TaxonomyIcon icon={category.icon} size={48} />
+              <h3 id={`projects-${category.id}-title`}>{category.label}</h3>
+            </header>
+            {category.projects.length ? (
+              <ul class="project-list">
+                {category.projects.map(({ key, metadata }) => (
+                  <li data-project-key={key}>
+                    <article class="project-card">
+                      <SiteImage src={metadata.image.src} alt={metadata.image.alt} width={480} sizes="(max-width: 760px) 100vw, 480px" />
+                      <h4>{metadata.title}</h4>
+                      <p>{metadata.description}</p>
+                      {metadata.status && <span class="project-card-status">{metadata.status}</span>}
+                      <ul class="project-card-tags" aria-label={projectCopy.tags}>
+                        {metadata.tags.map((tag) => <li>{tag}</li>)}
+                      </ul>
+                      {metadata.links.map((link) => <a href={withBasePath(link.url, import.meta.env.BASE_URL)}>{link.label}</a>)}
+                    </article>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <ContentEmptyState class="project-empty-state" headingLevel="h4" title={projectCopy.emptyTitle} hint={projectCopy.emptyHint} dogAlt={projectCopy.dogAlt}>
+                <a class="project-empty-clear" href="#projects-all">{projectCopy.clear}</a>
+              </ContentEmptyState>
+            )}
           </div>
         </section>
       ))}

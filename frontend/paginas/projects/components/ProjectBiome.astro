@@ -1,14 +1,29 @@
 ---
+import { getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import { projectBiomes, projectLayerStyle } from "../config/biomes";
 import { withBasePath } from "../../../utils/base-path";
 interface Props { category: string }
 const biome = projectBiomes.find((item) => item.category === Astro.props.category);
+const sources = import.meta.glob<ImageMetadata>("/public/images/*.png", { import: "default" });
+const layers = await Promise.all((biome?.layers ?? []).map(async (layer) => {
+  const source = await sources[`/public${layer.src}`]?.();
+  if (!source) throw new Error(`Missing biome asset: ${layer.src}`);
+  // Preserve Crystal Cave's original image requests and composition.
+  if (biome!.id === "crystal-cave") return { ...layer, url: withBasePath(layer.src, import.meta.env.BASE_URL), width: source.width, height: source.height, srcset: "" };
+  const image = await getImage({ src: source, width: source.width, widths: [720, 1280, source.width].filter((width) => width <= source.width), format: "webp" });
+  return { ...layer, url: withBasePath(image.src, import.meta.env.BASE_URL), width: Number(image.attributes.width), height: Number(image.attributes.height), srcset: image.srcSet.attribute };
+}));
 ---
 {biome && (
   <div class="project-biome-scene" data-project-biome={biome.id} aria-hidden="true">
-    {biome.layers.map((layer) => (
+    <noscript><style is:inline>.project-biome-scene { opacity: 1; } .project-biome-placement > img[data-biome-src] { display: none; }</style></noscript>
+    {layers.map((layer) => (
       <div class={`project-biome-layer project-biome-layer--${layer.className}`} data-project-biome-layer={layer.id} style={projectLayerStyle(layer)}>
-        <div class="project-biome-placement"><img data-biome-src={withBasePath(layer.src, import.meta.env.BASE_URL)} width="2172" height="724" alt="" decoding="async" draggable="false" /></div>
+        <div class="project-biome-placement">
+          <img data-biome-src={layer.url} data-biome-srcset={layer.srcset || undefined} sizes="(max-width: 760px) 1200px, 2172px" width={layer.width} height={layer.height} alt="" decoding="async" draggable="false" />
+          <noscript><img src={layer.url} srcset={layer.srcset || undefined} sizes="(max-width: 760px) 1200px, 2172px" width={layer.width} height={layer.height} alt="" loading="lazy" /></noscript>
+        </div>
       </div>
     ))}
   </div>
