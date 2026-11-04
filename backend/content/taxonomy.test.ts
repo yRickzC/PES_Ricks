@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createContentDatabase, parseManifest } from "./database.ts";
 import { parseLu } from "./parser.ts";
-import { contentCategories, resolveContentType, taxonomyTypes } from "./taxonomy.ts";
+import { contentCategories, resolveContentType, taxonomyCategories, taxonomyTypes } from "./taxonomy.ts";
 import { config, entry, lu, metadata } from "./test-fixtures.ts";
 
 describe("taxonomia do conteúdo", () => {
@@ -54,12 +54,41 @@ describe("taxonomia do conteúdo", () => {
 
   it("consulta categorias e tipo em conjunto no catálogo de conteúdo", () => {
     const article = entry({ id: "artigo", categories: ["article"], tags: ["offline"] });
-    const project = entry({ kind: "project", id: "sistema", categories: ["systems"] });
+    const project = entry({ kind: "project", id: "sistema", categories: ["web"] });
     const service = entry({ kind: "service", id: "sistema", categories: ["internal-systems"] });
     const database = createContentDatabase([article, project, service]);
-    expect(database.list({ contentType: "project", categories: ["systems"] }).map(({ key }) => key)).toEqual([project.key]);
-    expect(database.list({ contentType: "service", categories: ["systems"] })).toEqual([]);
+    expect(database.list({ contentType: "project", categories: ["web"] }).map(({ key }) => key)).toEqual([project.key]);
+    expect(database.list({ contentType: "service", categories: ["web"] })).toEqual([]);
     expect(database.list({ contentType: "blog", categories: ["article"], tags: ["offline"] }).map(({ key }) => key)).toEqual([article.key]);
     expect(database.card(service.key)?.categories).toEqual(["internal-systems"]);
   });
+
+  it("mantém as seis áreas de projetos e os IDs independentes do idioma", () => {
+    const ids = ["low-level", "game-dev", "products", "machine-learning", "mobile", "web"];
+    for (const locale of ["en", "pt-br"] as const) {
+      expect(taxonomyCategories("project", locale).map(({ id }) => id)).toEqual(ids);
+    }
+    expect(taxonomyCategories("project", "en").map(({ label }) => label))
+      .toEqual(["Low-Level", "Game Dev", "Products", "Machine Learning", "Mobile", "Web"]);
+  });
+
+  it("filtra projetos multicategoria, com fallback de idioma e sem misturar serviços", () => {
+    const app = entry({ kind: "project", id: "app", categories: ["mobile", "machine-learning"] });
+    const webEn = entry({ kind: "project", id: "site", locale: "en", categories: ["web"] });
+    const webPt = entry({ kind: "project", id: "site", locale: "pt-br", categories: ["web"] });
+    const service = entry({ kind: "service", id: "app", categories: ["mobile-apps"] });
+    const db = createContentDatabase([app, webEn, webPt, service]);
+    for (const locale of ["en", "pt-br"] as const) {
+      for (const category of ["mobile", "machine-learning"]) {
+        expect(db.list({ contentType: "project", locale, categories: [category] }).map(({ key }) => key)).toEqual([app.key]);
+      }
+      expect(db.list({ contentType: "project", locale, categories: ["web"] }).map(({ key }) => key))
+        .toEqual([locale === "en" ? webEn.key : webPt.key]);
+      expect(db.list({ contentType: "project", locale, categories: ["low-level"] })).toEqual([]);
+    }
+    expect(parseManifest({ version: 1, entries: [app] }).entries[0]!.metadata.categories)
+      .toEqual(["mobile", "machine-learning"]);
+    expect(() => entry({ kind: "project", categories: ["backend"] })).toThrow("[categories]");
+  });
+
 });

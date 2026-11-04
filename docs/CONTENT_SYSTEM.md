@@ -66,7 +66,7 @@ Os campos usam `chave: valor`, sem chaves de objeto e sem vírgulas ao fim das l
 | `image` / `imagem` | Capa obrigatória; caminho em public ou URL HTTPS. |
 | `image-alt` / `imagem-alt` | Descrição da imagem; se omitida na forma `image: caminho`, usa o título. Prefira uma descrição própria. |
 | `tags` | Obrigatório; uma ou mais tags, slugs separados por vírgula ou lista `[game-design, roblox]`. |
-| `categories` / `categorias` | Opcional para compatibilidade; lista de IDs cadastrados no tipo, como `article, dev-log` para blog ou `systems` para projeto. Tags não criam categorias. |
+| `categories` / `categorias` | Opcional para compatibilidade; lista de IDs cadastrados no tipo, como `article, dev-log` para blog ou `[web, machine-learning]` para projeto. Tags não criam categorias. |
 | `content-type` / `tipo-conteudo` | Opcional; ID do tipo de `backend/content/taxonomy.ts`, compatível com `kind`. Sem ele, usa-se o primeiro tipo do formato: blog para article, project para project, service para service. |
 | `kind` / `type` / `tipo` | `article`, `project`, `service`, `location` ou `changelog`. |
 | `date` / `data` | Data real `AAAA-MM-DD`; obrigatória em changelog. |
@@ -256,3 +256,7 @@ const html = renderLu(document, { database, githubHistory: snapshots });
 ```
 
 A API pública é acessada sem credenciais, com cancelamento e limites: 15s no total, 50 arquivos e 256.000 bytes por arquivo por padrão. Erros, árvore truncada ou limites excedidos retornam unavailable sem histórico parcial. Falhas não ficam em cache. Nenhuma rede é disparada ao declarar/renderizar um widget ou preparar conteúdo local. Para publicação sem rede, espelhe changelogs em public/content e use `$changelog`.
+
+## Áreas de projetos
+
+O Hero de Projetos e sua listagem usam a mesma taxonomia: `web`, `game-dev`, `low-level`, `mobile`, `products` e `machine-learning`. Os IDs são independentes do idioma. Use `categories: [mobile, machine-learning]` para um projeto aparecer em ambas as áreas. A seleção no Hero filtra as seções já consultadas pelo catálogo, e “Todas as categorias” restaura a listagem completa. O hash `#projects-<id>` permite abrir uma área diretamente. Sem JavaScript, os links continuam levando às seções. Categorias antigas de projetos devem ser reclassificadas para esses IDs; tags continuam livres.

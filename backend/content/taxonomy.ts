@@ -15,6 +15,13 @@ interface TypeDefinition extends NamedDefinition {
 }
 
 const icons = {
+  // Lucide outlines, rendered by the existing TaxonomyIcon component.
+  globe: { path: "M2 12a10 10 0 1 0 20 0a10 10 0 1 0 -20 0 M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20 M2 12h20" },
+  gamepad: { path: "M6 11L10 11 M8 9L8 13 M15 12L15.01 12 M18 10L18.01 10 M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z" },
+  cpu: { path: "M12 20v2 M12 2v2 M17 20v2 M17 2v2 M2 12h2 M2 17h2 M2 7h2 M20 12h2 M20 17h2 M20 7h2 M7 20v2 M7 2v2 M6 4H18a2 2 0 0 1 2 2V18a2 2 0 0 1 -2 2H6a2 2 0 0 1 -2 -2V6a2 2 0 0 1 2 -2Z M9 8H15a1 1 0 0 1 1 1V15a1 1 0 0 1 -1 1H9a1 1 0 0 1 -1 -1V9a1 1 0 0 1 1 -1Z" },
+  smartphone: { path: "M7 2H17a2 2 0 0 1 2 2V20a2 2 0 0 1 -2 2H7a2 2 0 0 1 -2 -2V4a2 2 0 0 1 2 -2Z M12 18h.01" },
+  package: { path: "M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z M12 22V12 M3.29 7 12 12 20.71 7 M0 0 m7.5 4.27 9 5.15" },
+  brainCircuit: { path: "M12 13h4 M12 18h6a2 2 0 012 2v1 M12 8h8 M12 9a4.17 4.17 0 01-3 4 M16 8V5a2 2 0 012-2 M6 18a4 4 0 01-2-7.465 M6.004 5.125a4 4 0 00-2.526 5.77 M6.294 6.294A3 3 0 1112 5v13a4 4 0 11-7.967-.518 M15.5 13a0.5 0.5 0 1 0 1 0a0.5 0.5 0 1 0 -1 0 M17.5 3a0.5 0.5 0 1 0 1 0a0.5 0.5 0 1 0 -1 0 M19.5 21a0.5 0.5 0 1 0 1 0a0.5 0.5 0 1 0 -1 0 M19.5 8a0.5 0.5 0 1 0 1 0a0.5 0.5 0 1 0 -1 0" },
   article: { path: "M6 3h9l4 4v14H5V3h1Zm8 0v5h5M8 12h8M8 16h6" },
   video: { path: "M3 5h18v14H3zM10 9l5 3-5 3V9Z" },
   code: { path: "m8 7-5 5 5 5m8-10 5 5-5 5m-3-12-2 14" },
@@ -47,13 +54,12 @@ export const contentTaxonomy = {
   project: {
     kind: "project", name: "project", icon: icons.products,
     categories: {
-      ai: { name: "projectAI", icon: icons.ai },
-      games: { name: "projectGames", icon: icons.games },
-      systems: { name: "projectSystems", icon: icons.systems },
-      research: { name: "projectResearch", icon: icons.research },
-      products: { name: "projectProducts", icon: icons.products },
-      frontend: { name: "projectFrontend", icon: icons.web },
-      backend: { name: "projectBackend", icon: icons.server },
+      "low-level": { name: "projectLowLevel", icon: icons.cpu },
+      "game-dev": { name: "projectGameDev", icon: icons.gamepad },
+      products: { name: "projectProducts", icon: icons.package },
+      "machine-learning": { name: "projectMachineLearning", icon: icons.brainCircuit },
+      mobile: { name: "projectMobile", icon: icons.smartphone },
+      web: { name: "projectWeb", icon: icons.globe },
     },
   },
   service: {

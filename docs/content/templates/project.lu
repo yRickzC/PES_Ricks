@@ -6,7 +6,7 @@ description: PREENCHER
 imagem: /images/PREENCHER.webp
 imagem-alt: PREENCHER
 tags: preencher
-categories: systems
+categories: [web, machine-learning]
 idioma: pt_br
 status: IDEA
 layout: project-detail

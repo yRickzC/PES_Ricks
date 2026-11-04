@@ -111,6 +111,7 @@
 .project-category-link:focus-visible { outline: 2px solid var(--color-text-primary); outline-offset: 4px; border-radius: 8px; }
 .project-category-link:hover span { text-decoration: underline; text-underline-offset: 6px; }
 
+project-explore { display: block; }
 .project-index { width: min(100% - 48px, 1120px); margin-inline: auto; padding-block: 64px 96px; }
 .project-index h2 { margin: 0 0 40px; font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 550; }
 .project-category-section { padding-block: 28px; border-top: 1px solid rgb(255 255 255 / 7%); scroll-margin-top: 110px; }
@@ -140,3 +141,14 @@
   .project-hero-layer { transform: none !important; will-change: auto !important; }
   .project-hero-layer--fog .project-hero-panorama { animation: none; }
 }
+
+/* Filtering affects only the project index, never the orbit or its motion. */
+.project-category-section[hidden] { display: none; }
+.project-category-link span { text-wrap: balance; }
+.project-category-link[aria-current="true"] span { text-decoration: underline; text-underline-offset: 6px; }
+.project-show-all { display: inline-block; margin-bottom: 24px; color: var(--color-text-primary); scroll-margin-top: 110px; }
+.project-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 32px; }
+.project-card img { display: block; width: 100%; height: auto; }
+.project-card h4 { margin: 16px 0 8px; font-size: 1.125rem; }
+.project-card p { color: var(--color-text-secondary); }
+.project-card a { display: inline-block; margin-right: 16px; color: var(--color-text-primary); }
