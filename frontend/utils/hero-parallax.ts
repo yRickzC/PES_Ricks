@@ -20,6 +20,18 @@ interface HeroParallaxOptions {
   layerAttribute: string;
 }
 
+// Scene instances share a single passive window scroll subscription.
+const scrollSubscribers = new Set<() => void>();
+const onScroll = () => scrollSubscribers.forEach((invalidate) => invalidate());
+function subscribeScroll(invalidate: () => void): () => void {
+  if (!scrollSubscribers.size) window.addEventListener("scroll", onScroll, { passive: true });
+  scrollSubscribers.add(invalidate);
+  return () => {
+    scrollSubscribers.delete(invalidate);
+    if (!scrollSubscribers.size) window.removeEventListener("scroll", onScroll);
+  };
+}
+
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
 export function mountHeroParallax(hero: HTMLElement, options: HeroParallaxOptions): () => void {
@@ -101,7 +113,7 @@ export function mountHeroParallax(hero: HTMLElement, options: HeroParallaxOption
     schedule();
   }, passive);
   hero.addEventListener("pointerleave", resetPointer, passive);
-  window.addEventListener("scroll", invalidate, passive);
+  const unsubscribeScroll = subscribeScroll(invalidate);
   window.addEventListener("resize", invalidate, passive);
   document.addEventListener("visibilitychange", updateState, { signal: abort.signal });
   desktop.addEventListener("change", updateState, { signal: abort.signal });
@@ -119,6 +131,7 @@ export function mountHeroParallax(hero: HTMLElement, options: HeroParallaxOption
     disposed = true;
     stop();
     abort.abort();
+    unsubscribeScroll();
     resize.disconnect();
     intersection.disconnect();
     layers.forEach(({ element }) => element.style.removeProperty("transform"));

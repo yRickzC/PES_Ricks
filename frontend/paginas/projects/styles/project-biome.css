@@ -1,0 +1,58 @@
+/* Only the Web category section owns this environment. The Hero is independent. */
+.project-index.project-index { width: 100%; }
+.project-index > h2, .project-index > .project-show-all, .project-category-section {
+  width: min(calc(100% - 48px), 1120px);
+  margin-inline: auto;
+}
+.project-index > .project-show-all { display: block; }
+.project-index .project-category-section--biome {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-height: max(640px, 75svh);
+  box-sizing: border-box;
+  padding-block: clamp(100px, 18svh, 160px) 160px;
+  border: 0;
+  overflow: hidden;
+  background: #090612;
+}
+.project-category-section--biome > .project-category-content {
+  position: relative;
+  z-index: 1;
+  width: min(calc(100% - 48px), 1120px);
+  margin-inline: auto;
+}
+.project-biome-scene { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity 320ms ease; }
+.project-biome-scene[data-ready="true"] { opacity: 1; }
+.project-biome-layer { position: absolute; inset: -32px; }
+.project-biome-placement {
+  position: absolute;
+  left: var(--desktop-x, 50%);
+  top: var(--desktop-top);
+  bottom: var(--desktop-bottom);
+  width: var(--desktop-width);
+  transform: translateX(-50%) scale(var(--desktop-scale));
+}
+.project-biome-placement img { display: block; width: 100%; height: auto; max-width: none; }
+.project-biome-layer--cave-background img { height: 100%; object-fit: cover; object-position: center 65%; }
+.project-biome-layer--cave-fog img { animation: crystal-fog-drift var(--fog-duration) ease-in-out infinite alternate; animation-play-state: paused; }
+.project-category-section--biome[data-parallax-active="true"] .project-biome-layer { will-change: transform; }
+.project-category-section--biome[data-parallax-active="true"] .project-biome-layer--cave-fog img { animation-play-state: running; }
+.project-biome-scene::after { content: ""; position: absolute; inset: 0; z-index: 5; background: linear-gradient(var(--color-bg-0), transparent 12%, transparent 84%, var(--color-bg-0)); }
+@keyframes crystal-fog-drift {
+  0% { transform: translate3d(calc(-1 * var(--fog-travel)), 0, 0); }
+  50% { transform: translate3d(0, calc(-1 * var(--fog-lift)), 0); }
+  100% { transform: translate3d(var(--fog-travel), 0, 0); }
+}
+@media (max-width: 760px) {
+  .project-index.project-index { width: 100%; }
+  .project-index > h2, .project-index > .project-show-all, .project-category-section:not(.project-category-section--biome), .project-category-section--biome > .project-category-content { width: calc(100% - 32px); }
+  .project-index .project-category-section--biome { min-height: 580px; padding-block: 110px 160px; }
+  .project-biome-layer { inset: -20px; }
+  .project-biome-placement { left: var(--mobile-x, 50%); width: var(--mobile-width); top: var(--mobile-top); bottom: var(--mobile-bottom); transform: translateX(-50%) scale(var(--mobile-scale)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .project-biome-scene { transition: none; }
+  .project-biome-layer { transform: none !important; will-change: auto !important; }
+  .project-biome-layer--cave-fog img { animation: none; }
+}

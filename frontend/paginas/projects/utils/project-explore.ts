@@ -20,6 +20,9 @@ export class ProjectExplore extends HTMLElement {
       if (active) link.setAttribute("aria-current", "true");
       else link.removeAttribute("aria-current");
     });
+    selected?.dispatchEvent(new CustomEvent("project-category-change", {
+      detail: selected?.dataset.projectSection,
+    }));
     // A previously hidden section must be visible before following its anchor.
     selected?.scrollIntoView({ block: "start" });
   };

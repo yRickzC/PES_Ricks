@@ -2,6 +2,9 @@
 import Main from "../../main.astro";
 import { defaultLocale, locales } from "../../config/i18n";
 import { getMessages } from "../../utils/translations";
+import ProjectBiome from "./components/ProjectBiome.astro";
+import { projectBiomes } from "./config/biomes";
+import "./styles/project-biome.css";
 import ProjectHero from "./components/ProjectHero.astro";
 import { publicDir } from "astro:config/server";
 import { fileURLToPath } from "node:url";
@@ -26,7 +29,9 @@ const projectCategories = taxonomyCategories("project", locale).map((category) =
       <h2 id="project-index-title">{copy.heroExploreProjects}</h2>
       <a id="projects-all" class="project-show-all" href="#projects-all" data-project-show-all aria-current="true">{copy.searchAllCategories}</a>
       {projectCategories.map((category) => (
-        <section class="project-category-section" data-project-section={category.id} id={`projects-${category.id}`} aria-labelledby={`projects-${category.id}-title`}>
+        <section class:list={["project-category-section", { "project-category-section--biome": projectBiomes.some((biome) => biome.category === category.id) }]} data-project-section={category.id} id={`projects-${category.id}`} aria-labelledby={`projects-${category.id}-title`}>
+          <ProjectBiome category={category.id} />
+          <div class="project-category-content">
           <h3 id={`projects-${category.id}-title`}>{category.label}</h3>
           {category.projects.length ? (
             <ul class="project-list">
@@ -42,6 +47,7 @@ const projectCategories = taxonomyCategories("project", locale).map((category) =
               ))}
             </ul>
           ) : <p class="section-empty">{copy.sectionEmpty}</p>}
+          </div>
         </section>
       ))}
     </section>

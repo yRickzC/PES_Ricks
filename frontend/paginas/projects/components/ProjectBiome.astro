@@ -1,0 +1,30 @@
+---
+import { projectBiomes, projectLayerStyle } from "../config/biomes";
+import { withBasePath } from "../../../utils/base-path";
+interface Props { category: string }
+const biome = projectBiomes.find((item) => item.category === Astro.props.category);
+---
+{biome && (
+  <div class="project-biome-scene" data-project-biome={biome.id} aria-hidden="true">
+    {biome.layers.map((layer) => (
+      <div class={`project-biome-layer project-biome-layer--${layer.className}`} data-project-biome-layer={layer.id} style={projectLayerStyle(layer)}>
+        <div class="project-biome-placement"><img data-biome-src={withBasePath(layer.src, import.meta.env.BASE_URL)} width="2172" height="724" alt="" decoding="async" draggable="false" /></div>
+      </div>
+    ))}
+  </div>
+)}
+<script>
+  import { mountProjectBiome } from "../utils/project-biome";
+  const mounted = new Map<HTMLElement, () => void>();
+  function mount() {
+    document.querySelectorAll<HTMLElement>("[data-project-biome]").forEach((scene) => {
+      if (!mounted.has(scene)) mounted.set(scene, mountProjectBiome(scene));
+    });
+  }
+  mount();
+  document.addEventListener("astro:page-load", mount);
+  document.addEventListener("astro:before-swap", () => {
+    mounted.forEach((cleanup) => cleanup());
+    mounted.clear();
+  });
+</script>
