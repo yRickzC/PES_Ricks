@@ -36,7 +36,7 @@ export function parseMetadata(raw: unknown, source: string): ContentMetadata {
   const issues: ContentIssue[] = [];
   const fail = (field: string, message: string) => issues.push({ source, field, message });
   if (!isObject(raw)) throw new ContentValidationError([{ source, field: "metadata", message: "Metadados inválidos." }]);
-  const allowed = new Set(["version", "kind", "id", "title", "description", "image", "tags", "contentType", "categories", "locale", "date", "status", "layout", "youtube", "links", "relations"]);
+  const allowed = new Set(["version", "kind", "id", "title", "description", "image", "tags", "contentType", "categories", "locale", "date", "updatedAt", "keywords", "featured", "featuredOrder", "status", "layout", "youtube", "links", "relations"]);
   for (const field of Object.keys(raw)) if (!allowed.has(field)) fail(field, "Campo desconhecido na configuração LU.");
   const text = (field: string): string => {
     const value = raw[field];
@@ -103,11 +103,17 @@ export function parseMetadata(raw: unknown, source: string): ContentMetadata {
   if (raw.locale !== undefined && raw.locale !== "en" && raw.locale !== "pt-br") fail("locale", "Use en ou pt-br.");
   const filenameLocale = sourceLocale(source);
   if (filenameLocale && raw.locale !== filenameLocale) fail("locale", "O idioma precisa corresponder ao sufixo do arquivo.");
-  if (raw.date !== undefined) {
-    const date = raw.date;
+  for (const field of ["date", "updatedAt"] as const) if (raw[field] !== undefined) {
+    const date = raw[field];
     if (typeof date !== "string" || !/^\d{4}-\d{2}-\d{2}$/u.test(date)
-      || !Number.isFinite(Date.parse(date)) || new Date(date).toISOString().slice(0, 10) !== date) fail("date", "Use uma data real no formato AAAA-MM-DD.");
+      || !Number.isFinite(Date.parse(date)) || new Date(date).toISOString().slice(0, 10) !== date) fail(field, "Use uma data real no formato AAAA-MM-DD.");
   }
+  for (const field of ["updatedAt", "keywords", "featured", "featuredOrder"]) {
+    if (raw[field] !== undefined && raw.kind !== "article") fail(field, "Campo editorial exclusivo de artigos do Blog.");
+  }
+  if (raw.keywords !== undefined && (!Array.isArray(raw.keywords) || !raw.keywords.every((keyword) => typeof keyword === "string" && keyword.trim()))) fail("keywords", "Informe uma lista de palavras-chave não vazias.");
+  if (raw.featured !== undefined && typeof raw.featured !== "boolean") fail("featured", "Use true ou false.");
+  if (raw.featuredOrder !== undefined && (typeof raw.featuredOrder !== "number" || !Number.isSafeInteger(raw.featuredOrder) || raw.featuredOrder < 0)) fail("featuredOrder", "Use um inteiro não negativo.");
   if (raw.kind === "changelog" && raw.date === undefined) fail("date", "Changelogs precisam de uma data.");
   if (raw.status !== undefined && (raw.kind !== "project" || typeof raw.status !== "string" || !isProjectStatus(raw.status))) fail("status", "Use um estado canônico somente em projetos.");
   if (raw.layout !== undefined && (typeof raw.layout !== "string" || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(raw.layout))) fail("layout", "Use o identificador de um layout, como project-detail.");
@@ -119,6 +125,10 @@ export function parseMetadata(raw: unknown, source: string): ContentMetadata {
     ...(raw.categories === undefined ? {} : { categories }),
     ...(raw.locale === undefined ? {} : { locale: raw.locale as ContentMetadata["locale"] }),
     ...(raw.date === undefined ? {} : { date: raw.date as string }),
+    ...(raw.updatedAt === undefined ? {} : { updatedAt: raw.updatedAt as string }),
+    ...(raw.keywords === undefined ? {} : { keywords: (raw.keywords as string[]).map((keyword) => keyword.trim()) }),
+    ...(raw.featured === undefined ? {} : { featured: raw.featured as boolean }),
+    ...(raw.featuredOrder === undefined ? {} : { featuredOrder: raw.featuredOrder as number }),
     ...(raw.status === undefined ? {} : { status: raw.status as ContentMetadata["status"] }),
     ...(raw.layout === undefined ? {} : { layout: raw.layout as string }),
     ...(raw.youtube === undefined ? {} : { youtube: raw.youtube as string }),

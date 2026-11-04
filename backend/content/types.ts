@@ -19,6 +19,11 @@ export interface ContentMetadata {
   categories?: string[];
   locale?: ContentLocale;
   date?: string;
+  // Metadados editoriais opcionais, exclusivos de artigos do Blog.
+  updatedAt?: string;
+  keywords?: string[];
+  featured?: boolean;
+  featuredOrder?: number;
   status?: ProjectStatus;
   layout?: string;
   youtube?: string;

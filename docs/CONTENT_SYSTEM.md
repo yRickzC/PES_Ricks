@@ -50,7 +50,7 @@ O cabeçalho é montado automaticamente a partir do `$Config`, sem widget de lay
 
 As rotas são `/blogs/<id>/` e `/pt-br/blogs/<id>/`. A listagem `/blogs/` também lê os LU e mostra capa, data quando presente, título e descrição. Não é necessário editar uma página Astro para cada artigo. O conteúdo é validado e renderizado durante a geração estática; filesystem não é enviado ao navegador. O carregador usa `publicDir` resolvido pelo Astro.
 
-As capas usam `SiteImage.astro`, baseado em `Image` de `astro:assets`, com dimensões inferidas dos arquivos locais e variantes responsivas. Capas e miniaturas usam `loading="lazy"`, sem prioridade alta forçada; `SiteImage` também adota lazy por padrão para novos consumidores. As imagens locais publicadas ficam em `public/images/` como WebP; as origens anteriores estão preservadas em `RAW/images/`. Para capas HTTPS, autorize explicitamente os hosts em `image.domains` ou `image.remotePatterns` de `astro.config.ts`: a inferência de tamanho remoto exige autorização do Astro e acesso à origem durante a geração. Não há liberação global de hosts externos. Imagens no corpo Markdown continuam sob responsabilidade do renderizador LU.
+As capas dos artigos usam `SiteImage.astro`, baseado em `Image` de `astro:assets`, com dimensões inferidas dos arquivos locais e variantes responsivas. A exploração do Blog prepara as variantes locais com `getImage` no build e reutiliza os mesmos dados em imagens HTML, inclusive após filtros/paginação; capas HTTPS nessa listagem usam a URL original, sem inferência remota. Capas e miniaturas usam `loading="lazy"`, sem prioridade alta forçada; `SiteImage` também adota lazy por padrão para novos consumidores. As imagens locais publicadas ficam em `public/images/` como WebP; as origens anteriores estão preservadas em `RAW/images/`. Para capas HTTPS nas páginas dos artigos, autorize explicitamente os hosts em `image.domains` ou `image.remotePatterns` de `astro.config.ts`: a inferência de tamanho remoto exige autorização do Astro e acesso à origem durante a geração. Não há liberação global de hosts externos. Imagens no corpo Markdown continuam sob responsabilidade do renderizador LU.
 
 O catálogo atual permanece vazio: só serão geradas páginas de artigos realmente cadastrados. Estilos editoriais ficam em `frontend/paginas/blogs/styles/blogs.css` e a composição em `layout/ArticleLayout.astro`. O widget GitHub continua exigindo um snapshot fornecido explicitamente; essa página não busca dados remotos automaticamente.
 
@@ -70,6 +70,10 @@ Os campos usam `chave: valor`, sem chaves de objeto e sem vírgulas ao fim das l
 | `content-type` / `tipo-conteudo` | Opcional; ID do tipo de `backend/content/taxonomy.ts`, compatível com `kind`. Sem ele, usa-se o primeiro tipo do formato: blog para article, project para project, service para service. |
 | `kind` / `type` / `tipo` | `article`, `project`, `service`, `location` ou `changelog`. |
 | `date` / `data` | Data real `AAAA-MM-DD`; obrigatória em changelog. |
+| `updatedAt` / `updated-at` / `atualizado-em` | Opcional, somente Blog: data real `AAAA-MM-DD` da atualização. |
+| `keywords` / `palavras-chave` | Opcional, somente Blog: lista de textos não vazios, separados por vírgula ou entre colchetes. Alimenta a busca da página do Blog. |
+| `featured` / `destaque` | Opcional, somente Blog: `true` destaca o post na descoberta editorial; padrão `false`. |
+| `featuredOrder` / `featured-order` / `ordem-destaque` | Opcional, somente Blog: inteiro não negativo; menor valor aparece primeiro entre destaques. |
 | `locale` / `idioma` | `en`, `pt-br` ou `pt_br`; normalmente inferido do nome do arquivo. |
 | `relations` / `relacoes` / `relações` | Chaves separadas por vírgula ou lista; relaciona vários projetos, serviços e locais. |
 | `status` | Somente projetos: IDEA, RESEARCH, PROTOTYPE, BUILDING, ACTIVE, SHIPPED, ARCHIVED. |
@@ -101,6 +105,8 @@ links.0.url: https://github.com/exemplo/projeto
 ````
 
 Os destinos desse exemplo precisam existir. Imagens locais são verificadas em public, sem decodificar o arquivo. URLs HTTPS não são consultadas durante a validação.
+
+A exploração abaixo do Hero usa exclusivamente artigos Blog do catálogo, com categorias e tags derivadas dos posts disponíveis no idioma selecionado. Sem filtros, mostra uma grade editorial ordenada por destaque e data; com filtros, uma lista horizontal. Filtra antes de paginar, com 10 posts por página. Configuração, parâmetros de URL e validação pendente estão em [BLOG_EXPLORE.md](BLOG_EXPLORE.md).
 
 ## Código, widgets e escapes
 

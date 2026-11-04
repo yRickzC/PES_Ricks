@@ -1,0 +1,22 @@
+---
+import type { BlogCopy } from "../../data/explore-copy";
+import type { BlogCategory } from "../../data/explore";
+interface Props { copy: BlogCopy; categories: BlogCategory[]; tags: string[] }
+const { copy, categories, tags } = Astro.props;
+---
+<div class="blog-explore-filters">
+  <div class="blog-explore-category">
+    <label for="blog-category">{copy.category}</label>
+    <select id="blog-category" data-blog-category aria-controls="blog-explore-results">
+      <option value="">{copy.allCategories}</option>
+      {categories.map(({ id, label }) => <option value={id}>{label}</option>)}
+    </select>
+  </div>
+  <fieldset class="blog-explore-tags" data-blog-tag-options hidden={!tags.length}>
+    <legend>{copy.tags}</legend>
+    <div class="blog-explore-tag-options" data-blog-tag-list>
+      {tags.map((tag) => <label class="blog-explore-tag-filter"><input type="checkbox" name="tag" value={tag} aria-controls="blog-explore-results" /><span>{tag}</span></label>)}
+    </div>
+  </fieldset>
+  <button class="blog-explore-clear" type="button" data-blog-clear hidden>{copy.clear}</button>
+</div>

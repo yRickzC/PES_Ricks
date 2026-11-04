@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="288" height="76" viewBox="0 0 288 76">
+  <defs>
+    <linearGradient id="fade" x2="0%" y2="100%">
+      <stop stop-color="white" />
+      <stop offset=".38" stop-color="white" />
+      <stop offset="1" stop-color="white" stop-opacity="0" />
+    </linearGradient>
+    <mask id="stone-fade" x="0" y="0" width="288" height="76" maskUnits="userSpaceOnUse">
+      <rect width="288" height="76" fill="url(#fade)" />
+    </mask>
+  </defs>
+  <g mask="url(#stone-fade)">
+    <path fill="#33204F" d="M0 13H66V6H126V10H184V3H241V13H288V76H0Z" />
+    <path fill="#120C22" d="M0 14H65V33H0ZM127 11H183V33H127ZM242 14H288V33H242ZM0 35H30V54H0ZM101 35H163V54H101ZM224 35H288V54H224Z" />
+    <path fill="#1B1030" d="M67 7H125V33H67ZM185 4H240V33H185ZM32 35H99V54H32ZM165 35H222V54H165Z" />
+    <path fill="#100A1D" d="M0 56H63V76H0ZM65 56H126V76H65ZM128 56H196V76H128ZM198 56H252V76H198ZM254 56H288V76H254Z" />
+    <path d="M49 34H89M157 34H199M230 55H260M66 19V30M241 20V31"
+      fill="none" stroke="#8066D6" stroke-opacity=".34" />
+  </g>
+</svg>

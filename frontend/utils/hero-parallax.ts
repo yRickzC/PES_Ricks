@@ -7,6 +7,7 @@ export interface HeroParallaxMotion {
   reducedMotionQuery: string;
   desktopQuery: string;
   mobileMultiplier: number;
+  travelFraction?: number;
   maxTravel: number;
   pointerTravel: number;
   damping: number;
@@ -59,7 +60,12 @@ export function mountHeroParallax(hero: HTMLElement, options: HeroParallaxOption
       boundsDirty = false;
     }
     const multiplier = desktop.matches ? 1 : motion.mobileMultiplier;
-    const targetScroll = clamp(-bounds.top, 0, motion.maxTravel) * multiplier;
+    const { maxTravel, travelFraction } = motion;
+    const scrollDistance = travelFraction === undefined
+      ? clamp(-bounds.top, 0, maxTravel)
+      : clamp(-bounds.top / Math.max(bounds.height, 1), 0, 1)
+        * Math.min(bounds.height * travelFraction, maxTravel);
+    const targetScroll = scrollDistance * multiplier;
     const seconds = previousTime ? Math.min((time - previousTime) / 1000, 0.05) : 1 / 60;
     previousTime = time;
     const blend = 1 - Math.exp(-motion.damping * seconds);

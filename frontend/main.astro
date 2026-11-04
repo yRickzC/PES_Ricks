@@ -7,6 +7,7 @@ import SiteSearch from "./components/site/SiteSearch.astro";
 import { defaultLocale, documentLanguages, locales, type Locale } from "./config/i18n";
 import type { PageId } from "./config/navigation";
 import { getMessages } from "./utils/translations";
+import { withBasePath } from "./utils/base-path";
 
 interface Props {
   locale?: Locale;
@@ -33,6 +34,7 @@ const copy = getMessages(locale);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description ?? copy.description} />
     <meta name="theme-color" content="#07070a" />
+    <link rel="icon" type="image/x-icon" href={withBasePath("/favicon.ico", import.meta.env.BASE_URL)} />
     <title>{title ?? copy.siteTitle}</title>
   </head>
   <body>

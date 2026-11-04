@@ -1,0 +1,27 @@
+---
+import type { BlogPost } from "../../data/explore";
+import type { BlogCopy } from "../../data/explore-copy";
+interface Props { post?: BlogPost; copy: BlogCopy }
+const { post, copy } = Astro.props;
+---
+<li class="blog-explore-post" data-featured={post?.featured ? "true" : "false"}>
+  <article class="blog-explore-post-inner">
+    <div class="blog-explore-visual">
+      <a class="blog-explore-image-link" href={post?.href} tabindex="-1" data-blog-image-link>
+        <img src={post?.cover.src} srcset={post?.cover.srcset} width={post?.cover.width} height={post?.cover.height} alt={post?.cover.alt ?? ""} sizes="(max-width: 700px) calc(100vw - 32px), (max-width: 1000px) 48vw, 720px" loading="lazy" decoding="async" data-blog-cover />
+      </a>
+      <ul class="blog-explore-post-tags" aria-label={copy.tags} data-blog-post-tags>
+        {post?.tags.map((tag) => <li>{tag}</li>)}
+      </ul>
+    </div>
+    <div class="blog-explore-post-content">
+      <div class="blog-explore-meta">
+        <span class="blog-explore-featured" data-blog-featured hidden={!post?.featured}>{copy.featured}</span>
+        <span data-blog-post-category hidden={!post?.categories.length}>{post?.categories.map(({ label }) => label).join(" / ")}</span>
+        <time datetime={post?.createdAt} data-blog-date hidden={!post?.createdAt}>{post?.dateLabel}</time>
+      </div>
+      <h3><a href={post?.href} data-blog-post-link>{post?.title}</a></h3>
+      <p class="blog-explore-summary" data-blog-summary>{post?.summary}</p>
+    </div>
+  </article>
+</li>

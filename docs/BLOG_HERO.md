@@ -12,7 +12,7 @@ Paleta: fundo `#07070a`, texto `#f4f4f6`, texto secundário `#d0cbd8`, label `#c
 
 - `frontend/paginas/blogs/components/BlogHero.astro`: renderização e montagem no ciclo de navegação Astro.
 - `frontend/paginas/blogs/config/hero.ts`: fontes, profundidade, deslocamento vertical, escala, ordem e parâmetros de motion.
-- `frontend/paginas/blogs/utils/hero-parallax.ts`: controlador independente da renderização.
+- `frontend/paginas/blogs/utils/hero-parallax.ts`: adaptador para o controlador compartilhado com Projects e Services.
 - `frontend/paginas/blogs/styles/blog-hero.css`: composição, leitura, vinheta e responsividade.
 
 | Camada | Asset existente em public/images | Depth | yOffset | Scale | zIndex |
@@ -31,7 +31,7 @@ A altura mínima é 94svh no desktop, com piso de 680px para acomodar texto; no 
 
 O controlador usa o progresso local da seção no scroll. A distância base é limitada ao menor valor entre 18% da altura e 140px; cada camada multiplica essa distância por seu depth. Assim, 0.70 representa a proporção relativa do foreground, sem deslocá-lo por 70% de todo o scroll da página. Movimento positivo acompanha a rolagem com intensidades diferentes. Escala e offset ficam na imagem interna; translate3d fica no plano externo, sem sobrescrever a composição.
 
-No mobile ou ponteiro coarse, o deslocamento cai para 24%. Não há movimento por mouse. requestAnimationFrame aplica interpolação temporal e encerra ao estabilizar. Listeners de scroll/resize são passivos; a geometria só é consultada quando invalidada. IntersectionObserver e visibilidade da aba pausam a atualização; prefers-reduced-motion restaura a cena estática, inclusive se alterado durante a sessão. Observers, listeners e frames são removidos antes da troca de página Astro. Sem JavaScript, a composição permanece estática e os links funcionam.
+No desktop com mouse, `pointerTravel` define um percurso de 36px em cada eixo, de uma extremidade à outra, antes do multiplicador de profundidade. Ao sair da hero, a contribuição do mouse retorna suavemente a zero. No mobile ou com ponteiro de toque, a rolagem usa 24% da intensidade. `requestAnimationFrame` interpola o movimento e encerra ao estabilizar. A atualização pausa fora da viewport e com a aba oculta. `prefers-reduced-motion` mantém a cena estática. Observers, listeners e frames são removidos antes da troca de página Astro. Sem JavaScript, a composição permanece estática e os links funcionam.
 
 SiteImage usa os WebP locais com variantes responsivas, carregamento eager e decode assíncrono. Somente o foreground recebe prioridade alta. Os originais estão preservados em `RAW/images/`.
 

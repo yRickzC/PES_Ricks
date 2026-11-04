@@ -8,6 +8,8 @@ function configMetadata(props: JsonObject, source: string) {
     tipo: "kind", type: "kind", titulo: "title", descricao: "description", imagem: "image",
     "imagem-alt": "image-alt", data: "date", idioma: "locale", relacoes: "relations",
     categorias: "categories", "tipo-conteudo": "contentType", "content-type": "contentType",
+    destaque: "featured", "ordem-destaque": "featuredOrder", "featured-order": "featuredOrder",
+    "palavras-chave": "keywords", "atualizado-em": "updatedAt", "updated-at": "updatedAt",
   };
   const raw: JsonObject = Object.create(null);
   for (const [key, value] of Object.entries(props)) {
@@ -18,7 +20,7 @@ function configMetadata(props: JsonObject, source: string) {
   raw.version ??= 1;
   const folders: Record<string, string> = { articles: "article", blogs: "article", projects: "project", services: "service", locations: "location", changelogs: "changelog" };
   raw.kind ??= source.split(/[\\/]/u).map((part) => Object.hasOwn(folders, part) ? folders[part] : undefined).find(Boolean) ?? (/changelog(?:\.[a-z_-]+)?\.lu$/iu.test(source) ? "changelog" : "article");
-  for (const field of ["tags", "categories", "relations"]) if (typeof raw[field] === "string") raw[field] = raw[field].split(",").map((item) => item.trim()).filter(Boolean);
+  for (const field of ["tags", "categories", "relations", "keywords"]) if (typeof raw[field] === "string") raw[field] = raw[field].split(",").map((item) => item.trim()).filter(Boolean);
   if (typeof raw.image === "string") raw.image = { src: raw.image, alt: raw["image-alt"] ?? raw.title ?? "" };
   else if (raw["image-alt"] !== undefined) throw new ContentValidationError([{ source, field: "image-alt", message: "Use image: caminho com image-alt, ou image.src e image.alt." }]);
   delete raw["image-alt"];

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 480">
+  <defs>
+    <!-- Sky tones from Hero_Main_Background and the design system's bg-0 and brand colors. -->
+    <linearGradient id="chamber-tone">
+      <stop stop-color="#0A0534" stop-opacity=".36" />
+      <stop offset=".24" stop-color="#8066D6" stop-opacity=".16" />
+      <stop offset=".34" stop-color="#15102D" stop-opacity=".42" />
+      <stop offset=".5" stop-color="#07070A" stop-opacity=".84" />
+      <stop offset=".66" stop-color="#15102D" stop-opacity=".42" />
+      <stop offset=".76" stop-color="#8066D6" stop-opacity=".13" />
+      <stop offset="1" stop-color="#0A0534" stop-opacity=".36" />
+    </linearGradient>
+    <linearGradient id="fade-horizontal">
+      <stop stop-color="white" stop-opacity="0" />
+      <stop offset=".14" stop-color="white" />
+      <stop offset=".86" stop-color="white" />
+      <stop offset="1" stop-color="white" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="fade-vertical" x2="0%" y2="100%">
+      <stop stop-color="white" stop-opacity="0" />
+      <stop offset=".24" stop-color="white" />
+      <stop offset=".58" stop-color="white" />
+      <stop offset="1" stop-color="white" stop-opacity="0" />
+    </linearGradient>
+    <mask id="horizontal-edges" x="0" y="0" width="1200" height="480" maskUnits="userSpaceOnUse">
+      <rect width="1200" height="480" fill="url(#fade-horizontal)" />
+    </mask>
+    <mask id="vertical-edges" x="0" y="0" width="1200" height="480" maskUnits="userSpaceOnUse">
+      <rect width="1200" height="480" fill="url(#fade-vertical)" />
+    </mask>
+    <pattern id="wall-courses" x="40" y="118" width="600" height="294"
+      viewBox="0 0 600 294" patternUnits="userSpaceOnUse">
+      <rect width="600" height="294" fill="#15102D" />
+      <path d="M0 0H255V89H0ZM210 196H465V294H210Z" fill="#261150" />
+      <path d="M136 89H421V196H136Z" fill="#432567" />
+      <path d="M421 89H600V196H421ZM0 89H136V196H0Z" fill="#160A4B" />
+      <path d="M0 0V89M255 0V89M136 89V196M421 89V196M210 196V294M465 196V294M0 89H600M0 196H600"
+        fill="none" stroke="#0E0821" stroke-width="3" />
+      <rect y="292" width="600" height="2" fill="#0E0821" />
+    </pattern>
+  </defs>
+
+  <g mask="url(#horizontal-edges)">
+    <g mask="url(#vertical-edges)">
+      <rect width="1200" height="118" fill="#0A0534" />
+      <path d="M228 0H525V48H228ZM846 0H1080V48H846ZM0 48H148V112H0ZM390 48H670V112H390ZM918 48H1200V112H918Z"
+        fill="#15102D" />
+      <path d="M148 48H390V112H148ZM670 48H918V112H670Z" fill="#21113D" />
+      <path d="M0 48H1200M228 0V48M525 0V48M846 0V48M1080 0V48M148 48V112M390 48V112M670 48V112M918 48V112"
+        fill="none" stroke="#080512" stroke-width="3" />
+      <rect y="112" width="1200" height="6" fill="#080512" />
+
+      <rect y="118" width="1200" height="362" fill="url(#wall-courses)" />
+      <rect width="1200" height="480" fill="url(#chamber-tone)" />
+    </g>
+  </g>
+</svg>

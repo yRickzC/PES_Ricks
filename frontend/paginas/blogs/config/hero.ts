@@ -1,3 +1,5 @@
+import type { HeroParallaxMotion } from "../../../utils/hero-parallax";
+
 export interface BlogHeroLayer {
   id: string;
   src: string;
@@ -18,12 +20,12 @@ export const blogHeroLayers = [
 
 export const blogHeroMotion = {
   reducedMotionQuery: "(prefers-reduced-motion: reduce)",
-  mobileQuery: "(max-width: 760px), (pointer: coarse)",
+  desktopQuery: "(width > 760px) and (hover: hover) and (pointer: fine)",
   mobileMultiplier: 0.24,
   // Depth multiplies a bounded travel distance, rather than full-page scroll.
   travelFraction: 0.18,
   maxTravel: 140,
+  pointerTravel: 36,
   damping: 12,
-  maxFrameSeconds: 0.05,
   settlePixels: 0.1,
-} as const;
+} as const satisfies HeroParallaxMotion;

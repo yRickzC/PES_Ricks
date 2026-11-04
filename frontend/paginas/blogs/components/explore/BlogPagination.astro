@@ -1,0 +1,13 @@
+---
+import { blogPageNumbers } from "../../data/explore";
+import type { BlogCopy } from "../../data/explore-copy";
+interface Props { copy: BlogCopy; page: number; pageCount: number }
+const { copy, page, pageCount } = Astro.props;
+---
+<nav class="blog-explore-pagination" aria-label={copy.pagination} data-blog-pagination hidden={pageCount < 2}>
+  <button type="button" data-blog-previous disabled={page <= 1}>← {copy.previous}</button>
+  <div class="blog-explore-page-numbers" data-blog-page-numbers>
+    {blogPageNumbers(page, pageCount).map((number) => number === "…" ? <span aria-hidden="true">…</span> : <button type="button" data-blog-page={number} aria-current={number === page ? "page" : undefined} aria-label={copy.page.replace("{page}", String(number)).replace("{count}", String(pageCount))}>{number}</button>)}
+  </div>
+  <button type="button" data-blog-next disabled={page >= pageCount}>{copy.next} →</button>
+</nav>

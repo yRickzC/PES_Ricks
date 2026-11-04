@@ -1,0 +1,12 @@
+---
+import SiteImage from "../../../../components/site/SiteImage.astro";
+import type { BlogCopy } from "../../data/explore-copy";
+interface Props { copy: BlogCopy; hidden: boolean }
+const { copy, hidden } = Astro.props;
+---
+<div class="blog-explore-empty" data-blog-empty hidden={hidden}>
+  <SiteImage src="/images/Blog_Result_Dog.webp" alt={copy.dogAlt} width={240} widths={[180, 240, 480]} sizes="(max-width: 700px) 170px, 220px" loading="lazy" decoding="async" />
+  <h3>{copy.emptyTitle}</h3>
+  <p>{copy.emptyHint}</p>
+  <button type="button" class="blog-explore-clear" data-blog-clear>{copy.clear}</button>
+</div>

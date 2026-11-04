@@ -1,0 +1,53 @@
+---
+import type { Locale } from "../../../../config/i18n";
+import { withBasePath } from "../../../../utils/base-path";
+import { blogFilterOptions, initialBlogState, selectBlogPage, type BlogPost } from "../../data/explore";
+import { blogCopy, blogCount } from "../../data/explore-copy";
+import BlogSearchBar from "./BlogSearchBar.astro";
+import BlogFilters from "./BlogFilters.astro";
+import BlogSearchResult from "./BlogSearchResult.astro";
+import BlogEmptyState from "./BlogEmptyState.astro";
+import BlogPagination from "./BlogPagination.astro";
+import "../../styles/blog-explore.css";
+interface Props { posts: BlogPost[]; locale: Locale; label: string }
+const { posts, locale, label } = Astro.props;
+const copy = blogCopy(locale);
+const options = blogFilterOptions(posts, locale);
+const initial = selectBlogPage(posts, initialBlogState());
+const resultsBackground = withBasePath("/images/Blog_Result_Background.svg", import.meta.env.BASE_URL);
+const resultsDivider = withBasePath("/images/Blog_Result_Divider.svg", import.meta.env.BASE_URL);
+const payload = JSON.stringify({ posts, copy }).replace(/</gu, "\\u003c");
+---
+<blog-explore>
+  <section class="blog-explore" id="lab-notes" aria-label={label}>
+    <BlogSearchBar copy={copy} />
+    <BlogFilters copy={copy} {...options} />
+    <div class="blog-explore-status" role="status" aria-live="polite" aria-atomic="true">
+      <span data-blog-count>{blogCount(copy, initial.total, false, "")}</span>
+      <span class="blog-explore-sr" data-blog-page-status></span>
+    </div>
+    <div
+      id="blog-explore-results"
+      class="blog-explore-results"
+      data-blog-results
+      data-mode="discovery"
+      tabindex="-1"
+      role="region"
+      aria-label={copy.resultsLabel}
+      style={`--blog-results-background: url("${resultsBackground}"); --blog-results-divider: url("${resultsDivider}");`}
+    >
+      <ol class="blog-explore-posts" data-blog-posts hidden={!initial.total}>
+        {initial.visible.map((post) => <BlogSearchResult post={post} copy={copy} />)}
+      </ol>
+      <BlogEmptyState copy={copy} hidden={!!initial.total} />
+    </div>
+    <BlogPagination copy={copy} page={initial.page} pageCount={initial.pageCount} />
+    <noscript><p class="blog-explore-noscript">{copy.noScript}</p></noscript>
+    <template data-blog-result-template><BlogSearchResult copy={copy} /></template>
+    <script type="application/json" data-blog-catalog set:html={payload} />
+  </section>
+</blog-explore>
+<script>
+  import { BlogExplore } from "../../utils/blog-explore";
+  if (!customElements.get("blog-explore")) customElements.define("blog-explore", BlogExplore);
+</script>
