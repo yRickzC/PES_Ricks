@@ -39,6 +39,7 @@ export interface Messages {
   projectsDescription: string;
   projectCategoriesLabel: string;
   servicesDescription: string;
+  servicesUnderConstruction: string;
   serviceHeroLabel: string;
   serviceHeroTitleLine1: string;
   serviceHeroTitleLine2: string;

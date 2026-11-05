@@ -1,9 +1,17 @@
 ---
 import ContentEmptyState from "../../../../components/site/ContentEmptyState.astro";
 import type { BlogCopy } from "../../data/explore-copy";
-interface Props { copy: BlogCopy; hidden: boolean }
-const { copy, hidden } = Astro.props;
+interface Props { copy: BlogCopy; hasPosts: boolean; hidden: boolean }
+const { copy, hasPosts, hidden } = Astro.props;
 ---
-<ContentEmptyState class="blog-explore-empty" data-blog-empty hidden={hidden} title={copy.emptyTitle} hint={copy.emptyHint} dogAlt={copy.dogAlt}>
-  <button type="button" class="blog-explore-clear" data-blog-clear>{copy.clear}</button>
+<ContentEmptyState
+  class="blog-explore-empty"
+  data-blog-empty
+  hidden={hidden}
+  title={hasPosts ? copy.emptyTitle : copy.unpublishedTitle}
+  hint={hasPosts ? copy.emptyHint : undefined}
+  dogAlt={hasPosts ? copy.dogAlt : ""}
+  dogSrc={hasPosts ? undefined : "/images/Dog_Sad.webp"}
+>
+  {hasPosts && <button type="button" class="blog-explore-clear" data-blog-clear>{copy.clear}</button>}
 </ContentEmptyState>

@@ -43,8 +43,8 @@ const scenery = await Promise.all(projectHeroLayers.map(async (layer) => ({
           const position = `--category-x: ${50 + Math.cos(angle) * orbitRadius}%; --category-y: ${50 + Math.sin(angle) * orbitRadius}%;`;
           return (
             <a class="project-category-link" data-project-filter={category.id} aria-controls={`projects-${category.id}`} href={`#projects-${category.id}`} style={position}>
-              <TaxonomyIcon icon={category.icon} size={24} />
-              <span>{category.label}</span>
+              <span class="project-category-icon"><TaxonomyIcon icon={category.icon} size={24} /></span>
+              <span class="project-category-label">{category.label}</span>
             </a>
           );
         })}

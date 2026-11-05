@@ -14,3 +14,20 @@
 2026-11-04 — Projects simplificado: removidos o título redundante “Explore Projects” e o link “All categories” abaixo do Hero. A categoria ativa pode ser desmarcada ao clicar nela novamente; “Clear filters” continua restaurando todas as áreas. Build estático e Chromium conferiram o layout, o filtro Web e o reset das seis áreas sem erros JavaScript.
 
 2026-11-04 — Transição do Hero para os biomas de Projects suavizada com uma faixa horizontal escura e divisor violeta discreto, esmaecidos para os dois lados da emenda. Ajuste responsivo em CSS; build de oito páginas passou e as capturas desktop/mobile no Chromium confirmaram a composição sem overflow ou erros JavaScript.
+
+2026-11-04 — Projects ganhou uma faixa preta de 80 a 160 px entre a floresta e o primeiro bioma. Ajuste conferido no CSS.
+
+2026-11-04 — Projects passou a exibir o cachorro e o convite para escolher uma categoria em fundo preto. Só o bioma selecionado aparece e os ícones ao redor da logo ganharam contornos quadrados transparentes.
+2026-11-04 — Convertidas Dog_Worker e Dog_Sad de RAW/images para WebP lossless em public/images com FFmpeg; dimensões e transparência preservadas, reduções de 41,4% e 39,7%.
+
+2026-11-04 — Blog sem publicações agora mostra Dog_Sad com mensagem própria em PT-BR e EN. O cachorro original aparece quando a busca não encontra posts em um catálogo com conteúdo. Conferido estaticamente.
+2026-11-04 — Dog_Thinking (nome inglês já correto) convertido de RAW/images para WebP lossless em public/images; 1254 × 1254, alpha preservado e redução de 41,3%.
+
+2026-11-04 — Serviços / Produtos passou a exibir Dog_Worker com o aviso de construção em PT-BR e EN abaixo da hero. Conferido estaticamente.
+
+2026-11-04 — Dog_Thinking aplicado ao aviso de seleção de categoria em Projects. Referência conferida no código.
+
+2026-11-04 — Degradê curto entre a floresta e a faixa preta em Projects. CSS conferido estaticamente.
+
+2026-11-04 — Removidos o título e a descrição acima do Dog_Worker em Serviços. O aviso de construção permanece.
+2026-11-04 — Controlador interativo do Blog deixou de importar em runtime o módulo que carrega JSON de `public/i18n`; formatador de contagem extraído para módulo puro e reexport preservada. Conferido estaticamente; aviso em servidor ainda sem validação.

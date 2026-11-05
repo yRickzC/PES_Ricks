@@ -27,7 +27,6 @@ export class ProjectExplore extends HTMLElement {
   private update = () => {
     const sections = [...this.querySelectorAll<HTMLElement>("[data-project-section]")];
     const selected = sections.find((section) => `#${section.id}` === window.location.hash);
-    for (const section of sections) section.hidden = !!selected && section !== selected;
     this.querySelectorAll<HTMLAnchorElement>("[data-project-filter]").forEach((link) => {
       const active = link.dataset.projectFilter === selected?.dataset.projectSection;
       if (active) link.setAttribute("aria-current", "true");
@@ -36,7 +35,7 @@ export class ProjectExplore extends HTMLElement {
     selected?.dispatchEvent(new CustomEvent("project-category-change", {
       detail: selected?.dataset.projectSection,
     }));
-    // A previously hidden section must be visible before following its anchor.
+    // Align the category after :target reveals it.
     selected?.scrollIntoView({ block: "start" });
   };
 }

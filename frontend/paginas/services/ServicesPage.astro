@@ -1,5 +1,6 @@
 ---
 import Main from "../../main.astro";
+import ContentEmptyState from "../../components/site/ContentEmptyState.astro";
 import { defaultLocale, locales } from "../../config/i18n";
 import { getMessages } from "../../utils/translations";
 import ServiceHero from "./components/ServiceHero.astro";
@@ -10,9 +11,12 @@ const copy = getMessages(locale);
 
 <Main locale={locale} pageId="services" title={`${copy.servicesLabel} — Rickz`} description={copy.servicesDescription}>
   <ServiceHero locale={locale} copy={copy} />
-  <section class="service-index" id="services" aria-labelledby="service-index-title">
-    <h2 id="service-index-title">{copy.serviceHeroLabel}</h2>
-    <p class="section-description">{copy.servicesDescription}</p>
-    <p class="section-empty">{copy.sectionEmpty}</p>
+  <section class="service-index" id="services" aria-label={copy.serviceHeroLabel}>
+    <ContentEmptyState
+      title={copy.servicesUnderConstruction}
+      headingLevel="h2"
+      dogSrc="/images/Dog_Worker.webp"
+      dogAlt=""
+    />
   </section>
 </Main>

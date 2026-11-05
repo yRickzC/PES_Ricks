@@ -65,6 +65,13 @@ const projectCategories = projectBiomes.map((biome) => categories.find(({ id }) 
           </div>
         </section>
       ))}
+      <ContentEmptyState
+        class="project-category-prompt"
+        title={projectCopy.selectCategoryTitle}
+        hint={projectCopy.selectCategoryHint}
+        dogSrc="/images/Dog_Thinking.webp"
+        dogAlt=""
+      />
     </section>
   </project-explore>
 </Main>

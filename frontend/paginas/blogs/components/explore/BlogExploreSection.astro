@@ -39,7 +39,7 @@ const payload = JSON.stringify({ posts, copy }).replace(/</gu, "\\u003c");
       <ol class="blog-explore-posts" data-blog-posts hidden={!initial.total}>
         {initial.visible.map((post) => <BlogSearchResult post={post} copy={copy} />)}
       </ol>
-      <BlogEmptyState copy={copy} hidden={!!initial.total} />
+      <BlogEmptyState copy={copy} hasPosts={posts.length > 0} hidden={initial.total > 0} />
     </div>
     <BlogPagination copy={copy} page={initial.page} pageCount={initial.pageCount} />
     <noscript><p class="blog-explore-noscript">{copy.noScript}</p></noscript>

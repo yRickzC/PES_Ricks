@@ -1,4 +1,6 @@
 {
+  "selectCategoryTitle": "Selecione uma categoria…",
+  "selectCategoryHint": "Use os ícones acima para explorar os projetos.",
   "emptyTitle": "Nenhum resultado encontrado",
   "emptyHint": "Ainda não há projetos nesta categoria. Tente outra categoria.",
   "dogAlt": "Cachorro procurando projetos",

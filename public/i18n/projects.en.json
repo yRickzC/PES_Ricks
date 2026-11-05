@@ -1,4 +1,6 @@
 {
+  "selectCategoryTitle": "Select a category…",
+  "selectCategoryHint": "Use the icons above to explore the projects.",
   "emptyTitle": "No results found",
   "emptyHint": "No projects in this category yet. Try another category.",
   "dogAlt": "Dog searching for projects",

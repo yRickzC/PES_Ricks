@@ -1,16 +1,20 @@
 /* Category environments remain below and independent from the original Hero. */
-.project-index.project-index { position: relative; z-index: 1; isolation: isolate; width: 100%; padding-top: 0; }
-.project-index::before {
-  content: "";
-  position: absolute;
-  inset: -52px 0 auto;
-  z-index: 3;
-  height: 104px;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, transparent, rgb(176 148 220 / 14%) 20%, rgb(176 148 220 / 22%) 50%, rgb(176 148 220 / 14%) 80%, transparent) center / 100% 1px no-repeat,
-    linear-gradient(180deg, transparent, rgb(6 4 12 / 46%) 38%, rgb(6 4 12 / 68%) 50%, rgb(6 4 12 / 46%) 62%, transparent);
+.project-index.project-index {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  width: 100%;
+  padding-top: 0;
+  border-block-start: clamp(80px, 10vw, 160px) solid #000;
+  background: #000;
 }
+.project-index .project-category-prompt {
+  min-height: clamp(320px, 52svh, 520px);
+  justify-content: center;
+  padding-block: 32px;
+}
+.project-category-section:not(:target),
+.project-category-section:target ~ .project-category-prompt { display: none; }
 .project-category-section {
   width: min(calc(100% - 48px), 1120px);
   margin-inline: auto;
@@ -56,7 +60,6 @@
 }
 @media (max-width: 760px) {
   .project-index.project-index { width: 100%; }
-  .project-index::before { inset-block-start: -42px; height: 84px; }
   .project-category-section:not(.project-category-section--biome), .project-category-section--biome > .project-category-content { width: calc(100% - 32px); }
   .project-index .project-category-section--biome { min-height: 580px; padding-block: 110px 160px; }
   .project-biome-layer { inset: -20px; }

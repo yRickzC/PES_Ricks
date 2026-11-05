@@ -10,7 +10,7 @@ export function mountProjectBiome(scene: HTMLElement): () => void {
   let loading = false;
   let stop: (() => void) | undefined;
   async function load() {
-    if (disposed || loading || section!.hidden || scene.dataset.ready === "true") return;
+    if (disposed || loading || !section!.matches(":target") || scene.dataset.ready === "true") return;
     loading = true;
     try {
       await Promise.all([...scene.querySelectorAll<HTMLImageElement>("[data-biome-src]")].map(async (image) => {
@@ -34,7 +34,7 @@ export function mountProjectBiome(scene: HTMLElement): () => void {
     if (entry?.isIntersecting) void load();
   }, { rootMargin: "180px 0px" });
   visible.observe(section);
-  // Selected categories load immediately; All categories loads each on approach.
+  // Load the selected biome immediately, even before it enters the viewport.
   const selected = () => { void load(); };
   section.addEventListener("project-category-change", selected);
   if (window.location.hash === `#${section.id}`) void load();

@@ -1,5 +1,6 @@
 import { blogPageNumbers, blogStateUrl, readBlogState, reduceBlogState, selectBlogPage, type BlogAction, type BlogPost } from "../data/explore";
-import { blogCount, type BlogCopy } from "../data/explore-copy";
+import { blogCount } from "../data/blog-count";
+import type { BlogCopy } from "../data/explore-copy";
 
 interface BlogPayload { posts: BlogPost[]; copy: BlogCopy }
 const SEARCH_DELAY = 160;

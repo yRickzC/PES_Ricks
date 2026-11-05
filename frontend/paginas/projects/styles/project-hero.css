@@ -7,6 +7,16 @@
   background: var(--color-bg-0);
 }
 
+.project-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 1;
+  height: clamp(24px, 3vw, 56px);
+  background: linear-gradient(to bottom, transparent, #000);
+  pointer-events: none;
+}
+
 .project-hero-scene {
   position: absolute;
   z-index: 0;
@@ -63,7 +73,7 @@
   place-items: center;
   width: min(100%, clamp(320px, 44svh, 416px));
   aspect-ratio: 1;
-  margin: 0 auto 8px;
+  margin: 0 auto 24px;
 }
 .project-hero-logo { display: block; width: 35%; max-width: 146px; height: auto; }
 .project-hero-content h1 {
@@ -107,9 +117,19 @@
 .project-hero-orbit[data-expanded="true"] { width: 100%; aspect-ratio: auto; gap: 24px; }
 .project-hero-orbit[data-expanded="true"] .project-categories { position: static; width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .project-hero-orbit[data-expanded="true"] .project-category-link { position: static; width: 100%; max-width: none; transform: none; }
+.project-category-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  aspect-ratio: 1;
+  border: 1px solid rgb(255 255 255 / 48%);
+  border-radius: 6px;
+}
 .project-category-link svg { width: 26px; height: 26px; color: var(--color-text-primary); }
 .project-category-link:focus-visible { outline: 2px solid var(--color-text-primary); outline-offset: 4px; border-radius: 8px; }
-.project-category-link:hover span { text-decoration: underline; text-underline-offset: 6px; }
+.project-category-link:is(:hover, [aria-current="true"]) .project-category-icon { border-color: var(--color-text-primary); }
+.project-category-link:is(:hover, [aria-current="true"]) .project-category-label { text-decoration: underline; text-underline-offset: 6px; }
+.project-category-label { text-wrap: balance; }
 
 project-explore { display: block; }
 .project-index { width: min(100% - 48px, 1120px); margin-inline: auto; padding-block: 64px 96px; }
@@ -131,6 +151,7 @@ project-explore { display: block; }
   .project-hero-content h1 { font-size: clamp(2rem, 6vw, 3rem); }
   .project-hero-description { font-size: 1rem; }
   .project-category-link { font-size: 0.75rem; }
+  .project-category-icon { width: 36px; }
   .project-category-link svg { width: 24px; height: 24px; }
   .project-hero-layer { height: 380px; }
   .project-hero-layer--sky { height: auto; }
@@ -142,10 +163,6 @@ project-explore { display: block; }
   .project-hero-layer--fog .project-hero-panorama { animation: none; }
 }
 
-/* Filtering affects only the project index, never the orbit or its motion. */
-.project-category-section[hidden] { display: none; }
-.project-category-link span { text-wrap: balance; }
-.project-category-link[aria-current="true"] span { text-decoration: underline; text-underline-offset: 6px; }
 .project-show-all { display: inline-block; margin-bottom: 24px; color: var(--color-text-primary); scroll-margin-top: 110px; }
 .project-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 32px; }
 .project-card img { display: block; width: 100%; height: auto; }
