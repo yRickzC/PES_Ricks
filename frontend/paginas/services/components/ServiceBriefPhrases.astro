@@ -1,0 +1,151 @@
+---
+interface Props {
+  intro: string;
+  phrases: string[];
+  pauseLabel: string;
+  resumeLabel: string;
+}
+
+const { intro, phrases, pauseLabel, resumeLabel } = Astro.props;
+---
+
+<service-brief-phrases data-phrases={JSON.stringify(phrases)}>
+  <p class="service-brief-phrase">
+    <span class="visually-hidden">{intro}</span>
+    <span data-phrase-text aria-hidden="true">{phrases[0] ?? intro}</span>
+  </p>
+  <button type="button" data-phrase-toggle data-pause-label={pauseLabel} data-resume-label={resumeLabel} hidden>
+    {pauseLabel}
+  </button>
+</service-brief-phrases>
+
+<script>
+  const timing = { hold: 4000, erase: 20, between: 240, type: 38 };
+
+  class ServiceBriefPhrases extends HTMLElement {
+    private cleanup?: () => void;
+
+    connectedCallback() {
+      const text = this.querySelector("[data-phrase-text]");
+      const toggle = this.querySelector<HTMLButtonElement>("[data-phrase-toggle]");
+      if (!text || !toggle || this.cleanup) return;
+
+      const phrases: string[] = JSON.parse(this.dataset.phrases ?? "[]");
+      if (phrases.length < 2) return;
+
+      const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const listeners = new AbortController();
+      const { signal } = listeners;
+      const { pauseLabel, resumeLabel } = toggle.dataset;
+      let timer: number | undefined;
+      let inView = false;
+      let paused = false;
+      let index = 0;
+      let length = phrases[0].length;
+      let erasing = true;
+      let delay = timing.hold;
+
+      const showFullPhrase = () => {
+        const phrase = phrases[index];
+        text.textContent = phrase;
+        length = phrase.length;
+        erasing = true;
+        delay = timing.hold;
+      };
+
+      const step = () => {
+        const phrase = phrases[index];
+        length += erasing ? -1 : 1;
+        text.textContent = phrase.slice(0, length);
+
+        if (length === 0) {
+          index = (index + 1) % phrases.length;
+          erasing = false;
+          delay = timing.between;
+        } else if (length === phrase.length) {
+          erasing = true;
+          delay = timing.hold;
+        } else {
+          delay = erasing ? timing.erase : timing.type;
+        }
+
+        timer = window.setTimeout(step, delay);
+      };
+
+      const sync = () => {
+        window.clearTimeout(timer);
+        toggle.hidden = motion.matches;
+        const playing = inView && !document.hidden && !motion.matches && !paused;
+        this.toggleAttribute("data-playing", playing);
+        if (paused || motion.matches) showFullPhrase();
+        if (playing) timer = window.setTimeout(step, delay);
+      };
+
+      const observer = new IntersectionObserver(([entry]) => {
+        inView = entry.isIntersecting;
+        sync();
+      });
+
+      toggle.addEventListener("click", () => {
+        paused = !paused;
+        toggle.textContent = (paused ? resumeLabel : pauseLabel) ?? "";
+        sync();
+      }, { signal });
+      motion.addEventListener("change", sync, { signal });
+      document.addEventListener("visibilitychange", sync, { signal });
+
+      this.cleanup = () => {
+        window.clearTimeout(timer);
+        observer.disconnect();
+        observer.takeRecords();
+        listeners.abort();
+      };
+      toggle.textContent = pauseLabel ?? "";
+      showFullPhrase();
+      sync();
+      observer.observe(this);
+    }
+
+    disconnectedCallback() {
+      this.cleanup?.();
+      this.cleanup = undefined;
+    }
+  }
+
+  if (!customElements.get("service-brief-phrases")) {
+    customElements.define("service-brief-phrases", ServiceBriefPhrases);
+  }
+</script>
+
+<style>
+  service-brief-phrases { display: block; }
+
+  .service-brief-phrase { min-block-size: 3lh; }
+
+  service-brief-phrases[data-playing] [data-phrase-text]::after {
+    display: inline-block;
+    inline-size: 1px;
+    block-size: 0.85em;
+    margin-inline-start: 0.15em;
+    background: var(--color-brand-light);
+    content: "";
+  }
+
+  button {
+    min-block-size: 32px;
+    margin-top: 4px;
+    padding: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.8125rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+  }
+
+  button:hover { color: var(--color-text-primary); }
+
+  button:focus-visible {
+    outline: 2px solid var(--color-brand-light);
+    outline-offset: 3px;
+  }
+</style>

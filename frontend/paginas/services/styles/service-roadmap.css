@@ -1,0 +1,172 @@
+.service-roadmap {
+  display: block;
+  margin-top: clamp(24px, 4vw, 36px);
+}
+
+.service-roadmap-number {
+  color: var(--color-brand-light);
+  font: 0.75rem var(--font-mono);
+}
+
+.service-roadmap:not([data-ready]) .service-roadmap-panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+  gap: 18px;
+}
+
+.service-roadmap:not([data-ready]) .service-roadmap-panel {
+  padding-top: 16px;
+  border-top: 1px solid rgb(177 149 248 / 30%);
+}
+
+.service-roadmap-panel .service-roadmap-number {
+  display: block;
+  margin-bottom: 12px;
+}
+
+.service-roadmap-panel p {
+  max-width: 38ch;
+  font-size: 0.9375rem;
+}
+
+.service-roadmap[data-ready] {
+  border: 1px solid rgb(177 149 248 / 20%);
+  border-radius: 14px;
+  background: var(--color-bg-1);
+}
+
+.service-roadmap-nav:not([hidden]) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-bottom: 1px solid rgb(177 149 248 / 16%);
+}
+
+.service-roadmap-tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  padding: 5px;
+  scroll-padding-inline: 5px;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(177 149 248 / 42%) transparent;
+}
+
+.service-roadmap-tab,
+.service-roadmap-controls button {
+  min-height: 44px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.service-roadmap-tab {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  padding-inline: clamp(10px, 1.5vw, 18px);
+  font-size: 0.875rem;
+  font-weight: 550;
+  white-space: nowrap;
+}
+
+.service-roadmap-tab .service-roadmap-number { color: inherit; }
+
+.service-roadmap-tab[aria-selected="true"] {
+  border-color: rgb(177 149 248 / 30%);
+  background: rgb(128 102 214 / 14%);
+  box-shadow: inset 0 -2px var(--color-brand-light);
+  color: var(--color-text-primary);
+}
+
+.service-roadmap-tab[aria-selected="true"] .service-roadmap-number {
+  color: var(--color-brand-light);
+}
+
+.service-roadmap-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.service-roadmap-controls button {
+  display: grid;
+  width: 44px;
+  place-items: center;
+  border-color: rgb(255 255 255 / 13%);
+}
+
+.service-roadmap-controls button[aria-disabled="true"] {
+  border-color: rgb(255 255 255 / 8%);
+  color: var(--color-text-muted);
+  cursor: default;
+}
+
+.service-roadmap button:focus-visible {
+  outline: 2px solid var(--color-brand-light);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .service-roadmap-tab:hover,
+  .service-roadmap-controls button:not([aria-disabled="true"]):hover {
+    color: var(--color-text-primary);
+  }
+}
+
+.service-roadmap[data-ready] .service-roadmap-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  min-height: 270px;
+  align-items: center;
+}
+
+.service-roadmap[data-ready] .service-roadmap-panels {
+  grid-row: 1;
+  grid-column: 1;
+  padding: clamp(24px, 4vw, 52px);
+}
+
+.service-roadmap[data-ready] .service-roadmap-panel h3 {
+  margin: 0 0 10px;
+  font-size: clamp(1.75rem, 4vw, 3.25rem);
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.service-roadmap-art:not([hidden]) {
+  display: grid;
+  grid-row: 1;
+  grid-column: 2;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  overflow: hidden;
+  background: radial-gradient(ellipse closest-side, rgb(128 102 214 / 18%), transparent);
+  color: var(--color-brand-light);
+}
+
+.service-roadmap-art svg {
+  display: block;
+  width: min(118%, 34rem);
+  max-width: none;
+}
+
+.service-roadmap-art polyline { vector-effect: non-scaling-stroke; }
+.service-roadmap-art polyline:not(:first-child) { stroke: var(--color-brand-soft); }
+
+@media (max-width: 760px) {
+  .service-roadmap[data-ready] .service-roadmap-stage {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .service-roadmap-art:not([hidden]) { grid-column: 1; }
+
+  .service-roadmap[data-ready] .service-roadmap-panels {
+    grid-row: 2;
+    padding-block-start: 0;
+  }
+}

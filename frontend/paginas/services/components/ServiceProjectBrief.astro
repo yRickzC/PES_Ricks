@@ -2,6 +2,7 @@
 import type { Locale } from "../../../config/i18n";
 import { socialLinks } from "../../../config/social";
 import { getServiceCopy } from "../config/catalog";
+import ServiceBriefPhrases from "./ServiceBriefPhrases.astro";
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -13,7 +14,12 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
   <div class="service-detail-inner service-brief-layout">
     <div class="service-brief-intro">
       <h2 id="service-brief-title">{brief.sectionTitle}</h2>
-      <p>{brief.intro}</p>
+      <ServiceBriefPhrases
+        intro={brief.intro}
+        phrases={brief.introPhrases}
+        pauseLabel={brief.pauseIntro}
+        resumeLabel={brief.resumeIntro}
+      />
       <noscript>
         <p>{brief.requiresJavaScript}</p>
         {whatsappHref && <a class="service-brief-action" href={whatsappHref}>{brief.openWhatsApp}</a>}
@@ -30,33 +36,59 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
       hidden
     >
       <h3 id="service-brief-form-title">{brief.title}</h3>
-      <div class="service-brief-fields">
-        <div>
-          <label for="service-brief-name">{brief.name}</label>
-          <input id="service-brief-name" type="text" name="name" autocomplete="name" maxlength="100" placeholder={brief.namePlaceholder} data-brief-label={brief.name} required />
+      <ol class="service-brief-progress" role="list" aria-label={brief.progressLabel}>
+        {brief.stepLabels.map((label, index) => (
+          <li data-brief-progress aria-current={index === 0 ? "step" : undefined}>
+            <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+            {label}
+          </li>
+        ))}
+      </ol>
+      <section class="service-brief-step" data-brief-step aria-labelledby="service-brief-step-title-1">
+        <h4 id="service-brief-step-title-1" data-brief-step-title tabindex="-1">{brief.stepTitles[0]}</h4>
+        <div class="service-brief-fields">
+          <div>
+            <label for="service-brief-name">{brief.name}</label>
+            <input id="service-brief-name" type="text" name="name" autocomplete="name" maxlength="100" placeholder={brief.namePlaceholder} data-brief-label={brief.name} required />
+          </div>
         </div>
-        <div>
-          <label for="service-brief-idea">{brief.idea}</label>
-          <textarea id="service-brief-idea" name="idea" rows="5" maxlength="1000" placeholder={brief.ideaPlaceholder} data-brief-label={brief.idea} required></textarea>
+      </section>
+      <section class="service-brief-step" data-brief-step aria-labelledby="service-brief-step-title-2" hidden>
+        <h4 id="service-brief-step-title-2" data-brief-step-title tabindex="-1">{brief.stepTitles[1]}</h4>
+        <div class="service-brief-fields">
+          <div>
+            <label for="service-brief-idea">{brief.idea}</label>
+            <textarea id="service-brief-idea" name="idea" rows="5" maxlength="1000" placeholder={brief.ideaPlaceholder} data-brief-label={brief.idea} required></textarea>
+          </div>
+          <div>
+            <label for="service-brief-references">
+              {brief.references} <span class="service-brief-optional">({brief.optional})</span>
+            </label>
+            <textarea id="service-brief-references" name="references" rows="2" maxlength="350" placeholder={brief.referencesPlaceholder} data-brief-label={brief.references}></textarea>
+          </div>
         </div>
-        <div>
-          <label for="service-brief-timing">
-            {brief.timing} <span class="service-brief-optional">({brief.optional})</span>
-          </label>
-          <select id="service-brief-timing" name="timing" data-brief-label={brief.timing}>
-            <option value="">{brief.timingPlaceholder}</option>
-            {brief.timingOptions.map((option) => <option value={option}>{option}</option>)}
-          </select>
+      </section>
+      <section class="service-brief-step" data-brief-step aria-labelledby="service-brief-step-title-3" hidden>
+        <h4 id="service-brief-step-title-3" data-brief-step-title tabindex="-1">{brief.stepTitles[2]}</h4>
+        <div class="service-brief-fields">
+          <div>
+            <label for="service-brief-timing">
+              {brief.timing} <span class="service-brief-optional">({brief.optional})</span>
+            </label>
+            <select id="service-brief-timing" name="timing" data-brief-label={brief.timing}>
+              <option value="">{brief.timingPlaceholder}</option>
+              {brief.timingOptions.map((option) => <option value={option}>{option}</option>)}
+            </select>
+          </div>
         </div>
-        <div>
-          <label for="service-brief-references">
-            {brief.references} <span class="service-brief-optional">({brief.optional})</span>
-          </label>
-          <textarea id="service-brief-references" name="references" rows="2" maxlength="350" placeholder={brief.referencesPlaceholder} data-brief-label={brief.references}></textarea>
-        </div>
+      </section>
+      <div class="service-brief-actions">
+        <button class="service-brief-action service-brief-back" type="button" data-brief-back hidden>{brief.previousStep}</button>
+        <button class="service-brief-action" type="submit" data-brief-next data-final-label={whatsappHref ? brief.continue : brief.prepare}>
+          {brief.nextStep}
+        </button>
       </div>
-      <button class="service-brief-action" type="submit">{whatsappHref ? brief.continue : brief.prepare}</button>
-      <p class="service-brief-note">{whatsappHref ? brief.review : brief.copyHint}</p>
+      <p class="service-brief-note" data-brief-note hidden>{whatsappHref ? brief.review : brief.copyHint}</p>
       {!whatsappHref && (
         <div class="service-brief-draft" data-brief-draft hidden>
           <label for="service-brief-draft">{brief.draft}</label>
@@ -68,28 +100,77 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
 </section>
 
 <script>
+  type BriefField = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+
   function mountProjectBrief() {
     const form = document.querySelector<HTMLFormElement>("form[data-project-brief][hidden]");
     if (!form) return;
 
-    const fields = form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>("[data-brief-label]");
+    const steps = Array.from(form.querySelectorAll<HTMLElement>("[data-brief-step]"));
+    const progress = form.querySelectorAll<HTMLElement>("[data-brief-progress]");
+    const back = form.querySelector<HTMLButtonElement>("[data-brief-back]");
+    const next = form.querySelector<HTMLButtonElement>("[data-brief-next]");
+    const note = form.querySelector<HTMLElement>("[data-brief-note]");
+    if (!steps.length || steps.length !== progress.length || !back || !next || !note) return;
+
+    const { whatsappUrl, title, requiredText } = form.dataset;
+    const nextLabel = next.textContent?.trim() ?? "";
+    const finalLabel = next.dataset.finalLabel ?? nextLabel;
+    const draft = form.querySelector<HTMLElement>("[data-brief-draft]");
+    const draftText = draft?.querySelector("textarea");
+    const stepFields = steps.map((step) => Array.from(step.querySelectorAll<BriefField>("[data-brief-label]")));
+    const fields = stepFields.flat();
+    const lastStep = steps.length - 1;
+    let activeStep = 0;
+
+    const showStep = (index: number) => {
+      activeStep = index;
+      steps.forEach((step, position) => {
+        step.hidden = position !== index;
+      });
+      progress.forEach((item, position) => {
+        if (position === index) item.setAttribute("aria-current", "step");
+        else item.removeAttribute("aria-current");
+        item.toggleAttribute("data-complete", position < index);
+      });
+      back.hidden = index === 0;
+      next.textContent = index === lastStep ? finalLabel : nextLabel;
+      note.hidden = index !== lastStep;
+      if (draft) draft.hidden = true;
+      steps[index].querySelector<HTMLElement>("[data-brief-step-title]")?.focus();
+    };
+
+    function validateStep(index: number) {
+      for (const field of stepFields[index]) {
+        field.setCustomValidity(field.required && !field.value.trim() ? requiredText ?? "" : "");
+        if (!field.validity.valid) {
+          if (index !== activeStep) showStep(index);
+          field.reportValidity();
+          return false;
+        }
+      }
+      return true;
+    }
+
     for (const field of fields) {
       field.addEventListener("input", () => field.setCustomValidity(""));
     }
 
+    back.addEventListener("click", () => {
+      if (activeStep > 0) showStep(activeStep - 1);
+    });
+
     form.addEventListener("submit", (event) => {
       event.preventDefault();
-      const { whatsappUrl, title, requiredText } = form.dataset;
-      const parts = [title];
+      if (activeStep < lastStep) {
+        if (validateStep(activeStep)) showStep(activeStep + 1);
+        return;
+      }
+      if (!stepFields.every((_, index) => validateStep(index))) return;
 
+      const parts = [title];
       for (const field of fields) {
         const value = field.value.trim();
-        if (field.required && !value) {
-          field.setCustomValidity(requiredText ?? "");
-          field.reportValidity();
-          return;
-        }
-
         if (value) parts.push(`${field.dataset.briefLabel}: ${value}`);
       }
 
@@ -101,8 +182,6 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
         return;
       }
 
-      const draft = form.querySelector<HTMLElement>("[data-brief-draft]");
-      const draftText = draft?.querySelector("textarea");
       if (draft && draftText) {
         draftText.value = message;
         draft.hidden = false;
@@ -111,6 +190,8 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
       }
     });
 
+    // Validate only the visible step until the final submission.
+    form.noValidate = true;
     form.hidden = false;
   }
 

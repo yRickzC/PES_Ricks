@@ -20,3 +20,6 @@ coverage/
 # Machine-specific environment and Astro development state
 .env
 .astro/dev.json
+
+# Local reference files attached through Codex
+.codex-attachments/

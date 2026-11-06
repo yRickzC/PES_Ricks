@@ -75,3 +75,11 @@
 2026-11-06 — “Projetos customizados” ganhou um briefing aberto com nome, contato, ideia, prazo e referências. O botão abre o WhatsApp com os dados preenchidos.
 
 2026-11-06 — Removido o campo de contato do briefing, já que o pedido segue pelo WhatsApp. O prazo passou a ser escolhido em um menu opcional.
+
+2026-11-06 — A introdução de “Projetos customizados” passou a alternar 50 frases com efeito de digitação e apagamento, com controle de pausa e respeito à preferência por movimento reduzido.
+
+2026-11-06 — As categorias do catálogo passaram a deslizar em uma faixa horizontal no celular. Os cards de resultado ganharam uma sombra suave.
+
+2026-11-06 — “Como funciona” virou um roadmap interativo com cinco etapas. As ilustrações em SVG se transformam ao navegar entre Problema, Contato, Planejamento, Produção e Entrega.
+
+2026-11-06 — O formulário de projetos customizados passou a mostrar nome, descrição com referências e prazo em três etapas, com envio do resumo ao WhatsApp.

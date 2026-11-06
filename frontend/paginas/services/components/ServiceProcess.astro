@@ -1,29 +1,74 @@
 ---
 import type { Locale } from "../../../config/i18n";
 import { getServiceCopy } from "../config/catalog";
+import { roadmapArt } from "../config/roadmap-art";
+import "../styles/service-roadmap.css";
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const { process } = getServiceCopy(locale);
+const stepNumber = (index: number) => String(index + 1).padStart(2, "0");
 ---
 
 <section class="service-process" aria-labelledby="service-process-title">
   <div class="service-detail-inner">
     <h2 id="service-process-title">{process.title}</h2>
-    <ol class="service-process-steps" role="list">
-      {process.steps.map(({ title, description }, index) => (
-        <li>
-          <span class="service-process-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-          <div>
-            <h3>{title}</h3>
-            <p>{description}</p>
-          </div>
-        </li>
-      ))}
-    </ol>
+    <service-roadmap class="service-roadmap">
+      <div class="service-roadmap-nav" data-roadmap-nav hidden>
+        <div class="service-roadmap-tabs" data-roadmap-tabs role="tablist" aria-labelledby="service-process-title">
+          {process.steps.map(({ title }, index) => (
+            <button
+              class="service-roadmap-tab"
+              id={`service-roadmap-tab-${index}`}
+              type="button"
+              role="tab"
+              aria-controls={`service-roadmap-panel-${index}`}
+              aria-selected={index === 0 ? "true" : "false"}
+              tabindex={index === 0 ? 0 : -1}
+            >
+              <span class="service-roadmap-number" aria-hidden="true">{stepNumber(index)}</span>
+              {title}
+            </button>
+          ))}
+        </div>
+        <div class="service-roadmap-controls">
+          <button type="button" data-roadmap-prev aria-label={process.previousStep} aria-disabled="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M19 12H5m6-6-6 6 6 6" />
+            </svg>
+          </button>
+          <button type="button" data-roadmap-next aria-label={process.nextStep}>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M5 12h14m-6-6 6 6-6 6" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="service-roadmap-stage">
+        <div class="service-roadmap-art" data-roadmap-art hidden aria-hidden="true">
+          <svg viewBox="0 0 360 220" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            {roadmapArt[0].map((points) => <polyline points={points} />)}
+          </svg>
+        </div>
+        <div class="service-roadmap-panels">
+          {process.steps.map(({ title, description }, index) => (
+            <div class="service-roadmap-panel" id={`service-roadmap-panel-${index}`} data-roadmap-panel>
+              <span class="service-roadmap-number" aria-hidden="true">{stepNumber(index)} / {stepNumber(process.steps.length - 1)}</span>
+              <h3>{title}</h3>
+              <p>{description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <span class="visually-hidden" data-roadmap-status role="status"></span>
+    </service-roadmap>
     <div class="service-process-support">
       <h3>{process.supportTitle}</h3>
       <p>{process.supportDescription}</p>
     </div>
   </div>
 </section>
+
+<script>
+  import "./service-roadmap";
+</script>
