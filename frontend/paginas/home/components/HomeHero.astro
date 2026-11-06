@@ -19,9 +19,8 @@ const { copy, locale, id = "home-hero" } = Astro.props;
   <div class="hero-vignette" aria-hidden="true"></div>
   <div class="hero-content">
     <div class="hero-copy">
-      <p class="hero-eyebrow">{copy.heroEyebrow}</p>
       <h1 id={`${id}-title`} class="hero-title">
-        <span>{copy.heroTitleLine1}</span>
+        <span>{copy.heroTitleLine1}</span>{" "}
         <span class="hero-title-accent">{copy.heroTitleLine2}</span>
       </h1>
       <p class="hero-subtitle">{copy.heroSubtitle}</p>

@@ -115,15 +115,6 @@
 }
 
 .hero-copy { width: 100%; margin: 0 auto; }
-.hero-eyebrow {
-  margin: 0 0 18px;
-  color: #c5b6df;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  line-height: 1.6;
-  letter-spacing: 0.18em;
-}
-
 .hero-title {
   margin: 0;
   color: #f4f2f8;
@@ -191,7 +182,6 @@
   .hero-layer--moon::before { width: calc(var(--mobile-width) * var(--moon-halo-size)); }
   .hero-layer--sky img { width: 100%; object-position: 60% 50%; }
   .hero-copy { max-width: 670px; }
-  .hero-eyebrow { margin-bottom: 20px; font-size: 9px; }
   .hero-title { font-size: clamp(32px, 7.8vw, 64px); }
   .hero-title span { display: block; }
   .hero-subtitle { margin-top: 20px; font-size: 16px; }

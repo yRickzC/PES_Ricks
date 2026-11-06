@@ -1,8 +1,8 @@
 {
-  "selectCategoryTitle": "Select a category…",
-  "selectCategoryHint": "Use the icons above to explore the projects.",
-  "emptyTitle": "No results found",
-  "emptyHint": "No projects in this category yet. Try another category.",
+  "selectCategoryTitle": "Where would you like to start?",
+  "selectCategoryHint": "Choose a category from the icons above to see the projects.",
+  "emptyTitle": "No projects here yet",
+  "emptyHint": "Choose another category to keep browsing.",
   "dogAlt": "Dog searching for projects",
   "clear": "Clear filters",
   "tags": "Project tags"

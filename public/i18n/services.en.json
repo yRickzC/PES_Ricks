@@ -1,0 +1,32 @@
+{
+  "chooseType": "Choose a service type",
+  "websites": {
+    "label": "Websites",
+    "offers": [
+      { "title": "Company website", "description": "Introduce your business, show what you do and give customers a clear way to get in touch." },
+      { "title": "Landing page", "description": "Focus a campaign or product launch on one action, from requesting a quote to joining a waitlist." },
+      { "title": "Online store", "description": "Organize your products and give customers a straightforward path from browsing to checkout." }
+    ]
+  },
+  "internal-systems": {
+    "label": "ERP & systems",
+    "offers": [
+      { "title": "Custom ERP", "description": "Bring orders, inventory and day-to-day operations into one system shaped around your workflow." },
+      { "title": "Internal portal", "description": "Give your team a place to manage requests, approvals and reports with the right permissions." }
+    ]
+  },
+  "mobile-apps": {
+    "label": "Mobile apps",
+    "offers": [
+      { "title": "Customer app", "description": "Let customers book, place orders or manage their accounts from their phones." },
+      { "title": "Field app", "description": "Help teams record visits, complete checklists and update work orders on the move." }
+    ]
+  },
+  "automation": {
+    "label": "Automation",
+    "offers": [
+      { "title": "Workflow automation", "description": "Turn repetitive steps into flows that process requests, send alerts and keep records up to date." },
+      { "title": "System integrations", "description": "Connect tools through APIs so information moves with the work and teams enter it once." }
+    ]
+  }
+}

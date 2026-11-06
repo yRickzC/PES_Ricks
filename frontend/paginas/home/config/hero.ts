@@ -27,6 +27,7 @@ export interface HeroLayer {
 export const heroMotion = {
   desktopQuery: "(min-width: 960px) and (hover: hover) and (pointer: fine)",
   reducedMotionQuery: "(prefers-reduced-motion: reduce)",
+  mobileMultiplier: 0.65,
   damping: 9,
   settleThreshold: 0.001,
   maxFrameSeconds: 0.05,

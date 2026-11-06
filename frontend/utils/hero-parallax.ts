@@ -52,6 +52,13 @@ function cancelRender(render: (time: number) => void) {
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
+export function mobileScrollProgress(bounds: DOMRectReadOnly): number {
+  // Below-the-fold scenes start moving as they reach the middle of the viewport.
+  // At the top of the page, the current scroll offset keeps the scene at rest.
+  const distance = Math.min(window.scrollY, window.innerHeight / 2 - bounds.top);
+  return clamp(distance / Math.max(bounds.height, 1), 0, 1);
+}
+
 export function mountHeroParallax(hero: HTMLElement, options: HeroParallaxOptions): () => void {
   const { layers: configuration, motion, layerAttribute } = options;
   const reducedMotion = window.matchMedia(motion.reducedMotionQuery);
@@ -90,13 +97,12 @@ export function mountHeroParallax(hero: HTMLElement, options: HeroParallaxOption
       bounds = hero.getBoundingClientRect();
       boundsDirty = false;
     }
-    const multiplier = desktop.matches ? 1 : motion.mobileMultiplier;
     const { maxTravel, travelFraction } = motion;
-    const scrollDistance = travelFraction === undefined
+    const travel = travelFraction === undefined ? maxTravel : Math.min(bounds.height * travelFraction, maxTravel);
+    const desktopScroll = travelFraction === undefined
       ? clamp(-bounds.top, 0, maxTravel)
-      : clamp(-bounds.top / Math.max(bounds.height, 1), 0, 1)
-        * Math.min(bounds.height * travelFraction, maxTravel);
-    const targetScroll = scrollDistance * multiplier;
+      : clamp(-bounds.top / Math.max(bounds.height, 1), 0, 1) * travel;
+    const targetScroll = desktop.matches ? desktopScroll : mobileScrollProgress(bounds) * travel * motion.mobileMultiplier;
     const seconds = previousTime ? Math.min((time - previousTime) / 1000, 0.05) : 1 / 60;
     previousTime = time;
     const blend = 1 - Math.exp(-motion.damping * seconds);
@@ -115,7 +121,7 @@ export function mountHeroParallax(hero: HTMLElement, options: HeroParallaxOption
   function resetPointer() { pointerX = pointerY = 0; schedule(); }
   function updateState() {
     stop();
-    if (!desktop.matches) pointerX = pointerY = 0;
+    if (!desktop.matches) x = y = pointerX = pointerY = 0;
     hero.dataset.parallaxActive = String(enabled());
     if (reducedMotion.matches) {
       x = y = scroll = pointerX = pointerY = 0;

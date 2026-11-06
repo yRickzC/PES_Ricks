@@ -31,3 +31,39 @@
 
 2026-11-04 — Removidos o título e a descrição acima do Dog_Worker em Serviços. O aviso de construção permanece.
 2026-11-04 — Controlador interativo do Blog deixou de importar em runtime o módulo que carrega JSON de `public/i18n`; formatador de contagem extraído para módulo puro e reexport preservada. Conferido estaticamente; aviso em servidor ainda sem validação.
+
+2026-11-05 — A pedido do usuário, textos de Início, Blog, Projetos e Serviços foram reescritos em PT-BR e inglês com voz mais pessoal e direta, removendo slogans e termos artificiais. Botões, descrições e estados vazios revisados; contador do blog padronizado para posts e expectativa existente ajustada. JSON, paridade, marcadores e diff conferidos estaticamente; Graphify atualizado por AST local sem alteração de topologia. Aplicativo, navegador, testes e build não executados conforme CodeMode.
+
+2026-11-05 — Captura mostrou “O que andoconstruindo.” no título do início. Os spans inline não tinham espaço explícito entre eles; acrescentada expressão de espaço na marcação compartilhada por PT-BR e EN. Conferência estática e diff sem erros; Graphify por AST local sem mudança de topologia. Navegador, aplicativo, testes e build não executados conforme CodeMode.
+
+2026-11-05 — Removidas as faixas de categorias acima dos títulos do Início, Blog e Serviços nos dois idiomas, incluindo “SISTEMAS / SOFTWARE / EXPERIMENTOS”. Estilos e traduções sem uso excluídos; nome acessível da seção de serviços preservado com a tradução de Serviços. Conferência estática de referências, JSON, interface e diff concluída; Graphify atualizado por AST local. Aplicativo, navegador, testes e build não executados conforme CodeMode.
+
+2026-11-05 — Padronizados os títulos das abas em português e inglês no formato “Nome da página — Rickz”. O Início ganhou título curto e os artigos mantêm o título de cada publicação. Catálogos, rotas e layout conferidos estaticamente. Graphify atualizado por AST local. Navegador, testes e build não executados.
+
+2026-11-05 — Trocado o travessão por hífen nos títulos das abas: “Nome da página - Rickz”. Conferido no código.
+
+2026-11-05 — Adicionado fade nativo de 500 ms entre as páginas nos dois idiomas, incluindo artigos, com respeito à preferência de movimento reduzido. Layouts e CSS conferidos estaticamente. Validação visual pendente.
+
+2026-11-05 — A pedido do usuário, o fade entre páginas passou de 500 ms para 1.200 ms para dar mais tempo ao carregamento. Duração fixa conferida no CSS. Validação visual pendente.
+
+2026-11-05 — O usuário enviou uma referência para a transição com a logo. A logo agora desce sobre o fundo violeta, recebe um brilho enquanto as imagens estáticas carregam e sai por baixo com o fundo em ritmos diferentes. A espera tem limite de 8 segundos. Sintaxe do script e integração com o layout conferidas estaticamente. Validação visual pendente.
+
+2026-11-05 — O usuário relatou que o fundo da transição aparecia de uma vez ao navegar. Fundo e logo agora entram caindo do topo em ritmos diferentes e só começam a saída depois da pausa central. Sintaxe e fases conferidas nos fontes. Validação visual pendente.
+
+2026-11-05 — O usuário esclareceu que a queda deve acontecer antes de abrir a página de destino. O clique agora fecha a cortina sobre a página atual e só depois ativa o link. O destino retoma a cortina fechada e a libera após o carregamento. Código conferido estaticamente. Validação visual pendente.
+
+2026-11-06 — A pedido do usuário, a rolagem no celular passou a acionar o parallax no Início e ganhou um percurso mais perceptível no Blog, em Projetos e em Serviços. Os biomas de Projetos começam a se mover quando alcançam o meio da tela. Sintaxe e diff conferidos, com Graphify atualizado por AST local. Validação visual pendente.
+
+2026-11-06 — A página de Serviços ganhou um seletor de categorias na faixa escura e cards ilustrativos que mudam com a seleção sobre o céu da hero. Integração e traduções conferidas estaticamente, com Graphify atualizado por AST local. Validação visual pendente.
+
+2026-11-06 — O usuário mostrou uma falha SSR ao carregar o catálogo. A página passou a importar o catálogo antes de o arquivo existir. Com os caminhos presentes, a página foi sinalizada ao watcher do Vite para nova resolução. Confirmação no servidor pendente.
+
+2026-11-06 — A pedido do usuário, Consultoria saiu do seletor e dos cards da página de Serviços. As quatro categorias restantes foram conferidas estaticamente nos dois idiomas.
+
+2026-11-06 — A página inicial ganhou o cachorro Work e a mensagem “Estamos trabalhando nisso!” logo abaixo da hero, com versão em inglês. Asset e traduções conferidos estaticamente.
+
+2026-11-06 — WhatsApp adicionado ao menu social com o número configurado em `.env` e `.env.example`.
+
+2026-11-06 — Perfil do YouTube `@yRickz` ligado ao menu social pela variável `PUBLIC_YOUTUBE_URL` nos arquivos de ambiente.
+
+2026-11-06 — Perfil do Instagram `@yrick_c` ligado ao menu social pela variável `PUBLIC_INSTAGRAM_URL` nos arquivos de ambiente.

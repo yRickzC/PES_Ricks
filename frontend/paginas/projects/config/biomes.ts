@@ -73,7 +73,7 @@ function createBiome(scene: SceneDefinition): ProjectBiome {
   const order: LayerName[] = ["Background", "Small", "Fog", "Medium", "Top"];
   return {
     id: scene.id, category: scene.category,
-    motion: { travelFraction: 0.1, maxTravel: 64, pointerTravel: 24, mobileMultiplier: 0.16 },
+    motion: { travelFraction: 0.1, maxTravel: 64, pointerTravel: 24 },
     layers: order.map((name, index): ProjectBiomeLayer => {
       const base = crystalCave[0].layers[index]!;
       const mobile: Placement = { ...base.mobile };

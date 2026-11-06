@@ -1,0 +1,286 @@
+---
+import { getImage } from "astro:assets";
+import logoSource from "../../../public/images/Rick_Logo_Transparent.webp";
+import { withBasePath } from "../../utils/base-path";
+
+const base = import.meta.env.BASE_URL;
+const logo = await getImage({ src: logoSource, width: 448, format: "webp", quality: 88 });
+const logoUrl = withBasePath(logo.src, base);
+const skyUrl = withBasePath("/images/Hero_Main_Background.webp", base);
+---
+
+<div id="page-transition" class="page-transition" data-base={base} aria-hidden="true" hidden>
+  <div class="page-transition__sky">
+    <img src={skyUrl} width="1672" height="941" alt="" draggable="false" />
+  </div>
+  <div class="page-transition__foreground">
+    <div class="page-transition__mark" style={`--page-transition-mark: url("${logoUrl}")`}>
+      <img src={logoUrl} width="448" height="448" alt="" fetchpriority="high" draggable="false" />
+      <div class="page-transition__sheen"></div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const curtain = document.getElementById("page-transition");
+    const artworkReady = Promise.allSettled(Array.from(curtain.querySelectorAll("img"), (image) => image.decode?.()));
+    const motion = matchMedia("(prefers-reduced-motion: no-preference)");
+    const basePath = curtain.dataset.base.replace(/\/+$/, "");
+    const handoffKey = `rickz-page-transition:${basePath}`;
+    const minimumHoldMs = 240;
+    const maximumWaitMs = 8000;
+    let activeRun;
+    let deadline;
+
+    function pageKey(url) {
+      return url.pathname.replace(/\/+$/, "") + url.search;
+    }
+
+    function takeHandoff() {
+      try {
+        const value = sessionStorage.getItem(handoffKey);
+        if (!value) return false;
+        sessionStorage.removeItem(handoffKey);
+        const { destination, expiresAt } = JSON.parse(value);
+        return destination === pageKey(location) && Date.now() < expiresAt;
+      } catch {
+        return false;
+      }
+    }
+
+    function show(phase) {
+      curtain.dataset.phase = phase;
+      curtain.hidden = false;
+    }
+
+    function hide() {
+      activeRun?.abort();
+      activeRun = undefined;
+      clearTimeout(deadline);
+      curtain.hidden = true;
+      delete curtain.dataset.phase;
+    }
+
+    function waitForMotion() {
+      const animations = curtain.getAnimations?.({ subtree: true }) ?? [];
+      return Promise.allSettled(animations.map((animation) => animation.finished));
+    }
+
+    async function exit(run) {
+      if (run.signal.aborted || curtain.dataset.phase === "exit") return;
+      clearTimeout(deadline);
+      curtain.dataset.phase = "exit";
+      await waitForMotion();
+      if (!run.signal.aborted) hide();
+    }
+
+    function resume() {
+      const run = new AbortController();
+      const { signal } = run;
+      activeRun = run;
+      show("hold");
+      deadline = setTimeout(() => void exit(run), maximumWaitMs);
+
+      const documentLoaded = document.readyState === "complete" ? Promise.resolve() : new Promise((resolve) => {
+        window.addEventListener("load", resolve, { once: true, signal });
+      });
+      const held = new Promise((resolve) => setTimeout(resolve, minimumHoldMs));
+
+      async function waitForImages() {
+        if (signal.aborted || curtain.dataset.phase === "exit") return;
+        // Only wait for images from the initial page, excluding deferred biomes.
+        const images = Array.from(document.images).filter((image) =>
+          !curtain.contains(image) &&
+          (image.getAttribute("src") || image.getAttribute("srcset")) &&
+          !image.closest("[hidden]") && !image.hasAttribute("data-biome-src"),
+        );
+        const decoded = images.map((image) => {
+          if (image.loading === "lazy") image.loading = "eager";
+          return image.decode?.();
+        });
+        // Window load covers stylesheet backgrounds. Failed images count as settled.
+        await Promise.allSettled([artworkReady, held, documentLoaded, ...decoded]);
+        void exit(run);
+      }
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Tab" || event.key === "Escape") hide();
+      }, { signal });
+      motion.addEventListener("change", () => {
+        if (!motion.matches) hide();
+      }, { signal });
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", waitForImages, { once: true, signal });
+      } else {
+        void waitForImages();
+      }
+    }
+
+    async function navigate(event) {
+      if (!motion.matches || event.defaultPrevented || event.button !== 0 ||
+          event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const link = event.target instanceof Element && event.target.closest("a[href]");
+      if (!(link instanceof HTMLAnchorElement) || link.hasAttribute("download") ||
+          (link.target && link.target.toLowerCase() !== "_self")) return;
+
+      let destination;
+      try {
+        destination = new URL(link.href);
+      } catch {
+        return;
+      }
+      if (destination.origin !== location.origin || destination.protocol !== location.protocol ||
+          pageKey(destination) === pageKey(location) ||
+          (destination.pathname !== basePath && !destination.pathname.startsWith(`${basePath}/`))) return;
+
+      event.preventDefault();
+      if (activeRun) return;
+      const run = new AbortController();
+      activeRun = run;
+      const nextLink = link.cloneNode(false);
+      nextLink.href = destination.href;
+      link.closest("dialog[open]")?.close();
+
+      const artworkTimeout = new Promise((resolve) => setTimeout(resolve, 400));
+      await Promise.race([artworkReady, artworkTimeout]);
+      if (run.signal.aborted) return;
+      show("enter");
+      await waitForMotion();
+      if (run.signal.aborted) return;
+      show("hold");
+
+      try {
+        sessionStorage.setItem(handoffKey, JSON.stringify({
+          destination: pageKey(destination),
+          expiresAt: Date.now() + maximumWaitMs,
+        }));
+      } catch {
+        // Link activation still works when session storage is unavailable.
+      }
+      deadline = setTimeout(hide, maximumWaitMs);
+      // Native link activation keeps the previous page in history during early clicks.
+      nextLink.click();
+    }
+
+    document.addEventListener("click", navigate);
+    window.addEventListener("pagehide", hide);
+    if (takeHandoff() && motion.matches) resume();
+  })();
+</script>
+
+<style>
+  .page-transition {
+    --page-transition-fall: cubic-bezier(.7, 0, .94, .6);
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    overflow: hidden;
+    pointer-events: none;
+    isolation: isolate;
+  }
+
+  @supports (animation-timing-function: linear(0, 1)) {
+    .page-transition {
+      /* Samples of an exponential position curve at equal time intervals. */
+      --page-transition-fall: linear(0, .028, .067, .122, .2, .311, .467, .688, 1);
+    }
+  }
+
+  .page-transition__sky,
+  .page-transition__foreground {
+    position: absolute;
+    inset: 0;
+  }
+
+  .page-transition__sky {
+    background: #0d0819;
+    pointer-events: auto;
+  }
+
+  .page-transition__sky img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: .7;
+  }
+
+  .page-transition__sky::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 20%, rgb(7 7 10 / 65%) 100%);
+  }
+
+  .page-transition__foreground {
+    display: grid;
+    place-items: center;
+  }
+
+  .page-transition__mark {
+    position: relative;
+    width: min(clamp(8rem, 26vw, 14rem), 42svh);
+    aspect-ratio: 1;
+  }
+
+  .page-transition__mark img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 1.25rem rgb(165 138 240 / 32%));
+  }
+
+  .page-transition__sheen {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    mask: var(--page-transition-mark) center / contain no-repeat;
+  }
+
+  .page-transition__sheen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(165deg, transparent 29%, #8066d6 50%, #f4f4f6 56%, transparent 70%);
+    opacity: .7;
+    transform: translateY(-110%);
+  }
+
+  [data-phase="enter"] .page-transition__sky {
+    animation: transition-drop-in 720ms var(--page-transition-fall) both;
+  }
+
+  [data-phase="enter"] .page-transition__foreground {
+    animation: transition-drop-in 900ms var(--page-transition-fall) both;
+  }
+
+  [data-phase="hold"] .page-transition__sheen::before {
+    animation: transition-scan 1250ms linear infinite;
+  }
+
+  [data-phase="exit"] .page-transition__sky {
+    animation: transition-drop-out 900ms var(--page-transition-fall) both;
+  }
+
+  [data-phase="exit"] .page-transition__foreground {
+    animation: transition-drop-out 720ms var(--page-transition-fall) both;
+  }
+
+  @keyframes transition-drop-in {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+  }
+
+  @keyframes transition-drop-out {
+    from { transform: translateY(0); }
+    to { transform: translateY(100%); }
+  }
+
+  @keyframes transition-scan {
+    from { transform: translateY(-65%); }
+    to { transform: translateY(65%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page-transition { display: none; }
+  }
+</style>

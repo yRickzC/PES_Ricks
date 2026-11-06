@@ -15,7 +15,7 @@ const { database } = await readBlogContent();
 const posts = await prepareBlogCovers(createBlogPosts(database.list({ kind: "article", contentType: "blog", locale }), locale, import.meta.env.BASE_URL), import.meta.env.BASE_URL);
 ---
 
-<Main locale={locale} pageId="blogs" title={`${copy.blogHeroTitle} — Rickz`} description={copy.blogHeroSubtitle}>
+<Main locale={locale} pageId="blogs" description={copy.blogHeroSubtitle}>
   <BlogHero copy={copy} locale={locale} />
   <BlogExploreSection posts={posts} locale={locale} label={copy.blogExploreNotes} />
 </Main>

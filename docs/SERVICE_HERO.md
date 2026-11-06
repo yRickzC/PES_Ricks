@@ -27,9 +27,10 @@ overscan lateral preservam margem para o movimento; não esticar as imagens
 verticalmente. Os atributos `sizes` acompanham essas larguras.
 
 Profundidades iniciais: céu 0.05, lua 0.10, Rock0 0.15, névoa 0.22, Rock1 0.30,
-Rock2 0.48. Scroll limitado a 80px antes da profundidade, com multiplicador
-mobile/coarse de 0.5. O mouse é exclusivo de desktop com ponteiro preciso;
-na lua, o deslocamento máximo por eixo é de aproximadamente 1.2px.
+Rock2 0.48. O percurso de scroll tem limite de 80px antes da profundidade.
+No mobile ou com ponteiro de toque, o movimento progride na vertical ao longo
+da altura da hero e usa até 65% do percurso. No desktop com ponteiro preciso,
+o mouse desloca a lua em aproximadamente 1.2px por eixo.
 
 O controlador antes usado por Projects foi extraído para
 `frontend/utils/hero-parallax.ts`. Projects mantém seu adaptador, parâmetros e
@@ -44,10 +45,13 @@ inclusive a névoa. Não há filtros animados nem hidratação de framework.
 
 ## Conteúdo e imagens
 
-As seis mensagens novas seguem `Messages` e os catálogos EN/PT-BR. O CTA
-principal aponta para `#services`, preservando o estado vazio existente;
-o secundário aponta para Projects no idioma atual. Não foram inventados
-produtos, preços ou serviços publicados.
+As mensagens da hero seguem `Messages` e os catálogos EN/PT-BR. O CTA
+principal aponta para o seletor de serviços em `#services` e o secundário
+leva a Projects no idioma atual.
+
+`ServiceCatalog.astro` usa as categorias da taxonomia e catálogos próprios
+em EN/PT-BR. A seleção usa controles nativos e CSS. Os cards exibem formatos
+de serviço sobre a mesma imagem de céu da hero.
 
 `SiteImage` prepara variantes responsivas com `astro:assets`; os originais PNG
 estão em `RAW/images/`. As imagens da primeira tela usam eager; somente a lua recebe

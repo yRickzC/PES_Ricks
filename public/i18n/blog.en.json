@@ -1,18 +1,18 @@
 {
-  "searchLabel": "Search Blog posts",
-  "searchPlaceholder": "Search blog posts…",
-  "submit": "Search Blog",
+  "searchLabel": "Search the blog",
+  "searchPlaceholder": "What would you like to read?",
+  "submit": "Search",
   "category": "Category",
   "allCategories": "All categories",
   "tags": "Tags",
   "featured": "Featured",
   "clear": "Clear filters",
-  "unpublishedTitle": "No blog posts yet",
-  "emptyTitle": "No results found",
-  "emptyHint": "Try another search or adjust your filters.",
+  "unpublishedTitle": "I haven't published any posts yet",
+  "emptyTitle": "No posts match your search",
+  "emptyHint": "Try different words or change the filters.",
   "dogAlt": "Dog searching for results",
-  "notesOne": "{count} note",
-  "notesMany": "{count} notes",
+  "notesOne": "{count} post",
+  "notesMany": "{count} posts",
   "resultsOne": "{count} result",
   "resultsMany": "{count} results",
   "queryCount": "{count} for “{query}”",
@@ -21,5 +21,5 @@
   "next": "Next",
   "page": "Page {page} of {count}",
   "resultsLabel": "Blog posts",
-  "noScript": "Up to 10 notes are shown. Enable JavaScript to search, filter and browse further pages."
+  "noScript": "This list shows up to 10 posts. Enable JavaScript to search, filter and see the next pages."
 }

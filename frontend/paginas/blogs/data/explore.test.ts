@@ -102,7 +102,7 @@ describe("exploração exclusiva do Blog", () => {
 
   it("localiza contadores sem inserir a consulta como HTML e mantém paridade dos textos", () => {
     expect(Object.keys(blogCopy("en")).sort()).toEqual(Object.keys(blogCopy("pt-br")).sort());
-    expect(blogCount(blogCopy("en"), 1, false, "")).toBe("1 note");
+    expect(blogCount(blogCopy("en"), 1, false, "")).toBe("1 post");
     expect(blogCount(blogCopy("pt-br"), 23, true, "jogos")).toBe("23 resultados para “jogos”");
     expect(blogCount(blogCopy("en"), 0, true, "<script>")).toContain("<script>"); // DOM controller uses textContent.
   });

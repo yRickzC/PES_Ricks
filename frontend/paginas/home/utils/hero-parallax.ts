@@ -1,4 +1,5 @@
 import { heroDepths, heroMotion } from "../config/hero";
+import { mobileScrollProgress } from "../../../utils/hero-parallax";
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
@@ -38,19 +39,20 @@ export function mountHeroParallax(hero: HTMLElement): () => void {
   }
 
   function schedule() {
-    // Touch devices keep a static composition and CSS fog only.
-    if (enabled() && desktop.matches && !frame) frame = requestAnimationFrame(render);
+    if (enabled() && !frame) frame = requestAnimationFrame(render);
   }
 
   function render(time: number) {
     frame = 0;
-    if (!enabled() || !desktop.matches) return;
+    if (!enabled()) return;
     if (boundsDirty) {
       bounds = hero.getBoundingClientRect();
       boundsDirty = false;
     }
 
-    const targetScroll = clamp(-bounds.top / Math.max(bounds.height, 1), 0, heroMotion.maxScrollProgress);
+    const targetScroll = desktop.matches
+      ? clamp(-bounds.top / Math.max(bounds.height, 1), 0, heroMotion.maxScrollProgress)
+      : mobileScrollProgress(bounds) * heroMotion.mobileMultiplier;
     const seconds = previousTime ? Math.min((time - previousTime) / 1000, heroMotion.maxFrameSeconds) : 1 / 60;
     const blend = 1 - Math.exp(-heroMotion.damping * seconds);
     previousTime = time;
@@ -75,8 +77,9 @@ export function mountHeroParallax(hero: HTMLElement): () => void {
     stop();
     const active = enabled();
     hero.dataset.motionActive = String(active);
-    hero.dataset.parallaxActive = String(active && desktop.matches);
-    if (!active || !desktop.matches) reset();
+    hero.dataset.parallaxActive = String(active);
+    if (!active) reset();
+    if (!desktop.matches) x = y = pointerX = pointerY = 0;
     boundsDirty = true;
     schedule();
   }

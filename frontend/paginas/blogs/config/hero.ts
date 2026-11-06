@@ -21,7 +21,7 @@ export const blogHeroLayers = [
 export const blogHeroMotion = {
   reducedMotionQuery: "(prefers-reduced-motion: reduce)",
   desktopQuery: "(width > 760px) and (hover: hover) and (pointer: fine)",
-  mobileMultiplier: 0.24,
+  mobileMultiplier: 0.5,
   // Depth multiplies a bounded travel distance, rather than full-page scroll.
   travelFraction: 0.18,
   maxTravel: 140,

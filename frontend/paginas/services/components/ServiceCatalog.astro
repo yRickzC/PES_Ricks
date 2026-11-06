@@ -1,0 +1,95 @@
+---
+import { contentTaxonomy } from "../../../../backend/content/taxonomy";
+import english from "../../../../public/i18n/services.en.json";
+import portuguese from "../../../../public/i18n/services.pt-br.json";
+import SiteImage from "../../../components/site/SiteImage.astro";
+import TaxonomyIcon from "../../../components/site/TaxonomyIcon.astro";
+import type { Locale } from "../../../config/i18n";
+import { serviceSkyImage } from "../config/hero";
+import "../styles/service-catalog.css";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const messages: Record<Locale, typeof english> = { en: english, "pt-br": portuguese };
+const copy = messages[locale];
+const definitions = contentTaxonomy.service.categories;
+const categoryIds = ["websites", "internal-systems", "mobile-apps", "automation"] as const satisfies readonly (keyof typeof definitions)[];
+
+// Decorative wireframes illustrate each format without presenting client work.
+const previews: Record<(typeof categoryIds)[number], readonly string[]> = {
+  websites: [
+    "M48 22h204v88H48z M48 37h204 M60 30h16 M68 55h65m-65 10h49m-49 16h28 M160 50h70v43h-70z M164 88l19-18 13 10 15-20 16 18",
+    "M48 22h204v88H48z M48 37h204 M60 30h16 M99 56h102m-90 12h78m-65 8h52 M131 88h38v10h-38z",
+    "M48 22h204v88H48z M48 37h204 M60 30h16 M68 52h44v30H68z M128 52h44v30h-44z M188 52h44v30h-44z M68 92h26m34 0h26m34 0h26",
+  ],
+  "internal-systems": [
+    "M48 22h204v88H48z M48 37h204 M60 30h16 M91 37v73 M60 52h19m-19 12h19m-19 12h19 M109 52h33v16h-33z M153 52h33v16h-33z M197 52h33v16h-33z M109 98h121m-118-8 24-10 24 7 26-8 34-6",
+    "M48 22h204v88H48z M48 37h204 M60 30h16 M91 37v73 M60 52h19m-19 12h19m-19 12h19 M107 53h123m-123 15h123m-123 15h123m-123 15h123 M209 53v45",
+  ],
+  "mobile-apps": [
+    "M83 20h52v92H83z M165 20h52v92h-52z M102 29h14m68 0h14 M92 40h34v23H92z M174 40h34v15h-34z M92 72h34m-34 10h23m59-16h34m-34 10h26 M92 93h34v8H92z M174 93h34v8h-34z",
+    "M83 20h52v92H83z M165 20h52v92h-52z M102 29h14m68 0h14 M92 44l3 3 5-6m4 3h21 M92 60l3 3 5-6m4 3h21 M92 76l3 3 5-6m4 3h21 M174 40h34v38h-34z M174 89h25m-25 9h17",
+  ],
+  automation: [
+    "M48 53h48v26H48z M126 53h48v26h-48z M204 29h48v26h-48z M204 77h48v26h-48z M96 66h30m48 0h15V42h15m-15 24v24h15 M61 66h22m56 0h22m56-24h22m-22 48h22",
+    "M51 30h50v25H51z M51 77h50v25H51z M199 30h50v25h-50z M199 77h50v25h-50z M131 54h38v24h-38z M101 42h16v24h14m-30 24h16V66m52 0h14V42h16m-16 24v24h16",
+  ],
+};
+---
+
+<section class="service-catalog" id="services" aria-labelledby="service-catalog-title">
+  <div class="service-catalog-selector">
+    <fieldset>
+      <legend><h2 id="service-catalog-title">{copy.chooseType}</h2></legend>
+      <div class="service-catalog-options">
+        {categoryIds.map((id) => (
+          <div class="service-catalog-option">
+            <input
+              type="radio"
+              name="service-type"
+              id={`service-type-${id}`}
+              value={id}
+              checked={id === "websites"}
+              aria-controls={`service-panel-${id}`}
+            />
+            <label for={`service-type-${id}`}>
+              <TaxonomyIcon icon={definitions[id].icon} size={18} />
+              {copy[id].label}
+            </label>
+          </div>
+        ))}
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="service-catalog-scene">
+    <div class="service-catalog-sky" aria-hidden="true">
+      <SiteImage src={serviceSkyImage} alt="" width={1672} widths={[960, 1672]} sizes="100vw" />
+    </div>
+    {categoryIds.map((id) => (
+      <section
+        class="service-catalog-panel"
+        id={`service-panel-${id}`}
+        data-service-panel={id}
+        aria-labelledby={`service-panel-title-${id}`}
+      >
+        <h3 id={`service-panel-title-${id}`}>{copy[id].label}</h3>
+        <ul class="service-catalog-cards">
+          {copy[id].offers.map(({ title, description }, index) => (
+            <li class="service-catalog-card">
+              <div class="service-catalog-preview" aria-hidden="true">
+                <svg viewBox="0 0 300 132" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                  <path d={previews[id][index]} />
+                </svg>
+              </div>
+              <div class="service-catalog-card-copy">
+                <h4>{title}</h4>
+                <p>{description}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</section>

@@ -8,7 +8,7 @@ export const projectHeroLayers = [
 export const projectHeroMotion = {
   reducedMotionQuery: "(prefers-reduced-motion: reduce)",
   desktopQuery: "(min-width: 761px) and (hover: hover) and (pointer: fine)",
-  mobileMultiplier: 0.24,
+  mobileMultiplier: 0.65,
   maxTravel: 100,
   pointerTravel: 40,
   damping: 10,

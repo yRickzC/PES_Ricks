@@ -5,14 +5,12 @@ import type { Locale } from "../config/i18n";
 export { documentLanguages, locales, type Locale } from "../config/i18n";
 
 export interface Messages {
-  siteTitle: string;
   description: string;
   homeLabel: string;
   languageSelector: string;
   englishOption: string;
   portugueseOption: string;
   labName: string;
-  heroEyebrow: string;
   headingLine1: string;
   headingLine2: string;
   heroDescription: string;
@@ -25,12 +23,12 @@ export interface Messages {
   exploreLab: string;
   labStatus: string;
   homeTitle: string;
+  homeWorkInProgress: string;
   navigationLabel: string;
   blogsLabel: string;
   projectsLabel: string;
   servicesLabel: string;
   blogsDescription: string;
-  blogHeroLabel: string;
   blogHeroTitle: string;
   blogHeroSubtitle: string;
   blogExploreNotes: string;
@@ -40,7 +38,6 @@ export interface Messages {
   projectCategoriesLabel: string;
   servicesDescription: string;
   servicesUnderConstruction: string;
-  serviceHeroLabel: string;
   serviceHeroTitleLine1: string;
   serviceHeroTitleLine2: string;
   serviceHeroSubtitle: string;

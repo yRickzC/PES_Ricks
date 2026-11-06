@@ -21,7 +21,7 @@ Os panoramas têm canvas transparente de 2172 × 724. Os fundos repetem horizont
 
 Margem horizontal de 64px por lado cobre os deslocamentos: mouse de até ±20px antes da profundidade e névoa independente de ±24px. Scroll limitado a 100px antes da profundidade; deslocamentos verticais mantêm as bases além da borda inferior. A névoa usa opacidade 0.16 e animação de 110s por percurso. Não há glow nem filtros nos pinheiros.
 
-Mobile/toque usa 24% do scroll, sem mouse. `prefers-reduced-motion` desativa parallax e névoa; a cena permanece visível sem JavaScript. Logo e navegação permanecem estáveis. A animação pausa fora da viewport e com a aba oculta.
+No mobile ou com ponteiro de toque, a rolagem desloca as camadas na vertical com até 65% do percurso e progride ao longo da altura da hero. `prefers-reduced-motion` desativa parallax e névoa. A cena permanece visível sem JavaScript. Logo e navegação permanecem estáveis. A animação pausa fora da viewport e com a aba oculta.
 
 ## Validação registrada
 
@@ -49,7 +49,7 @@ O Hero mantém a floresta, a logo e a órbita de categorias originais. A Crystal
 
 `projects/config/biomes.ts` associa `crystal-cave` ao ID estável `web`. O cadastro define os cinco PNGs originais, ordem, profundidades, posições/escalas desktop e mobile, opacidade e animação da névoa. `ProjectBiome.astro` renderiza a cena atrás do conteúdo da categoria. `project-biome.css` delimita a caverna à seção, em largura completa, com proporções preservadas e transição para o fundo escuro.
 
-Os PNGs são solicitados quando Web é selecionada ou quando sua seção se aproxima da viewport na visualização de todas as categorias. A névoa usa transform durante 125s, amplitude de 22px e oscilação de 4px, com opacidade 0.18. O parallax utiliza o controlador compartilhado, que distribui um único listener de scroll às cenas visíveis. A caverna tem seu próprio enquadramento e limites de deslocamento; o Hero mantém os parâmetros originais. As animações pausam fora da viewport e respeitam prefers-reduced-motion.
+Os PNGs são solicitados quando Web é selecionada ou quando sua seção se aproxima da viewport na visualização de todas as categorias. A névoa usa transform durante 125s, amplitude de 22px e oscilação de 4px, com opacidade 0.18. O parallax utiliza o controlador compartilhado, que distribui um único listener de scroll às cenas visíveis. No mobile, o movimento começa quando a seção cruza o centro da tela e usa até 65% do percurso do bioma. Cada cena mantém seu próprio enquadramento e limite de deslocamento. As animações pausam fora da viewport e respeitam prefers-reduced-motion.
 
 As consultas ao catálogo e os hashes de categorias permanecem os mesmos. A seleção de Web mostra somente sua seção e navega até ela. A visão de todas as categorias inclui a caverna somente dentro da seção Web. As outras seções mantêm o fundo original.
 

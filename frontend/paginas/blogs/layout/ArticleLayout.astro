@@ -13,7 +13,7 @@ const copy = getMessages(locale);
 const date = articleDate(metadata.date, locale);
 ---
 
-<Main locale={locale} pageId="blogs" title={`${metadata.title} — Rickz`} description={metadata.description} languagePaths={languagePaths}>
+<Main locale={locale} pageId="blogs" title={metadata.title} description={metadata.description} languagePaths={languagePaths}>
   <article class="blog-article" lang={documentLanguages[metadata.locale ?? locale]} aria-labelledby="article-title">
     <header class="blog-article-header">
       {date && <time class="blog-date" datetime={metadata.date}>{date}</time>}

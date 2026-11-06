@@ -28,7 +28,7 @@ const projectCategories = projectBiomes.map((biome) => categories.find(({ id }) 
 }));
 ---
 
-<Main locale={locale} pageId="projects" title={`${copy.projectsLabel} — Rickz`} description={copy.projectsDescription}>
+<Main locale={locale} pageId="projects" description={copy.projectsDescription}>
   <project-explore>
     <ProjectHero copy={copy} locale={locale} />
     <section id="projects-all" class="project-index" aria-label={copy.heroExploreProjects}>

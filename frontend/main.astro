@@ -1,11 +1,12 @@
 ---
 import "./styles/global.css";
 import "./styles/site.css";
+import PageTransition from "./components/site/PageTransition.astro";
 import SiteHeader from "./components/site/SiteHeader.astro";
 import SiteFooter from "./components/site/SiteFooter.astro";
 import SiteSearch from "./components/site/SiteSearch.astro";
 import { defaultLocale, documentLanguages, locales, type Locale } from "./config/i18n";
-import type { PageId } from "./config/navigation";
+import { sitePages, type PageId } from "./config/navigation";
 import { getMessages } from "./utils/translations";
 import { withBasePath } from "./utils/base-path";
 
@@ -25,6 +26,8 @@ const {
   languagePaths,
 } = Astro.props;
 const copy = getMessages(locale);
+const page = sitePages.find(({ id }) => id === pageId)!;
+const pageTitle = title ?? copy[page.titleKey];
 ---
 
 <!doctype html>
@@ -35,9 +38,10 @@ const copy = getMessages(locale);
     <meta name="description" content={description ?? copy.description} />
     <meta name="theme-color" content="#07070a" />
     <link rel="icon" type="image/x-icon" href={withBasePath("/favicon.ico", import.meta.env.BASE_URL)} />
-    <title>{title ?? copy.siteTitle}</title>
+    <title>{`${pageTitle} - Rickz`}</title>
   </head>
   <body>
+    <PageTransition />
     <a class="skip-link" href="#main-content">{copy.skipToContent}</a>
     <div class="site-frame lab-atmosphere">
       <div class="site-grid" aria-hidden="true"></div>

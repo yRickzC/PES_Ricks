@@ -24,7 +24,7 @@ export function mountProjectBiome(scene: HTMLElement): () => void {
       scene.dataset.ready = "true";
       stop = mountHeroParallax(section!, {
         layers: biome!.layers,
-        motion: { ...projectHeroMotion, maxTravel: 64, pointerTravel: 24, mobileMultiplier: 0.18, ...biome!.motion },
+        motion: { ...projectHeroMotion, maxTravel: 64, pointerTravel: 24, ...biome!.motion },
         layerAttribute: "data-project-biome-layer",
       });
     } catch { /* Keep the section readable on its original dark background. */ }

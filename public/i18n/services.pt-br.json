@@ -1,0 +1,32 @@
+{
+  "chooseType": "Escolha o tipo de serviço",
+  "websites": {
+    "label": "Sites",
+    "offers": [
+      { "title": "Site institucional", "description": "Apresente sua empresa, mostre o que ela faz e facilite o contato com clientes." },
+      { "title": "Landing page", "description": "Crie uma página de campanha ou lançamento focada em uma ação, como pedir um orçamento ou entrar na lista de espera." },
+      { "title": "Loja virtual", "description": "Organize seus produtos e facilite a compra, da navegação pelo catálogo ao pagamento." }
+    ]
+  },
+  "internal-systems": {
+    "label": "ERP e sistemas",
+    "offers": [
+      { "title": "ERP sob medida", "description": "Reúna pedidos, estoque e rotinas operacionais em um sistema adaptado ao fluxo da sua empresa." },
+      { "title": "Portal interno", "description": "Dê à equipe um espaço para gerenciar solicitações, aprovações e relatórios com controle de acesso." }
+    ]
+  },
+  "mobile-apps": {
+    "label": "Apps mobile",
+    "offers": [
+      { "title": "App para clientes", "description": "Permita que clientes façam reservas, pedidos ou gerenciem a própria conta pelo celular." },
+      { "title": "App para equipes de campo", "description": "Registre visitas, preencha checklists e atualize ordens de serviço durante o trabalho em campo." }
+    ]
+  },
+  "automation": {
+    "label": "Automação",
+    "offers": [
+      { "title": "Automação de rotinas", "description": "Transforme tarefas repetitivas em fluxos que processam solicitações, enviam alertas e atualizam registros." },
+      { "title": "Integração entre sistemas", "description": "Conecte ferramentas por APIs para que os dados circulem sem precisar ser digitados novamente." }
+    ]
+  }
+}

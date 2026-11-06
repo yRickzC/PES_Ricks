@@ -1,8 +1,8 @@
 {
-  "selectCategoryTitle": "Selecione uma categoria…",
-  "selectCategoryHint": "Use os ícones acima para explorar os projetos.",
-  "emptyTitle": "Nenhum resultado encontrado",
-  "emptyHint": "Ainda não há projetos nesta categoria. Tente outra categoria.",
+  "selectCategoryTitle": "Por onde quer começar?",
+  "selectCategoryHint": "Escolha uma categoria nos ícones acima para ver os projetos.",
+  "emptyTitle": "Ainda não há projetos por aqui",
+  "emptyHint": "Escolha outra categoria para continuar.",
   "dogAlt": "Cachorro procurando projetos",
   "clear": "Limpar filtros",
   "tags": "Tags do projeto"

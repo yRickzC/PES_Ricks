@@ -16,11 +16,13 @@ interface ServiceHeroLayer extends HeroParallaxLayer {
   sizes: string;
 }
 
+export const serviceSkyImage = "/images/Hero_Main_Background.webp";
+
 // Keep the source proportions. Overscan and staggered bases protect all three
 // silhouettes from gaps while the shared controller translates their wrappers.
 export const serviceHeroLayers = [
   {
-    id: "sky", src: "/images/Hero_Main_Background.webp", depth: 0.05, zIndex: 0, opacity: 0.55, anchorY: "-50%",
+    id: "sky", src: serviceSkyImage, depth: 0.05, zIndex: 0, opacity: 0.55, anchorY: "-50%",
     desktop: { width: "calc(100% + 64px)", y: "50%", scale: 1 },
     mobile: { width: "calc(100% + 64px)", y: "50%", scale: 1 },
     sizes: "calc(100vw + 64px)",
@@ -60,7 +62,7 @@ export const serviceHeroLayers = [
 export const serviceHeroMotion = {
   reducedMotionQuery: "(prefers-reduced-motion: reduce)",
   desktopQuery: "(min-width: 761px) and (hover: hover) and (pointer: fine)",
-  mobileMultiplier: 0.5,
+  mobileMultiplier: 0.65,
   maxTravel: 80,
   pointerTravel: 24,
   damping: 10,
