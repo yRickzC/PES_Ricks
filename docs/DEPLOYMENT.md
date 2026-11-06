@@ -10,6 +10,12 @@ O site é compilado como estático pelo Astro (**output: static**) e publicado p
 
 O workflow usa a action oficial do Astro com o CLI chamado diretamente pelo Node e a action de deploy do GitHub Pages. Ele não versiona **dist/**; dependências e saídas locais estão no **.gitignore**.
 
+## Variáveis públicas
+
+O **.env** local é ignorado pelo Git e não existe no runner do GitHub. Antes de compilar, o workflow copia **.env.example** para **.env**, disponibilizando `PUBLIC_WHATSAPP_NUMBER`, `PUBLIC_YOUTUBE_URL` e `PUBLIC_INSTAGRAM_URL` ao Astro. O Astro incorpora esses valores no site estático; o arquivo **.env** não faz parte do artefato enviado ao Pages. Como os valores `PUBLIC_*` ficam visíveis no site publicado, não use esse arquivo para credenciais privadas.
+
+Ao alterar os links sociais, atualize **.env.example**; o workflow usa esse arquivo tanto para a publicação quanto como referência da configuração pública.
+
 ## Ativação no repositório
 
 Na primeira configuração, abra **Settings → Pages** e selecione **GitHub Actions** em **Build and deployment → Source**. Depois, um push em **main** ou **deploy/github-pages** inicia o deploy; acompanhe o resultado na aba **Actions**.

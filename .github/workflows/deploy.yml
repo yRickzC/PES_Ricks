@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
+      - name: Prepare public build environment
+        run: cp .env.example .env
       - name: Install, build, and upload
         uses: withastro/action@v6
         with:
