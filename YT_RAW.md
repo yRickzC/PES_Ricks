@@ -83,3 +83,13 @@
 2026-11-06 — “Como funciona” virou um roadmap interativo com cinco etapas. As ilustrações em SVG se transformam ao navegar entre Problema, Contato, Planejamento, Produção e Entrega.
 
 2026-11-06 — O formulário de projetos customizados passou a mostrar nome, descrição com referências e prazo em três etapas, com envio do resumo ao WhatsApp.
+
+2026-11-06 — O deploy do Pages expirou após dez minutos em `deployment_queued`/`updating_pages`; repetir apenas o job falho retornou `Deployment cancelled.`. O deploy de uma nova revisão passou, mas o log mostrou que `actions/deploy-pages@v5` limita timeouts maiores a dez minutos; removido o override ineficaz e registrado o incidente.
+
+2026-11-06 — Deploy após a correção publicado no commit `b7365fc`; run [42231538844](https://github.com/yRickzC/PES_Ricks/actions/runs/42231538844) concluiu build e deploy com sucesso.
+
+2026-11-06 — A página inicial ganhou animações de entrada ao rolar. As camadas do hero, os textos, os botões, o cachorro, a mensagem e o rodapé surgem uma vez, com suporte a movimento reduzido.
+
+2026-11-06 — Os desenhos do roadmap passaram a mostrar cenas com cliente e desenvolvedor, mantendo as transformações em SVG. A manutenção pós-entrega passou para a quinta etapa.
+
+2026-11-06 — Corrigido o deploy das redes sociais: como `.env` é ignorado, o workflow agora cria o arquivo a partir de `.env.example` antes do build Astro. O commit `78d334d` foi enviado e o run 42238725921 concluiu build e deploy com sucesso.

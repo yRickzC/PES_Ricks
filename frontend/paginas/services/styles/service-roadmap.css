@@ -155,7 +155,7 @@
 }
 
 .service-roadmap-art polyline { vector-effect: non-scaling-stroke; }
-.service-roadmap-art polyline:not(:first-child) { stroke: var(--color-brand-soft); }
+.service-roadmap-art polyline:nth-child(n + 11) { stroke: var(--color-brand-soft); }
 
 @media (max-width: 760px) {
   .service-roadmap[data-ready] .service-roadmap-stage {

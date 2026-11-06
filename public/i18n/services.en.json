@@ -7,12 +7,10 @@
       { "title": "First contact", "description": "Tell me your idea so we can discuss what the project needs." },
       { "title": "Planning", "description": "We agree on scope, timeline and budget before work begins." },
       { "title": "Development", "description": "I build the solution in stages and share progress for your review." },
-      { "title": "Delivery", "description": "We check the solution together and I walk you through how to use it." }
+      { "title": "Delivery", "description": "We check the solution together and I walk you through how to use it. After delivery, maintenance can include updates, fixes and monitoring, depending on the agreed scope." }
     ],
     "previousStep": "Previous step",
-    "nextStep": "Next step",
-    "supportTitle": "Support and maintenance",
-    "supportDescription": "After delivery, support can include updates, fixes and monitoring, depending on what we agree for the project."
+    "nextStep": "Next step"
   },
   "brief": {
     "sectionTitle": "Custom projects",

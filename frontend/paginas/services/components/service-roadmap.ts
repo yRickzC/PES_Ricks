@@ -1,9 +1,37 @@
 import { roadmapArt } from "../config/roadmap-art";
 
-const drawings = roadmapArt.map((strokes) =>
+const outlines = roadmapArt.map((strokes) =>
   strokes.map((points) => points.split(/[ ,]+/).map(Number)),
 );
+const coordinateCounts = outlines[0].map((_, index) =>
+  Math.max(...outlines.map((strokes) => strokes[index].length)),
+);
+const drawings = outlines.map((strokes) =>
+  strokes.map((stroke, index) => subdivideStroke(stroke, coordinateCounts[index])),
+);
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+
+// Split the longest segment first so every stroke can morph without changing its resting shape.
+function subdivideStroke(points: number[], coordinateCount: number) {
+  const stroke = [...points];
+  while (stroke.length < coordinateCount) {
+    let splitAt = 2;
+    let longest = 0;
+    for (let index = 2; index < stroke.length; index += 2) {
+      const dx = stroke[index] - stroke[index - 2];
+      const dy = stroke[index + 1] - stroke[index - 1];
+      const lengthSquared = dx * dx + dy * dy;
+      if (lengthSquared > longest) {
+        longest = lengthSquared;
+        splitAt = index;
+      }
+    }
+    const x = stroke[splitAt - 2];
+    const y = stroke[splitAt - 1];
+    stroke.splice(splitAt, 0, (x + (stroke[splitAt] ?? x)) / 2, (y + (stroke[splitAt + 1] ?? y)) / 2);
+  }
+  return stroke;
+}
 
 class ServiceRoadmap extends HTMLElement {
   #index = 0;

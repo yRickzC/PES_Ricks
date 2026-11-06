@@ -10,6 +10,7 @@ import SiteImage from "../../../components/site/SiteImage.astro";
       class:list={["hero-layer", `hero-layer--${layer.id}`]}
       style={heroLayerStyle(layer)}
       data-hero-layer={layer.id}
+      data-home-reveal
     >
       <SiteImage
         src={layer.src}
@@ -27,7 +28,7 @@ import SiteImage from "../../../components/site/SiteImage.astro";
   ))}
   <div class="hero-fog" data-hero-layer="fog" style={`z-index:${heroFog.zIndex}`}>
     {heroFog.layers.map((fog) => (
-      <div class="hero-fog-position" style={`left:${fog.x};top:${fog.y};width:${fog.width};height:${fog.height}`}>
+      <div class="hero-fog-position" style={`left:${fog.x};top:${fog.y};width:${fog.width};height:${fog.height}`} data-home-reveal>
         <div
           class="hero-fog-cloud"
           style={`--fog-opacity:${fog.opacity};--fog-duration:${fog.duration};--fog-delay:${fog.delay};--fog-travel:${fog.travel};--fog-lift:${fog.lift}`}

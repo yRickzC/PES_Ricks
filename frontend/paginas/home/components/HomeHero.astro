@@ -19,17 +19,17 @@ const { copy, locale, id = "home-hero" } = Astro.props;
   <div class="hero-vignette" aria-hidden="true"></div>
   <div class="hero-content">
     <div class="hero-copy">
-      <h1 id={`${id}-title`} class="hero-title">
+      <h1 id={`${id}-title`} class="hero-title" data-home-reveal>
         <span>{copy.heroTitleLine1}</span>{" "}
         <span class="hero-title-accent">{copy.heroTitleLine2}</span>
       </h1>
-      <p class="hero-subtitle">{copy.heroSubtitle}</p>
-      <p class="hero-description">{copy.heroSupportingText}</p>
+      <p class="hero-subtitle" data-home-reveal>{copy.heroSubtitle}</p>
+      <p class="hero-description" data-home-reveal>{copy.heroSupportingText}</p>
       <div class="hero-actions">
-        <a class="hero-action hero-action--primary" href={getRelativeLocaleUrl(locale, "projects")}>
+        <a class="hero-action hero-action--primary" href={getRelativeLocaleUrl(locale, "projects")} data-home-reveal>
           {copy.heroExploreProjects}<span aria-hidden="true">↗</span>
         </a>
-        <a class="hero-action hero-action--secondary" href={getRelativeLocaleUrl(locale, "blogs")}>
+        <a class="hero-action hero-action--secondary" href={getRelativeLocaleUrl(locale, "blogs")} data-home-reveal>
           {copy.heroViewNotes}<span aria-hidden="true">↗</span>
         </a>
       </div>

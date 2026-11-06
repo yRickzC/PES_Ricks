@@ -7,12 +7,10 @@
       { "title": "Contato", "description": "Conte sua ideia para conversarmos sobre o que o projeto precisa." },
       { "title": "Planejamento", "description": "Combinamos o escopo, o prazo e o orçamento antes de começar." },
       { "title": "Produção", "description": "Construo a solução em etapas e compartilho o progresso para você revisar." },
-      { "title": "Entrega", "description": "Conferimos a solução juntos e eu explico como colocá-la em uso." }
+      { "title": "Entrega", "description": "Conferimos a solução juntos e eu explico como colocá-la em uso. Após a entrega, a manutenção pode incluir atualizações, correções e monitoramento, conforme o escopo combinado." }
     ],
     "previousStep": "Etapa anterior",
-    "nextStep": "Próxima etapa",
-    "supportTitle": "Suporte e manutenção",
-    "supportDescription": "Após a entrega, o suporte pode incluir atualizações, correções e monitoramento, conforme combinado para o projeto."
+    "nextStep": "Próxima etapa"
   },
   "brief": {
     "sectionTitle": "Projetos customizados",

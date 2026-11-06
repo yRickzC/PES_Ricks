@@ -12,6 +12,7 @@ const copy = getMessages(locale);
 <HomeLayout locale={locale} copy={copy}>
   <HomeHero copy={copy} locale={locale} />
   <ContentEmptyState
+    data-home-reveal-group
     headingLevel="h2"
     title={copy.homeWorkInProgress}
     dogSrc="/images/Dog_Worker.webp"

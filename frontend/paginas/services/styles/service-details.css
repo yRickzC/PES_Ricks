@@ -32,19 +32,6 @@
   font-weight: 600;
 }
 
-.service-process-support {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 8px 24px;
-  align-items: baseline;
-  margin-top: clamp(24px, 4vw, 40px);
-  padding-top: 24px;
-  border-top: 1px solid rgb(255 255 255 / 12%);
-}
-
-.service-process-support h3 { margin: 0; }
-.service-process-support p { max-width: 57ch; }
-
 .service-brief {
   scroll-margin-top: 96px;
   border-top: 1px solid rgb(255 255 255 / 9%);
@@ -213,6 +200,5 @@
 .service-brief-draft { margin-top: 24px; }
 
 @media (max-width: 760px) {
-  .service-process-support,
   .service-brief-layout { grid-template-columns: minmax(0, 1fr); }
 }
