@@ -14,6 +14,10 @@ O workflow usa a action oficial do Astro com o CLI chamado diretamente pelo Node
 
 Na primeira configuração, abra **Settings → Pages** e selecione **GitHub Actions** em **Build and deployment → Source**. Depois, um push em **main** ou **deploy/github-pages** inicia o deploy; acompanhe o resultado na aba **Actions**.
 
+## Diagnóstico de timeout
+
+Se o build passar e o deploy ficar em `deployment_queued` ou `updating_pages` até expirar, confira os logs do job **Deploy**. No `actions/deploy-pages@v5`, valores de timeout acima de **600.000 ms (10 minutos)** são limitados a esse máximo pelo runtime observado; aumentar o valor no workflow não estende a espera.
+
 ## Caminho base
 
 **astro.config.ts** mantém o modo **static** e calcula o site e caminho base para o destino:
