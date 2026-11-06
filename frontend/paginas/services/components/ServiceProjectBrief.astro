@@ -1,0 +1,119 @@
+---
+import type { Locale } from "../../../config/i18n";
+import { socialLinks } from "../../../config/social";
+import { getServiceCopy } from "../config/catalog";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const { brief } = getServiceCopy(locale);
+const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
+---
+
+<section class="service-brief" id="quote" aria-labelledby="service-brief-title">
+  <div class="service-detail-inner service-brief-layout">
+    <div class="service-brief-intro">
+      <h2 id="service-brief-title">{brief.sectionTitle}</h2>
+      <p>{brief.intro}</p>
+      <noscript>
+        <p>{brief.requiresJavaScript}</p>
+        {whatsappHref && <a class="service-brief-action" href={whatsappHref}>{brief.openWhatsApp}</a>}
+      </noscript>
+    </div>
+    <form
+      class="service-brief-form"
+      method="post"
+      aria-labelledby="service-brief-form-title"
+      data-project-brief
+      data-whatsapp-url={whatsappHref}
+      data-title={brief.sectionTitle}
+      data-required-text={brief.requiredText}
+      hidden
+    >
+      <h3 id="service-brief-form-title">{brief.title}</h3>
+      <div class="service-brief-fields">
+        <div>
+          <label for="service-brief-name">{brief.name}</label>
+          <input id="service-brief-name" type="text" name="name" autocomplete="name" maxlength="100" placeholder={brief.namePlaceholder} data-brief-label={brief.name} required />
+        </div>
+        <div>
+          <label for="service-brief-idea">{brief.idea}</label>
+          <textarea id="service-brief-idea" name="idea" rows="5" maxlength="1000" placeholder={brief.ideaPlaceholder} data-brief-label={brief.idea} required></textarea>
+        </div>
+        <div>
+          <label for="service-brief-timing">
+            {brief.timing} <span class="service-brief-optional">({brief.optional})</span>
+          </label>
+          <select id="service-brief-timing" name="timing" data-brief-label={brief.timing}>
+            <option value="">{brief.timingPlaceholder}</option>
+            {brief.timingOptions.map((option) => <option value={option}>{option}</option>)}
+          </select>
+        </div>
+        <div>
+          <label for="service-brief-references">
+            {brief.references} <span class="service-brief-optional">({brief.optional})</span>
+          </label>
+          <textarea id="service-brief-references" name="references" rows="2" maxlength="350" placeholder={brief.referencesPlaceholder} data-brief-label={brief.references}></textarea>
+        </div>
+      </div>
+      <button class="service-brief-action" type="submit">{whatsappHref ? brief.continue : brief.prepare}</button>
+      <p class="service-brief-note">{whatsappHref ? brief.review : brief.copyHint}</p>
+      {!whatsappHref && (
+        <div class="service-brief-draft" data-brief-draft hidden>
+          <label for="service-brief-draft">{brief.draft}</label>
+          <textarea id="service-brief-draft" rows="6" readonly></textarea>
+        </div>
+      )}
+    </form>
+  </div>
+</section>
+
+<script>
+  function mountProjectBrief() {
+    const form = document.querySelector<HTMLFormElement>("form[data-project-brief][hidden]");
+    if (!form) return;
+
+    const fields = form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>("[data-brief-label]");
+    for (const field of fields) {
+      field.addEventListener("input", () => field.setCustomValidity(""));
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const { whatsappUrl, title, requiredText } = form.dataset;
+      const parts = [title];
+
+      for (const field of fields) {
+        const value = field.value.trim();
+        if (field.required && !value) {
+          field.setCustomValidity(requiredText ?? "");
+          field.reportValidity();
+          return;
+        }
+
+        if (value) parts.push(`${field.dataset.briefLabel}: ${value}`);
+      }
+
+      const message = parts.join("\n\n");
+      if (whatsappUrl) {
+        const url = new URL(whatsappUrl);
+        url.searchParams.set("text", message);
+        window.location.assign(url.href);
+        return;
+      }
+
+      const draft = form.querySelector<HTMLElement>("[data-brief-draft]");
+      const draftText = draft?.querySelector("textarea");
+      if (draft && draftText) {
+        draftText.value = message;
+        draft.hidden = false;
+        draftText.focus();
+        draftText.select();
+      }
+    });
+
+    form.hidden = false;
+  }
+
+  mountProjectBrief();
+  document.addEventListener("astro:page-load", mountProjectBrief);
+</script>

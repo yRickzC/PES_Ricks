@@ -1,0 +1,29 @@
+---
+import type { Locale } from "../../../config/i18n";
+import { getServiceCopy } from "../config/catalog";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const { process } = getServiceCopy(locale);
+---
+
+<section class="service-process" aria-labelledby="service-process-title">
+  <div class="service-detail-inner">
+    <h2 id="service-process-title">{process.title}</h2>
+    <ol class="service-process-steps" role="list">
+      {process.steps.map(({ title, description }, index) => (
+        <li>
+          <span class="service-process-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+          <div>
+            <h3>{title}</h3>
+            <p>{description}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <div class="service-process-support">
+      <h3>{process.supportTitle}</h3>
+      <p>{process.supportDescription}</p>
+    </div>
+  </div>
+</section>

@@ -67,3 +67,11 @@
 2026-11-06 — Perfil do YouTube `@yRickz` ligado ao menu social pela variável `PUBLIC_YOUTUBE_URL` nos arquivos de ambiente.
 
 2026-11-06 — Perfil do Instagram `@yrick_c` ligado ao menu social pela variável `PUBLIC_INSTAGRAM_URL` nos arquivos de ambiente.
+
+2026-11-06 — Serviços ganhou duas seções abaixo do catálogo. A primeira explica o processo e o suporte. A segunda prepara o orçamento para WhatsApp ou gera uma mensagem para cópia.
+
+2026-11-06 — “Como funciona” passou para a transição entre a hero e o catálogo. Seletor e cards compartilham o fundo espacial, e o orçamento agora fica em “Projetos customizados”.
+
+2026-11-06 — “Projetos customizados” ganhou um briefing aberto com nome, contato, ideia, prazo e referências. O botão abre o WhatsApp com os dados preenchidos.
+
+2026-11-06 — Removido o campo de contato do briefing, já que o pedido segue pelo WhatsApp. O prazo passou a ser escolhido em um menu opcional.

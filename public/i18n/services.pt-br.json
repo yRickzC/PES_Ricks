@@ -1,5 +1,39 @@
 {
   "chooseType": "Escolha o tipo de serviço",
+  "process": {
+    "title": "Como funciona",
+    "steps": [
+      { "title": "Briefing", "description": "Conversamos sobre o problema, o público e o que você quer alcançar." },
+      { "title": "Proposta", "description": "Definimos o escopo, os prazos e o orçamento do projeto." },
+      { "title": "Desenvolvimento", "description": "Construo a solução em etapas e compartilho o progresso para revisão." },
+      { "title": "Entrega", "description": "Valido a solução com você e explico como colocar tudo em uso." }
+    ],
+    "supportTitle": "Suporte e manutenção",
+    "supportDescription": "Após a entrega, o suporte pode incluir atualizações, correções e monitoramento, conforme combinado para o projeto."
+  },
+  "brief": {
+    "sectionTitle": "Projetos customizados",
+    "intro": "Um projeto pode começar com um problema, um esboço ou uma ideia ainda tomando forma. Conte o que você tem em mente e vamos conversar sobre o que dá para construir.",
+    "title": "Conte sua ideia",
+    "optional": "opcional",
+    "name": "Nome",
+    "namePlaceholder": "Como posso chamar você?",
+    "idea": "Ideia do projeto",
+    "ideaPlaceholder": "Que problema você quer resolver e quem usaria a solução?",
+    "timing": "Prazo ideal",
+    "timingPlaceholder": "Selecione um prazo",
+    "timingOptions": ["Até 1 mês", "Entre 1 e 3 meses", "Mais de 3 meses", "Prazo flexível"],
+    "references": "Referências",
+    "referencesPlaceholder": "Links, protótipos ou exemplos que ajudem a explicar sua ideia",
+    "continue": "Solicitar pelo WhatsApp",
+    "review": "Você pode revisar a mensagem no WhatsApp antes de enviar.",
+    "openWhatsApp": "Abrir WhatsApp",
+    "prepare": "Gerar mensagem",
+    "copyHint": "Copie a mensagem para compartilhar sua ideia.",
+    "draft": "Mensagem pronta para copiar",
+    "requiresJavaScript": "Ative o JavaScript para preencher o formulário.",
+    "requiredText": "Preencha este campo."
+  },
   "websites": {
     "label": "Sites",
     "offers": [

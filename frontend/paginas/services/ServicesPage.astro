@@ -4,6 +4,9 @@ import { defaultLocale, locales } from "../../config/i18n";
 import { getMessages } from "../../utils/translations";
 import ServiceHero from "./components/ServiceHero.astro";
 import ServiceCatalog from "./components/ServiceCatalog.astro";
+import ServiceProcess from "./components/ServiceProcess.astro";
+import ServiceProjectBrief from "./components/ServiceProjectBrief.astro";
+import "./styles/service-details.css";
 
 const locale = locales.find((locale) => locale === Astro.currentLocale) ?? defaultLocale;
 const copy = getMessages(locale);
@@ -11,5 +14,7 @@ const copy = getMessages(locale);
 
 <Main locale={locale} pageId="services" description={copy.servicesDescription}>
   <ServiceHero locale={locale} copy={copy} />
+  <ServiceProcess locale={locale} />
   <ServiceCatalog locale={locale} />
+  <ServiceProjectBrief locale={locale} />
 </Main>

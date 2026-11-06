@@ -1,5 +1,39 @@
 {
   "chooseType": "Choose a service type",
+  "process": {
+    "title": "How it works",
+    "steps": [
+      { "title": "Briefing", "description": "We discuss the problem, your audience and what you want to achieve." },
+      { "title": "Proposal", "description": "We agree on the project scope, timeline and budget." },
+      { "title": "Development", "description": "I build the solution in stages and share progress for review." },
+      { "title": "Delivery", "description": "We validate the solution together and I walk you through how to use it." }
+    ],
+    "supportTitle": "Support and maintenance",
+    "supportDescription": "After delivery, support can include updates, fixes and monitoring, depending on what we agree for the project."
+  },
+  "brief": {
+    "sectionTitle": "Custom projects",
+    "intro": "A project can start with a problem, a sketch or an idea still taking shape. Tell me what you have in mind and we can talk about what to build.",
+    "title": "Share your idea",
+    "optional": "optional",
+    "name": "Name",
+    "namePlaceholder": "What should I call you?",
+    "idea": "Project idea",
+    "ideaPlaceholder": "What problem would you like to solve, and who would use it?",
+    "timing": "Ideal timeline",
+    "timingPlaceholder": "Select a timeline",
+    "timingOptions": ["Up to 1 month", "1 to 3 months", "More than 3 months", "Flexible timeline"],
+    "references": "References",
+    "referencesPlaceholder": "Links, prototypes or examples that help explain your idea",
+    "continue": "Request via WhatsApp",
+    "review": "You can review the message in WhatsApp before sending it.",
+    "openWhatsApp": "Open WhatsApp",
+    "prepare": "Prepare message",
+    "copyHint": "Copy the message to share your idea.",
+    "draft": "Message ready to copy",
+    "requiresJavaScript": "Enable JavaScript to fill out the form.",
+    "requiredText": "Please fill out this field."
+  },
   "websites": {
     "label": "Websites",
     "offers": [

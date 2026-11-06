@@ -1,0 +1,194 @@
+.service-detail-inner {
+  width: min(calc(100% - 32px), 1120px);
+  margin-inline: auto;
+  padding-block: clamp(56px, 8vw, 104px);
+}
+
+.service-detail-inner h2 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 550;
+  letter-spacing: -0.045em;
+  line-height: 1.07;
+}
+
+.service-detail-inner p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+}
+
+.service-process {
+  background: var(--color-bg-0);
+}
+
+.service-process .service-detail-inner {
+  padding-block: clamp(40px, 6vw, 72px) clamp(28px, 5vw, 52px);
+}
+
+.service-process-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: clamp(24px, 4vw, 36px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.service-process-steps li {
+  padding: 18px 20px 0 0;
+  border-top: 1px solid rgb(177 149 248 / 30%);
+}
+
+.service-process-number {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--color-brand-light);
+  font: 0.8rem var(--font-mono);
+}
+
+.service-process h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-weight: 600;
+}
+
+.service-process-steps p {
+  max-width: 29ch;
+  font-size: 0.9375rem;
+}
+
+.service-process-support {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 8px 24px;
+  align-items: baseline;
+  margin-top: clamp(24px, 4vw, 40px);
+  padding-top: 24px;
+  border-top: 1px solid rgb(255 255 255 / 12%);
+}
+
+.service-process-support h3 { margin: 0; }
+.service-process-support p { max-width: 57ch; }
+
+.service-brief {
+  scroll-margin-top: 96px;
+  border-top: 1px solid rgb(255 255 255 / 9%);
+  background: var(--color-bg-1);
+}
+
+.service-brief-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: clamp(24px, 7vw, 96px);
+  align-items: start;
+}
+
+.service-brief-intro p {
+  max-width: 39ch;
+  margin-top: 16px;
+}
+
+.service-brief-form {
+  padding-top: 18px;
+  border-top: 1px solid rgb(177 149 248 / 30%);
+}
+
+.service-brief-form h3 {
+  margin: 0 0 16px;
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
+  font-weight: 600;
+}
+
+.service-brief-fields {
+  display: grid;
+  gap: 18px;
+}
+
+.service-brief-form label {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.service-brief-optional {
+  margin-inline-start: 4px;
+  color: var(--color-text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+.service-brief-form input,
+.service-brief-form select,
+.service-brief-form textarea {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 14px;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 8px;
+  background: var(--color-surface-0);
+  color: var(--color-text-primary);
+  font: inherit;
+}
+
+.service-brief-form select {
+  color-scheme: dark;
+  cursor: pointer;
+}
+
+.service-brief-form textarea { resize: vertical; }
+
+.service-brief-form ::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 1;
+}
+
+.service-brief-action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 46px;
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: 1px solid var(--color-text-primary);
+  border-radius: 8px;
+  background: var(--color-text-primary);
+  color: var(--color-bg-0);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.service-brief-form :focus-visible,
+.service-brief-action:focus-visible {
+  outline: 2px solid var(--color-brand-light);
+  outline-offset: 3px;
+}
+
+.service-brief-form .service-brief-note {
+  margin-top: 10px;
+  font-size: 0.875rem;
+}
+
+.service-brief-draft { margin-top: 24px; }
+
+@media (max-width: 760px) {
+  .service-process-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 24px; }
+  .service-process-support,
+  .service-brief-layout { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .service-process-steps { grid-template-columns: minmax(0, 1fr); row-gap: 0; }
+  .service-process-steps li {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    padding: 0 0 22px 14px;
+    border-top: 0;
+    border-left: 1px solid rgb(177 149 248 / 30%);
+  }
+  .service-process-steps li:last-child { padding-bottom: 0; }
+  .service-process-number { margin-top: 4px; }
+}
