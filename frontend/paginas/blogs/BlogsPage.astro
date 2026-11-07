@@ -7,6 +7,7 @@ import { getMessages } from "../../utils/translations";
 import { createBlogPosts } from "./data/explore-catalog";
 import { prepareBlogCovers } from "./data/explore-images";
 import { readBlogContent } from "./data/public-content";
+import "../../styles/scroll-reveal.css";
 import "./styles/blogs.css";
 
 const locale = locales.find((value) => value === Astro.currentLocale) ?? defaultLocale;

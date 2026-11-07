@@ -1,6 +1,7 @@
 import { blogPageNumbers, blogStateUrl, readBlogState, reduceBlogState, selectBlogPage, type BlogAction, type BlogPost } from "../data/explore";
 import { blogCount } from "../data/blog-count";
 import type { BlogCopy } from "../data/explore-copy";
+import { mountScrollReveal } from "../../../utils/scroll-reveal";
 
 interface BlogPayload { posts: BlogPost[]; copy: BlogCopy }
 const SEARCH_DELAY = 160;
@@ -166,6 +167,15 @@ function mountBlogExplore(root: HTMLElement): () => void {
     syncUrl("replace");
   }, { signal });
   render();
+  const revealTargets = root.querySelectorAll<HTMLElement>([
+    ".blog-explore-search > :is(input, button)",
+    ".blog-explore-filters > *",
+    ".blog-explore-status",
+    ".blog-explore-posts > *",
+    ".blog-explore-empty > *",
+    ".blog-explore-pagination > *",
+  ].join(", "));
+  mountScrollReveal(root, revealTargets);
   syncUrl("replace");
   return () => { clearTimeout(timer); controller.abort(); };
 }

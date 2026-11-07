@@ -1,5 +1,6 @@
 {
   "chooseType": "Choose a service type",
+  "discussProject": "Discuss your project",
   "process": {
     "title": "How it works",
     "steps": [
@@ -67,8 +68,6 @@
       "A way to hear from the people who use the service every day.",
       "Tell me what you’ve already tried and where you want to go."
     ],
-    "pauseIntro": "Pause phrases",
-    "resumeIntro": "Resume phrases",
     "title": "Share your idea",
     "progressLabel": "Project form steps",
     "stepLabels": ["Name", "Project", "Timeline"],
@@ -82,7 +81,12 @@
     "ideaPlaceholder": "What problem would you like to solve, and who would use it?",
     "timing": "Ideal timeline",
     "timingPlaceholder": "Select a timeline",
-    "timingOptions": ["Up to 1 month", "1 to 3 months", "More than 3 months", "Flexible timeline"],
+    "timingOptions": {
+      "within-month": "Up to 1 month",
+      "one-to-three-months": "1 to 3 months",
+      "over-three-months": "More than 3 months",
+      "flexible": "Flexible timeline"
+    },
     "references": "References",
     "referencesPlaceholder": "Links, prototypes or examples that help explain your idea",
     "continue": "Request via WhatsApp",

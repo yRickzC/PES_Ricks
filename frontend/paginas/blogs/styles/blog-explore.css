@@ -41,6 +41,17 @@ blog-explore { display: block; container-type: inline-size; }
 .blog-explore-clear:hover { color: var(--color-text-primary); }
 .blog-explore-filters > .blog-explore-clear { align-self: end; }
 .blog-explore-status { margin-block: 22px 32px; color: var(--color-text-secondary); font-family: var(--font-mono); font-size: .75rem; line-height: 1.7; overflow-wrap: anywhere; }
+.blog-explore-search button,
+.blog-explore-filters > :nth-child(2),
+.blog-explore-empty > :nth-child(2),
+.blog-explore-pagination > :nth-child(2) { --scroll-reveal-delay: 70ms; }
+
+.blog-explore-filters > :nth-child(3),
+.blog-explore-empty > :nth-child(3),
+.blog-explore-pagination > :nth-child(3) { --scroll-reveal-delay: 140ms; }
+
+.blog-explore-empty > :nth-child(4) { --scroll-reveal-delay: 210ms; }
+
 .blog-explore-results {
   position: relative;
   isolation: isolate;

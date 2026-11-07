@@ -37,7 +37,7 @@
 
 .service-roadmap-nav:not([hidden]) {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 8px;
   padding: 6px 10px;
@@ -46,6 +46,7 @@
 
 .service-roadmap-tabs {
   display: flex;
+  justify-content: safe center;
   gap: 4px;
   overflow-x: auto;
   padding: 5px;
@@ -55,7 +56,7 @@
 }
 
 .service-roadmap-tab,
-.service-roadmap-controls button {
+.service-roadmap-arrow {
   min-height: 44px;
   border: 1px solid transparent;
   border-radius: 7px;
@@ -87,22 +88,11 @@
   color: var(--color-brand-light);
 }
 
-.service-roadmap-controls {
-  display: flex;
-  gap: 4px;
-}
-
-.service-roadmap-controls button {
+.service-roadmap-arrow {
   display: grid;
   width: 44px;
   place-items: center;
   border-color: rgb(255 255 255 / 13%);
-}
-
-.service-roadmap-controls button[aria-disabled="true"] {
-  border-color: rgb(255 255 255 / 8%);
-  color: var(--color-text-muted);
-  cursor: default;
 }
 
 .service-roadmap button:focus-visible {
@@ -112,7 +102,7 @@
 
 @media (hover: hover) {
   .service-roadmap-tab:hover,
-  .service-roadmap-controls button:not([aria-disabled="true"]):hover {
+  .service-roadmap-arrow:hover {
     color: var(--color-text-primary);
   }
 }
@@ -156,6 +146,18 @@
 
 .service-roadmap-art polyline { vector-effect: non-scaling-stroke; }
 .service-roadmap-art polyline:nth-child(n + 11) { stroke: var(--color-brand-soft); }
+
+.service-roadmap-tab { --scroll-reveal-offset: 5px; }
+
+.service-roadmap-tab:nth-child(2),
+.service-roadmap-panel h3 { --scroll-reveal-delay: 70ms; }
+
+.service-roadmap-tab:nth-child(3),
+.service-roadmap-panel p,
+.service-roadmap-art { --scroll-reveal-delay: 140ms; }
+
+.service-roadmap-tab:nth-child(n + 4),
+.service-roadmap-arrow:last-child { --scroll-reveal-delay: 210ms; }
 
 @media (max-width: 760px) {
   .service-roadmap[data-ready] .service-roadmap-stage {

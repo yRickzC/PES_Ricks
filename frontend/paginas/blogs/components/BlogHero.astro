@@ -48,13 +48,16 @@ const { copy, locale } = Astro.props;
 </section>
 
 <script>
+  import { mountScrollReveal } from "../../../utils/scroll-reveal";
   import { mountBlogHeroParallax } from "../utils/hero-parallax";
 
   const mounted = new Map<HTMLElement, () => void>();
 
   function mountBlogHeroes() {
     document.querySelectorAll<HTMLElement>("[data-blog-hero]").forEach((hero) => {
-      if (!mounted.has(hero)) mounted.set(hero, mountBlogHeroParallax(hero));
+      if (mounted.has(hero)) return;
+      mounted.set(hero, mountBlogHeroParallax(hero));
+      mountScrollReveal(hero, hero.querySelectorAll<HTMLElement>("h1, .blog-hero-subtitle, .blog-hero-action"));
     });
   }
 

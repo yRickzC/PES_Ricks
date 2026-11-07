@@ -98,6 +98,10 @@
 .blog-hero-action--notes { border-color: #9c86c0; color: var(--color-text-primary); }
 .blog-hero-action:hover { color: white; border-color: var(--color-brand-light); }
 
+.blog-hero-subtitle { --scroll-reveal-delay: 70ms; }
+.blog-hero-action:first-child { --scroll-reveal-delay: 140ms; }
+.blog-hero-action:last-child { --scroll-reveal-delay: 210ms; }
+
 .blog-notes {
   position: relative;
   width: min(100% - 48px, 1120px);

@@ -1,5 +1,6 @@
 {
   "chooseType": "Escolha o tipo de serviço",
+  "discussProject": "Conversar sobre o projeto",
   "process": {
     "title": "Como funciona",
     "steps": [
@@ -67,8 +68,6 @@
       "Um jeito de ouvir quem usa o serviço todos os dias.",
       "Conte o que já tentou e onde gostaria de chegar."
     ],
-    "pauseIntro": "Pausar frases",
-    "resumeIntro": "Retomar frases",
     "title": "Conte sua ideia",
     "progressLabel": "Etapas do formulário de projeto",
     "stepLabels": ["Nome", "Projeto", "Prazo"],
@@ -82,7 +81,12 @@
     "ideaPlaceholder": "Que problema você quer resolver e quem usaria a solução?",
     "timing": "Prazo ideal",
     "timingPlaceholder": "Selecione um prazo",
-    "timingOptions": ["Até 1 mês", "Entre 1 e 3 meses", "Mais de 3 meses", "Prazo flexível"],
+    "timingOptions": {
+      "within-month": "Até 1 mês",
+      "one-to-three-months": "Entre 1 e 3 meses",
+      "over-three-months": "Mais de 3 meses",
+      "flexible": "Prazo flexível"
+    },
     "references": "Referências",
     "referencesPlaceholder": "Links, protótipos ou exemplos que ajudem a explicar sua ideia",
     "continue": "Solicitar pelo WhatsApp",

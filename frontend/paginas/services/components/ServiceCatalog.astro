@@ -40,10 +40,10 @@ const previews: Record<(typeof serviceCategoryIds)[number], readonly string[]> =
   </div>
   <div class="service-catalog-selector">
     <fieldset>
-      <legend><h2 id="service-catalog-title">{copy.chooseType}</h2></legend>
+      <legend><h2 id="service-catalog-title" data-service-reveal>{copy.chooseType}</h2></legend>
       <div class="service-catalog-options">
         {serviceCategoryIds.map((id) => (
-          <div class="service-catalog-option">
+          <div class="service-catalog-option" data-service-reveal>
             <input
               type="radio"
               name="service-type"
@@ -69,19 +69,31 @@ const previews: Record<(typeof serviceCategoryIds)[number], readonly string[]> =
       data-service-panel={id}
       aria-labelledby={`service-panel-title-${id}`}
     >
-      <h3 id={`service-panel-title-${id}`}>{copy[id].label}</h3>
+      <h3 id={`service-panel-title-${id}`} data-service-reveal>{copy[id].label}</h3>
       <ul class="service-catalog-cards">
         {copy[id].offers.map(({ title, description }, index) => (
-          <li class="service-catalog-card">
-            <div class="service-catalog-preview" aria-hidden="true">
-              <svg viewBox="0 0 300 132" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" focusable="false">
-                <path d={previews[id][index]} />
-              </svg>
-            </div>
-            <div class="service-catalog-card-copy">
-              <h4>{title}</h4>
-              <p>{description}</p>
-            </div>
+          <li class="service-catalog-item" data-service-reveal>
+            <a
+              class="service-catalog-card"
+              href="#quote"
+              aria-labelledby={`service-offer-${id}-${index} service-offer-action-${id}-${index}`}
+            >
+              <div class="service-catalog-preview" aria-hidden="true">
+                <svg viewBox="0 0 300 132" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                  <path d={previews[id][index]} />
+                </svg>
+              </div>
+              <div class="service-catalog-card-copy">
+                <h4 id={`service-offer-${id}-${index}`}>{title}</h4>
+                <p>{description}</p>
+                <span class="service-catalog-card-action" id={`service-offer-action-${id}-${index}`}>
+                  {copy.discussProject}
+                  <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 8h9m-4-4 4 4-4 4" />
+                  </svg>
+                </span>
+              </div>
+            </a>
           </li>
         ))}
       </ul>

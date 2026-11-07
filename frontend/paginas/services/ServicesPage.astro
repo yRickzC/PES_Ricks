@@ -7,6 +7,7 @@ import ServiceCatalog from "./components/ServiceCatalog.astro";
 import ServiceProcess from "./components/ServiceProcess.astro";
 import ServiceProjectBrief from "./components/ServiceProjectBrief.astro";
 import "./styles/service-details.css";
+import "../../styles/scroll-reveal.css";
 
 const locale = locales.find((locale) => locale === Astro.currentLocale) ?? defaultLocale;
 const copy = getMessages(locale);
@@ -18,3 +19,10 @@ const copy = getMessages(locale);
   <ServiceCatalog locale={locale} />
   <ServiceProjectBrief locale={locale} />
 </Main>
+
+<script>
+  import { mountScrollReveal } from "../../utils/scroll-reveal";
+
+  const main = document.getElementById("main-content");
+  if (main) mountScrollReveal(main, main.querySelectorAll<HTMLElement>("[data-service-reveal]"));
+</script>

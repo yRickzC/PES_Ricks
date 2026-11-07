@@ -12,9 +12,14 @@ const stepNumber = (index: number) => String(index + 1).padStart(2, "0");
 
 <section class="service-process" aria-labelledby="service-process-title">
   <div class="service-detail-inner">
-    <h2 id="service-process-title">{process.title}</h2>
+    <h2 id="service-process-title" data-service-reveal>{process.title}</h2>
     <service-roadmap class="service-roadmap">
       <div class="service-roadmap-nav" data-roadmap-nav hidden>
+        <button class="service-roadmap-arrow" type="button" data-roadmap-prev data-service-reveal aria-label={process.previousStep}>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M19 12H5m6-6-6 6 6 6" />
+          </svg>
+        </button>
         <div class="service-roadmap-tabs" data-roadmap-tabs role="tablist" aria-labelledby="service-process-title">
           {process.steps.map(({ title }, index) => (
             <button
@@ -22,6 +27,7 @@ const stepNumber = (index: number) => String(index + 1).padStart(2, "0");
               id={`service-roadmap-tab-${index}`}
               type="button"
               role="tab"
+              data-service-reveal
               aria-controls={`service-roadmap-panel-${index}`}
               aria-selected={index === 0 ? "true" : "false"}
               tabindex={index === 0 ? 0 : -1}
@@ -31,21 +37,14 @@ const stepNumber = (index: number) => String(index + 1).padStart(2, "0");
             </button>
           ))}
         </div>
-        <div class="service-roadmap-controls">
-          <button type="button" data-roadmap-prev aria-label={process.previousStep} aria-disabled="true">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-              <path d="M19 12H5m6-6-6 6 6 6" />
-            </svg>
-          </button>
-          <button type="button" data-roadmap-next aria-label={process.nextStep}>
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-              <path d="M5 12h14m-6-6 6 6-6 6" />
-            </svg>
-          </button>
-        </div>
+        <button class="service-roadmap-arrow" type="button" data-roadmap-next data-service-reveal aria-label={process.nextStep}>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M5 12h14m-6-6 6 6-6 6" />
+          </svg>
+        </button>
       </div>
       <div class="service-roadmap-stage">
-        <div class="service-roadmap-art" data-roadmap-art hidden aria-hidden="true">
+        <div class="service-roadmap-art" data-roadmap-art data-service-reveal hidden aria-hidden="true">
           <svg viewBox="0 0 360 220" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
             {roadmapArt[0].map((points) => <polyline points={points} />)}
           </svg>
@@ -53,9 +52,9 @@ const stepNumber = (index: number) => String(index + 1).padStart(2, "0");
         <div class="service-roadmap-panels">
           {process.steps.map(({ title, description }, index) => (
             <div class="service-roadmap-panel" id={`service-roadmap-panel-${index}`} data-roadmap-panel>
-              <span class="service-roadmap-number" aria-hidden="true">{stepNumber(index)} / {stepNumber(process.steps.length - 1)}</span>
-              <h3>{title}</h3>
-              <p>{description}</p>
+              <span class="service-roadmap-number" data-service-reveal aria-hidden="true">{stepNumber(index)} / {stepNumber(process.steps.length - 1)}</span>
+              <h3 data-service-reveal>{title}</h3>
+              <p data-service-reveal>{description}</p>
             </div>
           ))}
         </div>

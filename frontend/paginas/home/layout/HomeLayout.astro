@@ -2,6 +2,7 @@
 import Main from "../../../main.astro";
 import type { Locale } from "../../../config/i18n";
 import type { Messages } from "../../../utils/translations";
+import "../../../styles/scroll-reveal.css";
 
 interface Props {
   locale: Locale;
@@ -22,72 +23,36 @@ const { locale, copy } = Astro.props;
 </Main>
 
 <script>
-  const home = document.querySelector(".home-layout");
-  const motion = matchMedia("(prefers-reduced-motion: no-preference)");
+  import { mountScrollReveal } from "../../../utils/scroll-reveal";
 
-  if (home && motion.matches && "IntersectionObserver" in window) {
+  const home = document.querySelector(".home-layout");
+
+  if (home) {
     const targets = Array.from(home.querySelectorAll<HTMLElement>("[data-home-reveal], [data-home-reveal-group] > *"));
     const footer = home.closest(".site-frame")?.querySelector<HTMLElement>(".site-footer");
     if (footer) targets.push(footer);
 
-    const observer = new IntersectionObserver((entries) => {
-      for (const { target, isIntersecting } of entries) {
-        if (!(target instanceof HTMLElement) || !isIntersecting || target.dataset.homeRevealState !== "waiting") continue;
-        observer.unobserve(target);
-        target.dataset.homeRevealState = "entering";
-      }
-    });
-
-    for (const target of targets) {
-      if (target.matches(":focus-within")) continue;
-      target.dataset.homeRevealState = "waiting";
-      observer.observe(target);
-    }
-
-    home.addEventListener("focusin", (event) => {
-      if (!(event.target instanceof Element)) return;
-      const target = event.target.closest<HTMLElement>("[data-home-reveal-state]");
-      if (!target) return;
-      observer.unobserve(target);
-      delete target.dataset.homeRevealState;
-    });
+    mountScrollReveal(home, targets);
   }
 </script>
 
 <style is:global>
   @media (prefers-reduced-motion: no-preference) {
-    [data-home-reveal-state="waiting"] {
-      opacity: 0 !important;
-    }
-
-    [data-home-reveal-state="entering"] {
-      animation: home-reveal-in 560ms cubic-bezier(.22, 1, .36, 1) var(--home-reveal-delay, 0ms) backwards;
-    }
-
-    body:has(#page-transition[data-phase="hold"]) [data-home-reveal-state="entering"] {
-      animation-play-state: paused;
-    }
+    .home-layout { --scroll-reveal-offset: 24px; }
 
     .home-layout .hero-subtitle,
     .home-layout .hero-layer--moon,
     .home-layout .hero-layer--gears,
-    .home-layout [data-home-reveal-group] > :nth-child(2) { --home-reveal-delay: 70ms; }
+    .home-layout [data-home-reveal-group] > :nth-child(2) { --scroll-reveal-delay: 70ms; }
 
     .home-layout .hero-description,
-    .home-layout .hero-layer--island { --home-reveal-delay: 140ms; }
-    .home-layout .hero-action--primary { --home-reveal-delay: 210ms; }
-    .home-layout .hero-action--secondary { --home-reveal-delay: 280ms; }
+    .home-layout .hero-layer--island { --scroll-reveal-delay: 140ms; }
+    .home-layout .hero-action--primary { --scroll-reveal-delay: 210ms; }
+    .home-layout .hero-action--secondary { --scroll-reveal-delay: 280ms; }
 
     .home-layout .hero-layer--sky,
     .home-layout .hero-layer--moon,
     .home-layout .hero-fog-position,
-    .site-footer[data-home-reveal-state] { --home-reveal-offset: 0px; }
-
-    @keyframes home-reveal-in {
-      from {
-        opacity: 0;
-        translate: 0 var(--home-reveal-offset, 16px);
-      }
-    }
+    .site-footer[data-scroll-reveal-state] { --scroll-reveal-offset: 12px; }
   }
 </style>

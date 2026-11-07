@@ -2,21 +2,16 @@
 interface Props {
   intro: string;
   phrases: string[];
-  pauseLabel: string;
-  resumeLabel: string;
 }
 
-const { intro, phrases, pauseLabel, resumeLabel } = Astro.props;
+const { intro, phrases } = Astro.props;
 ---
 
-<service-brief-phrases data-phrases={JSON.stringify(phrases)}>
+<service-brief-phrases data-brief-reveal data-phrases={JSON.stringify(phrases)}>
   <p class="service-brief-phrase">
     <span class="visually-hidden">{intro}</span>
     <span data-phrase-text aria-hidden="true">{phrases[0] ?? intro}</span>
   </p>
-  <button type="button" data-phrase-toggle data-pause-label={pauseLabel} data-resume-label={resumeLabel} hidden>
-    {pauseLabel}
-  </button>
 </service-brief-phrases>
 
 <script>
@@ -27,8 +22,7 @@ const { intro, phrases, pauseLabel, resumeLabel } = Astro.props;
 
     connectedCallback() {
       const text = this.querySelector("[data-phrase-text]");
-      const toggle = this.querySelector<HTMLButtonElement>("[data-phrase-toggle]");
-      if (!text || !toggle || this.cleanup) return;
+      if (!text || this.cleanup) return;
 
       const phrases: string[] = JSON.parse(this.dataset.phrases ?? "[]");
       if (phrases.length < 2) return;
@@ -36,10 +30,8 @@ const { intro, phrases, pauseLabel, resumeLabel } = Astro.props;
       const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
       const listeners = new AbortController();
       const { signal } = listeners;
-      const { pauseLabel, resumeLabel } = toggle.dataset;
       let timer: number | undefined;
       let inView = false;
-      let paused = false;
       let index = 0;
       let length = phrases[0].length;
       let erasing = true;
@@ -74,10 +66,9 @@ const { intro, phrases, pauseLabel, resumeLabel } = Astro.props;
 
       const sync = () => {
         window.clearTimeout(timer);
-        toggle.hidden = motion.matches;
-        const playing = inView && !document.hidden && !motion.matches && !paused;
+        const playing = inView && !document.hidden && !motion.matches;
         this.toggleAttribute("data-playing", playing);
-        if (paused || motion.matches) showFullPhrase();
+        if (motion.matches) showFullPhrase();
         if (playing) timer = window.setTimeout(step, delay);
       };
 
@@ -86,11 +77,6 @@ const { intro, phrases, pauseLabel, resumeLabel } = Astro.props;
         sync();
       });
 
-      toggle.addEventListener("click", () => {
-        paused = !paused;
-        toggle.textContent = (paused ? resumeLabel : pauseLabel) ?? "";
-        sync();
-      }, { signal });
       motion.addEventListener("change", sync, { signal });
       document.addEventListener("visibilitychange", sync, { signal });
 
@@ -100,7 +86,6 @@ const { intro, phrases, pauseLabel, resumeLabel } = Astro.props;
         observer.takeRecords();
         listeners.abort();
       };
-      toggle.textContent = pauseLabel ?? "";
       showFullPhrase();
       sync();
       observer.observe(this);
@@ -129,23 +114,5 @@ const { intro, phrases, pauseLabel, resumeLabel } = Astro.props;
     margin-inline-start: 0.15em;
     background: var(--color-brand-light);
     content: "";
-  }
-
-  button {
-    min-block-size: 32px;
-    margin-top: 4px;
-    padding: 0;
-    color: var(--color-text-secondary);
-    font-size: 0.8125rem;
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-    cursor: pointer;
-  }
-
-  button:hover { color: var(--color-text-primary); }
-
-  button:focus-visible {
-    outline: 2px solid var(--color-brand-light);
-    outline-offset: 3px;
   }
 </style>

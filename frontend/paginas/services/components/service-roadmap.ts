@@ -65,9 +65,6 @@ class ServiceRoadmap extends HTMLElement {
         tab.tabIndex = active ? 0 : -1;
         panels[position].hidden = !active;
       });
-      previous.setAttribute("aria-disabled", String(index === 0));
-      next.setAttribute("aria-disabled", String(index === tabs.length - 1));
-
       // Reveal the active tab without moving the page vertically.
       const bounds = rail.getBoundingClientRect();
       const tabBounds = tabs[index].getBoundingClientRect();
@@ -76,9 +73,10 @@ class ServiceRoadmap extends HTMLElement {
       this.#morph();
     };
 
+    const adjacentIndex = (offset: number) => (this.#index + offset + tabs.length) % tabs.length;
+
     const move = (offset: number) => {
-      const index = this.#index + offset;
-      if (index < 0 || index >= tabs.length) return;
+      const index = adjacentIndex(offset);
       select(index);
       status.textContent = panels[index].querySelector("h3")?.textContent ?? "";
     };
@@ -94,8 +92,8 @@ class ServiceRoadmap extends HTMLElement {
       if (event.altKey || event.ctrlKey || event.metaKey) return;
       let index: number;
       switch (event.key) {
-        case "ArrowLeft": index = (this.#index + tabs.length - 1) % tabs.length; break;
-        case "ArrowRight": index = (this.#index + 1) % tabs.length; break;
+        case "ArrowLeft": index = adjacentIndex(-1); break;
+        case "ArrowRight": index = adjacentIndex(1); break;
         case "Home": index = 0; break;
         case "End": index = tabs.length - 1; break;
         default: return;

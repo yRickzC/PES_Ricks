@@ -93,3 +93,23 @@
 2026-11-06 — Os desenhos do roadmap passaram a mostrar cenas com cliente e desenvolvedor, mantendo as transformações em SVG. A manutenção pós-entrega passou para a quinta etapa.
 
 2026-11-06 — Corrigido o deploy das redes sociais: como `.env` é ignorado, o workflow agora cria o arquivo a partir de `.env.example` antes do build Astro. O commit `78d334d` foi enviado e o run 42238725921 concluiu build e deploy com sucesso.
+
+2026-11-06 — Os cards de Projetos ganharam borda, sombra e links com setas. Cards com links se elevam ao passar o mouse e mostram foco por teclado. Quando há um único destino, o card inteiro abre o link.
+
+2026-11-06 — As setas do roadmap passaram para as pontas da faixa de etapas, com navegação em loop nos dois sentidos. O desenvolvedor passou a olhar para a esquerda nas cenas de Planejamento e Desenvolvimento.
+
+2026-11-06 — Os cards do catálogo de Serviços ganharam sombra, elevação ao passar o mouse e glow violeta. Cada card passou a levar ao formulário de Projetos customizados.
+
+2026-11-06 — Os cards de Serviços ganharam uma base violeta visível em repouso e efeito de pressão ao clicar.
+
+2026-11-06 — Os botões do formulário de projetos customizados passaram a ocupar toda a linha. O controle de pausa das frases saiu, e o navegador passou a guardar o rascunho e a etapa atual.
+
+2026-11-06 — Os elementos do formulário de projetos customizados ganharam animações individuais de entrada reaproveitando o efeito da Home.
+
+2026-11-06 — A Home reaproveitou o FadeInUp do site em cada elemento da sequência. Céu, lua, névoa e rodapé também ganharam um leve movimento de subida.
+
+2026-11-06 — Projetos passou a reutilizar o FadeInUp da Home. Os itens entram separadamente na primeira vez em que aparecem na tela.
+
+2026-11-06 — O Blog reaproveitou o FadeInUp para a entrada individual de elementos do Hero, da exploração e do estado vazio.
+
+2026-11-06 — Roadmap e catálogo de Serviços ganharam entrada individual com o FadeInUp compartilhado.

@@ -36,13 +36,13 @@ const scenery = await Promise.all(projectHeroLayers.map(async (layer) => ({
   </div>
   <div class="project-hero-content">
     <div class="project-hero-orbit" data-expanded={projectCategories.length > 7 ? "true" : undefined}>
-      <SiteImage class="project-hero-logo" src="/images/Rick_Logo_Transparent.webp" alt="" width={192} widths={[128, 192, 384]} sizes="(max-width: 760px) 122px, 146px" loading="eager" decoding="async" />
+      <SiteImage class="project-hero-logo" data-project-reveal src="/images/Rick_Logo_Transparent.webp" alt="" width={192} widths={[128, 192, 384]} sizes="(max-width: 760px) 122px, 146px" loading="eager" decoding="async" />
       <nav class="project-categories" aria-label={copy.projectCategoriesLabel}>
         {projectCategories.map((category, index) => {
           const angle = -Math.PI / 2 + index * Math.PI * 2 / projectCategories.length;
           const position = `--category-x: ${50 + Math.cos(angle) * orbitRadius}%; --category-y: ${50 + Math.sin(angle) * orbitRadius}%;`;
           return (
-            <a class="project-category-link" data-project-filter={category.id} aria-controls={`projects-${category.id}`} href={`#projects-${category.id}`} style={position}>
+            <a class="project-category-link" data-project-reveal data-project-filter={category.id} aria-controls={`projects-${category.id}`} href={`#projects-${category.id}`} style={position}>
               <span class="project-category-icon"><TaxonomyIcon icon={category.icon} size={24} /></span>
               <span class="project-category-label">{category.label}</span>
             </a>
@@ -50,8 +50,8 @@ const scenery = await Promise.all(projectHeroLayers.map(async (layer) => ({
         })}
       </nav>
     </div>
-    <h1 id="project-hero-title">{copy.projectsLabel}</h1>
-    <p class="project-hero-description">{copy.projectsDescription}</p>
+    <h1 id="project-hero-title" data-project-reveal>{copy.projectsLabel}</h1>
+    <p class="project-hero-description" data-project-reveal>{copy.projectsDescription}</p>
   </div>
 </section>
 

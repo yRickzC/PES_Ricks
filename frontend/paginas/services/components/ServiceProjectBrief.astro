@@ -3,6 +3,7 @@ import type { Locale } from "../../../config/i18n";
 import { socialLinks } from "../../../config/social";
 import { getServiceCopy } from "../config/catalog";
 import ServiceBriefPhrases from "./ServiceBriefPhrases.astro";
+import "../../../styles/scroll-reveal.css";
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -13,13 +14,8 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
 <section class="service-brief" id="quote" aria-labelledby="service-brief-title">
   <div class="service-detail-inner service-brief-layout">
     <div class="service-brief-intro">
-      <h2 id="service-brief-title">{brief.sectionTitle}</h2>
-      <ServiceBriefPhrases
-        intro={brief.intro}
-        phrases={brief.introPhrases}
-        pauseLabel={brief.pauseIntro}
-        resumeLabel={brief.resumeIntro}
-      />
+      <h2 id="service-brief-title" data-brief-reveal>{brief.sectionTitle}</h2>
+      <ServiceBriefPhrases intro={brief.intro} phrases={brief.introPhrases} />
       <noscript>
         <p>{brief.requiresJavaScript}</p>
         {whatsappHref && <a class="service-brief-action" href={whatsappHref}>{brief.openWhatsApp}</a>}
@@ -35,32 +31,32 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
       data-required-text={brief.requiredText}
       hidden
     >
-      <h3 id="service-brief-form-title">{brief.title}</h3>
+      <h3 id="service-brief-form-title" data-brief-reveal>{brief.title}</h3>
       <ol class="service-brief-progress" role="list" aria-label={brief.progressLabel}>
         {brief.stepLabels.map((label, index) => (
-          <li data-brief-progress aria-current={index === 0 ? "step" : undefined}>
+          <li data-brief-progress data-brief-reveal aria-current={index === 0 ? "step" : undefined}>
             <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
             {label}
           </li>
         ))}
       </ol>
       <section class="service-brief-step" data-brief-step aria-labelledby="service-brief-step-title-1">
-        <h4 id="service-brief-step-title-1" data-brief-step-title tabindex="-1">{brief.stepTitles[0]}</h4>
+        <h4 id="service-brief-step-title-1" data-brief-step-title data-brief-reveal tabindex="-1">{brief.stepTitles[0]}</h4>
         <div class="service-brief-fields">
-          <div>
+          <div data-brief-reveal>
             <label for="service-brief-name">{brief.name}</label>
             <input id="service-brief-name" type="text" name="name" autocomplete="name" maxlength="100" placeholder={brief.namePlaceholder} data-brief-label={brief.name} required />
           </div>
         </div>
       </section>
       <section class="service-brief-step" data-brief-step aria-labelledby="service-brief-step-title-2" hidden>
-        <h4 id="service-brief-step-title-2" data-brief-step-title tabindex="-1">{brief.stepTitles[1]}</h4>
+        <h4 id="service-brief-step-title-2" data-brief-step-title data-brief-reveal tabindex="-1">{brief.stepTitles[1]}</h4>
         <div class="service-brief-fields">
-          <div>
+          <div data-brief-reveal>
             <label for="service-brief-idea">{brief.idea}</label>
             <textarea id="service-brief-idea" name="idea" rows="5" maxlength="1000" placeholder={brief.ideaPlaceholder} data-brief-label={brief.idea} required></textarea>
           </div>
-          <div>
+          <div data-brief-reveal>
             <label for="service-brief-references">
               {brief.references} <span class="service-brief-optional">({brief.optional})</span>
             </label>
@@ -69,28 +65,28 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
         </div>
       </section>
       <section class="service-brief-step" data-brief-step aria-labelledby="service-brief-step-title-3" hidden>
-        <h4 id="service-brief-step-title-3" data-brief-step-title tabindex="-1">{brief.stepTitles[2]}</h4>
+        <h4 id="service-brief-step-title-3" data-brief-step-title data-brief-reveal tabindex="-1">{brief.stepTitles[2]}</h4>
         <div class="service-brief-fields">
-          <div>
+          <div data-brief-reveal>
             <label for="service-brief-timing">
               {brief.timing} <span class="service-brief-optional">({brief.optional})</span>
             </label>
             <select id="service-brief-timing" name="timing" data-brief-label={brief.timing}>
               <option value="">{brief.timingPlaceholder}</option>
-              {brief.timingOptions.map((option) => <option value={option}>{option}</option>)}
+              {Object.entries(brief.timingOptions).map(([value, label]) => <option value={value}>{label}</option>)}
             </select>
           </div>
         </div>
       </section>
       <div class="service-brief-actions">
-        <button class="service-brief-action service-brief-back" type="button" data-brief-back hidden>{brief.previousStep}</button>
-        <button class="service-brief-action" type="submit" data-brief-next data-final-label={whatsappHref ? brief.continue : brief.prepare}>
+        <button class="service-brief-action service-brief-back" type="button" data-brief-back data-brief-reveal hidden>{brief.previousStep}</button>
+        <button class="service-brief-action" type="submit" data-brief-next data-brief-reveal data-final-label={whatsappHref ? brief.continue : brief.prepare}>
           {brief.nextStep}
         </button>
       </div>
-      <p class="service-brief-note" data-brief-note hidden>{whatsappHref ? brief.review : brief.copyHint}</p>
+      <p class="service-brief-note" data-brief-note data-brief-reveal hidden>{whatsappHref ? brief.review : brief.copyHint}</p>
       {!whatsappHref && (
-        <div class="service-brief-draft" data-brief-draft hidden>
+        <div class="service-brief-draft" data-brief-draft data-brief-reveal hidden>
           <label for="service-brief-draft">{brief.draft}</label>
           <textarea id="service-brief-draft" rows="6" readonly></textarea>
         </div>
@@ -100,7 +96,11 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
 </section>
 
 <script>
+  import { mountScrollReveal } from "../../../utils/scroll-reveal";
+
   type BriefField = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+  type BriefDraft = { step: number; fields: Record<string, string> };
+  const draftKey = "rickz:service-brief:v1";
 
   function mountProjectBrief() {
     const form = document.querySelector<HTMLFormElement>("form[data-project-brief][hidden]");
@@ -123,7 +123,42 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
     const lastStep = steps.length - 1;
     let activeStep = 0;
 
-    const showStep = (index: number) => {
+    function saveDraft() {
+      try {
+        const saved: BriefDraft = {
+          step: activeStep,
+          fields: Object.fromEntries(fields.map((field) => [field.name, field.value])),
+        };
+        localStorage.setItem(draftKey, JSON.stringify(saved));
+      } catch {
+        // The form remains usable when browser storage is unavailable.
+      }
+    }
+
+    function restoreDraft() {
+      try {
+        const raw = localStorage.getItem(draftKey);
+        const saved = raw ? JSON.parse(raw) as Partial<BriefDraft> | null : null;
+        for (const field of fields) {
+          const value = saved?.fields?.[field.name];
+          if (typeof value !== "string") continue;
+          if (field instanceof HTMLSelectElement) {
+            if (Array.from(field.options).some((option) => option.value === value)) field.value = value;
+          } else {
+            field.value = field.maxLength < 0 ? value : value.slice(0, field.maxLength);
+          }
+        }
+
+        const index = saved?.step;
+        if (typeof index !== "number" || !Number.isInteger(index) || index < 0 || index > lastStep) return 0;
+        const incomplete = stepFields.findIndex((group) => group.some((field) => field.required && !field.value.trim()));
+        return incomplete === -1 ? index : Math.min(index, incomplete);
+      } catch {
+        return 0;
+      }
+    }
+
+    const showStep = (index: number, focus = true) => {
       activeStep = index;
       steps.forEach((step, position) => {
         step.hidden = position !== index;
@@ -137,7 +172,7 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
       next.textContent = index === lastStep ? finalLabel : nextLabel;
       note.hidden = index !== lastStep;
       if (draft) draft.hidden = true;
-      steps[index].querySelector<HTMLElement>("[data-brief-step-title]")?.focus();
+      if (focus) steps[index].querySelector<HTMLElement>("[data-brief-step-title]")?.focus();
     };
 
     function validateStep(index: number) {
@@ -155,22 +190,31 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
     for (const field of fields) {
       field.addEventListener("input", () => field.setCustomValidity(""));
     }
+    form.addEventListener("input", saveDraft);
+    form.addEventListener("change", saveDraft);
 
     back.addEventListener("click", () => {
-      if (activeStep > 0) showStep(activeStep - 1);
+      if (activeStep === 0) return;
+      showStep(activeStep - 1);
+      saveDraft();
     });
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       if (activeStep < lastStep) {
-        if (validateStep(activeStep)) showStep(activeStep + 1);
+        if (validateStep(activeStep)) {
+          showStep(activeStep + 1);
+          saveDraft();
+        }
         return;
       }
       if (!stepFields.every((_, index) => validateStep(index))) return;
+      saveDraft();
 
       const parts = [title];
       for (const field of fields) {
-        const value = field.value.trim();
+        if (!field.value.trim()) continue;
+        const value = field instanceof HTMLSelectElement ? field.selectedOptions[0]?.label : field.value.trim();
         if (value) parts.push(`${field.dataset.briefLabel}: ${value}`);
       }
 
@@ -192,7 +236,10 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
 
     // Validate only the visible step until the final submission.
     form.noValidate = true;
+    showStep(restoreDraft(), false);
     form.hidden = false;
+    const section = form.closest(".service-brief");
+    if (section) mountScrollReveal(section, Array.from(section.querySelectorAll<HTMLElement>("[data-brief-reveal]")));
   }
 
   mountProjectBrief();
