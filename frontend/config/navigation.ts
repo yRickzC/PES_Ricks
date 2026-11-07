@@ -54,5 +54,9 @@ export const pageRoutes = locales.flatMap((locale) => {
       pattern: `${prefix}/blogs/[id]/`,
       entrypoint: "./frontend/paginas/blogs/subpaginas/ArticlePage.astro",
     },
+    {
+      pattern: `${prefix}/services/[id]/`,
+      entrypoint: "./frontend/paginas/services/subpaginas/ServicePage.astro",
+    },
   ];
 });

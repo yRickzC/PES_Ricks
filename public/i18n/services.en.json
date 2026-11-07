@@ -1,6 +1,12 @@
 {
   "chooseType": "Choose a service type",
-  "discussProject": "Discuss your project",
+  "viewService": "Explore service",
+  "construction": {
+    "title": "This page is under construction!",
+    "hint": "I'm working on the details of this service. Come back soon to see what's taking shape.",
+    "dogAlt": "Dog working on a page under construction",
+    "back": "Back to services"
+  },
   "process": {
     "title": "How it works",
     "steps": [

@@ -113,3 +113,7 @@
 2026-11-06 — O Blog reaproveitou o FadeInUp para a entrada individual de elementos do Hero, da exploração e do estado vazio.
 
 2026-11-06 — Roadmap e catálogo de Serviços ganharam entrada individual com o FadeInUp compartilhado.
+
+2026-11-07 — Os nove cards de Serviços passaram a abrir páginas próprias com o cachorro trabalhando e o aviso de construção, em português e inglês. Cada tela mostra o serviço e permite voltar ao catálogo. Revisão estática e Graphify local concluídos; navegador, build e testes não executados.
+
+2026-11-07 — O usuário reportou 404 ao abrir Landing page. A configuração do Astro passou a observar os arquivos que definem as rotas para atualizar o manifesto durante o desenvolvimento. Revisão estática e Graphify local concluídos; desaparecimento do erro em execução ainda não confirmado, sem executar servidor, build ou testes.

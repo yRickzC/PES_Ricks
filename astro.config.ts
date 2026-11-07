@@ -36,7 +36,11 @@ export default defineConfig({
     {
       name: "domain-pages",
       hooks: {
-        "astro:config:setup": ({ injectRoute }) => {
+        "astro:config:setup": ({ injectRoute, addWatchFile }) => {
+          // Rebuild the injected route manifest when its configuration changes.
+          addWatchFile(new URL("./frontend/config/navigation.ts", import.meta.url));
+          addWatchFile(new URL("./frontend/config/i18n.ts", import.meta.url));
+
           for (const route of pageRoutes) {
             injectRoute(route);
           }
