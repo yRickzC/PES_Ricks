@@ -41,19 +41,33 @@ const contactHref = quoteUrl.startsWith("#") ? `${getRelativeLocaleUrl(locale, "
 </section>
 
 <script>
-  import { mountHeroParallax } from "../utils/hero-parallax";
-
   const mounted = new Map<HTMLElement, () => void>();
+  let generation = 0;
 
-  function mountHeroes() {
-    document.querySelectorAll<HTMLElement>("[data-cinematic-hero]").forEach((hero) => {
-      if (!mounted.has(hero)) mounted.set(hero, mountHeroParallax(hero));
+  async function mountHeroes() {
+    const heroes = Array.from(document.querySelectorAll<HTMLElement>("[data-cinematic-hero]"))
+      .filter((hero) => !mounted.has(hero));
+    if (!heroes.length) return;
+
+    const pendingGeneration = generation;
+    const { mountHeroParallax } = await import("../utils/hero-parallax");
+    if (pendingGeneration !== generation) return;
+
+    heroes.forEach((hero) => {
+      if (hero.isConnected && !mounted.has(hero)) mounted.set(hero, mountHeroParallax(hero));
     });
   }
 
-  mountHeroes();
-  document.addEventListener("astro:page-load", mountHeroes);
+  function scheduleHeroes() {
+    // Decorative motion must not compete with the initial page and LCP images.
+    if (document.readyState === "complete") void mountHeroes();
+    else window.addEventListener("load", () => void mountHeroes(), { once: true });
+  }
+
+  scheduleHeroes();
+  document.addEventListener("astro:page-load", scheduleHeroes);
   document.addEventListener("astro:before-swap", () => {
+    generation += 1;
     mounted.forEach((cleanup) => cleanup());
     mounted.clear();
   });

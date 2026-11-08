@@ -48,6 +48,8 @@
   transform: translateX(-50%) scale(var(--desktop-scale));
 }
 .project-biome-placement img { display: block; width: 100%; height: auto; max-width: none; }
+.project-biome-placement > img[data-biome-src] { opacity: 0; transition: opacity 320ms ease; }
+.project-biome-placement > img[data-biome-ready="true"] { opacity: 1; }
 .project-biome-layer--cave-background img { height: 100%; object-fit: cover; object-position: center 65%; }
 .project-biome-layer--cave-fog img { animation: crystal-fog-drift var(--fog-duration) ease-in-out infinite alternate; animation-play-state: paused; }
 .project-category-section--biome[data-parallax-active="true"] .project-biome-layer { will-change: transform; }
@@ -67,6 +69,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .project-biome-scene { transition: none; }
+  .project-biome-placement > img[data-biome-src] { transition: none; }
   .project-biome-layer { transform: none !important; will-change: auto !important; }
   .project-biome-layer--cave-fog img { animation: none; }
 }

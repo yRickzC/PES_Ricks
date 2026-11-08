@@ -35,7 +35,6 @@ const icons = {
   server: { path: "M4 3h16v7H4V3Zm0 11h16v7H4v-7ZM7 6.5h.01M7 17.5h.01M11 6.5h6M11 17.5h6" },
   business: { path: "M4 21V5h10v16M14 10h6v11M2 21h20M7 8h4M7 12h4M7 16h4M17 13h.01M17 17h.01" },
   mobile: { path: "M7 2h10v20H7V2Zm0 4h10M11 18h2" },
-  automation: { path: "m13 2-9 12h7l-1 8 10-13h-7l1-7Z" },
   consulting: { path: "M4 3h16v13h-8l-5 5v-5H4V3Zm4 5h8M8 12h5" },
 } satisfies Record<string, TaxonomyIcon>;
 
@@ -68,7 +67,6 @@ export const contentTaxonomy = {
       "internal-systems": { name: "serviceSystems", icon: icons.business },
       websites: { name: "serviceWeb", icon: icons.web },
       "mobile-apps": { name: "serviceMobile", icon: icons.mobile },
-      automation: { name: "serviceAutomation", icon: icons.automation },
       consulting: { name: "serviceConsulting", icon: icons.consulting },
     },
   },

@@ -34,6 +34,12 @@ Se o build passar e o deploy ficar em `deployment_queued` ou `updating_pages` at
 
 Para um domínio/caminho diferente, defina **PUBLIC_SITE_URL** e **PUBLIC_BASE_PATH** no ambiente do job de build. Por exemplo, domínio próprio na raiz: **PUBLIC_SITE_URL=https://exemplo.com** e **PUBLIC_BASE_PATH=/**.
 
+## Cache e auditoria de desempenho
+
+As capturas Lighthouse de 2026-11-08 mostram TTL de dez minutos nos assets publicados no GitHub Pages. O workflow atual envia arquivos estáticos; não configura cabeçalhos HTTP `Cache-Control`. Os nomes com hash em `_astro/` já distinguem versões dos derivados, mas não ampliam o TTL da resposta.
+
+Um arquivo `_headers` ou uma tag HTML não altera esse cabeçalho no fluxo atual. Para atender ao alerta de cache longo, é necessário configurar uma camada de hospedagem/CDN que permita definir cabeçalhos: assets com hash podem receber `public, max-age=31536000, immutable`, mantendo HTML revalidável e evitando aplicar cache imutável aos arquivos públicos sem hash. Nenhuma mudança de infraestrutura ou publicação foi feita nesta correção; o TTL permanece uma pendência da hospedagem.
+
 ## Build local
 
 ~~~powershell

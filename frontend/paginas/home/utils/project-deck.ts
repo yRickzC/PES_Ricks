@@ -6,7 +6,6 @@ export function mountProjectDeck(root: HTMLElement): () => void {
   const next = root.querySelector<HTMLButtonElement>("[data-deck-next]");
   const counter = root.querySelector<HTMLElement>("[data-deck-counter]");
   const status = root.querySelector<HTMLElement>("[data-deck-status]");
-  const hint = root.querySelector<HTMLElement>("[data-deck-hint]");
   if (!cards.length || slots.length !== cards.length || !controls || !previous || !next) return () => {};
 
   const listeners = new AbortController();
@@ -63,12 +62,8 @@ export function mountProjectDeck(root: HTMLElement): () => void {
 
   select(active);
   root.dataset.deckReady = "true";
-  controls.hidden = false;
-  if (hint) hint.hidden = false;
   return () => {
     listeners.abort();
     delete root.dataset.deckReady;
-    controls.hidden = true;
-    if (hint) hint.hidden = true;
   };
 }

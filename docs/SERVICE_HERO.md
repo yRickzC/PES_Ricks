@@ -101,6 +101,15 @@ prioridade alta. A geração dos derivados depende de um build futuro.
 
 ## Validação e ajustes pendentes
 
+Em 2026-11-08, o catálogo passou a conter três categorias com três ofertas cada:
+Sites (site institucional, landing page e loja virtual), ERP e sistemas (ERP,
+CRM e portal interno) e Apps mobile (delivery, agendamentos/eventos e vendas).
+Automação foi removida do catálogo, dos seletores CSS, da taxonomia de busca
+e das traduções EN/PT-BR. Os slugs das páginas estáticas acompanham as novas
+ofertas; as ilustrações SVG de CRM e aplicativos usam o estilo existente.
+Os cards continuam iniciando o orçamento no WhatsApp com a solução escolhida.
+Alteração conferida estaticamente, sem executar aplicativo, testes ou build.
+
 Em 2026-11-07, a pedido do usuário, a página local de Serviços foi aberta no
 navegador. Rastros visíveis foram observados na hero e no catálogo após aumentar
 espessura, contraste e frequência; animações CSS em execução confirmadas no DOM,

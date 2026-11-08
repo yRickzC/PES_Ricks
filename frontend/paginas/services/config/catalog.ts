@@ -4,14 +4,13 @@ import portuguese from "../../../../public/i18n/services.pt-br.json";
 import type { Locale } from "../../../config/i18n";
 import { socialLinks } from "../../../config/social";
 
-export const serviceCategoryIds = ["websites", "internal-systems", "mobile-apps", "automation"] as const satisfies readonly (keyof typeof contentTaxonomy.service.categories)[];
+export const serviceCategoryIds = ["websites", "internal-systems", "mobile-apps"] as const satisfies readonly (keyof typeof contentTaxonomy.service.categories)[];
 
 // Stable URLs for static detail routes, in catalog offer order.
 export const serviceOfferSlugs = {
   websites: ["company-website", "landing-page", "online-store"],
-  "internal-systems": ["custom-erp", "internal-portal"],
-  "mobile-apps": ["customer-app", "field-app"],
-  automation: ["workflow-automation", "system-integrations"],
+  "internal-systems": ["custom-erp", "crm", "internal-portal"],
+  "mobile-apps": ["delivery-app", "booking-events-app", "sales-app"],
 } as const satisfies Record<(typeof serviceCategoryIds)[number], readonly string[]>;
 
 const messages: Record<Locale, typeof english> = { en: english, "pt-br": portuguese };

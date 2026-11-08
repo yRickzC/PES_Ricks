@@ -18,6 +18,8 @@ Em `heroLayers`, cada imagem tem um `id` exclusivo e as seguintes propriedades:
 | Parâmetro | Efeito |
 |---|---|
 | `src`, `width`, `height` | Caminho público e dimensões originais da imagem. |
+| `widths`, `sizes`, `quality` | Variantes responsivas, largura exibida por breakpoint e compressão dos derivados Astro; manter `sizes` alinhado às posições CSS. |
+| `loading`, `fetchpriority` | Descoberta e prioridade de rede; o céu identificado como LCP permanece eager/high. |
 | `desktop` / `mobile` | Composição independente em cada faixa de tela. |
 | `x`, `y` | Centro da imagem em relação à seção; fábrica e engrenagens usam a faixa inferior como referência. |
 | `width` | Largura CSS, aceitando %, vw, min() e max(). A proporção original é preservada. |
@@ -54,9 +56,19 @@ Mouse e scroll usam um único requestAnimationFrame por instância. O controlado
 
 Em telas com toque ou abaixo de 960px, o parallax fica estático; a névoa mantém seu movimento lento. `prefers-reduced-motion` desliga ambos os efeitos, inclusive quando a preferência muda. Sem JavaScript, toda a composição e os links continuam disponíveis, com névoa estática. Não há entrada animada que esconda o conteúdo inicial.
 
+## Caminho de carregamento
+
+Parallax e FadeInUp são importados dinamicamente após `window.load`. O HTML inicial permanece visível, e o reveal só prepara os alvos ainda abaixo da viewport. O céu não recebe reveal. Montagens assíncronas são invalidadas em `astro:before-swap`.
+
+O deck de projetos reserva desde o HTML a altura e as posições finais das cartas. Controles e dica usam `visibility` para preservar espaço antes da montagem; o fallback `noscript` mantém a lista rolável. Mudanças de seleção usam transform, sem alterar a altura do palco.
+
+`astro.config.ts` usa `build.inlineStylesheets: "always"` para incorporar os estilos das páginas no HTML e remover as requisições CSS bloqueantes apontadas no relatório. Isso aumenta o HTML e precisa ser reavaliado se o volume de CSS crescer. A arte da cortina de navegação só recebe `src` ao iniciar uma transição. No destino, após o DOM inicial estar disponível, a cortina espera somente imagens renderizadas que intersectam a viewport, sem promover lazy para eager, sem incluir eager abaixo da dobra e sem depender de `window.load`. A arte da própria cortina e o tempo mínimo de 240ms continuam na espera, limitada pelo prazo de oito segundos; falhas de imagem contam como concluídas. Fundos CSS não são condição de liberação.
+
 ## Imagens e validação pendente
 
-As imagens servidas em `public/images/` agora são WebP. Os 18 PNG e o SVG de origem permanecem como backup em `RAW/images/`, fora do diretório público. Os 19 WebP somam 1.608.242 bytes, contra 19.123.552 bytes dos originais: redução total de 91,6%. O SVG, que não é usado pelo frontend e que o FFmpeg instalado não decodifica, foi rasterizado temporariamente em 450 × 300 com Sharp; o arquivo final também foi codificado por FFmpeg/libwebp. Os demais arquivos foram convertidos diretamente, mantendo as dimensões de origem e o canal alpha quando existente. `SiteImage.astro` importa os WebP como metadados e usa `Image` de `astro:assets`, preparando variantes responsivas com `widths`/`sizes`; a geração dos derivados e os tamanhos transferidos ainda precisam ser observados em build/navegador. A ilha tem prioridade de carregamento alta; as outras imagens têm prioridade baixa e decodificação assíncrona. A propriedade `loading` de cada layer em `hero.ts` mantém céu, lua e ilha como eager; fábrica e engrenagens da transição inferior usam lazy. O navegador decide quando buscar imagens lazy conforme a proximidade da viewport.
+As imagens servidas em `public/images/` são WebP. Os originais permanecem em `RAW/images/`, fora do diretório público. `SiteImage.astro` importa os WebP como metadados e usa `Image` de `astro:assets`, preparando variantes responsivas com `widths`/`sizes` e qualidade configurável. Lua e ilha têm variantes intermediárias e `sizes` alinhado aos limites CSS, evitando selecionar uma largura desnecessariamente grande. Parede e vapor usam qualidade 55 e 50 por serem fundos decorativos de baixa opacidade; os arquivos públicos originais não foram recomprimidos. A geração dos derivados, a aparência e os tamanhos transferidos ainda precisam ser observados em build/navegador.
+
+O céu, apontado como LCP nas capturas de 2026-11-08, tem prioridade alta; a ilha usa auto e as demais camadas usam baixa. Todas mantêm decodificação assíncrona. `loading` em `hero.ts` mantém céu, lua e ilha eager; fábrica e engrenagens da transição inferior usam lazy. O navegador decide quando buscar imagens lazy conforme a proximidade da viewport. Preservar essas regras ao adicionar imagens e conferir no HTML gerado o `srcset`, `sizes` e a prioridade do LCP.
 
 A entrega teve inspeção estática de imports, assets, catálogos e atualização do grafo por AST local. Aplicativo, navegador, testes, check e build não foram executados, conforme CodeMode. Não há medição de FPS, LCP ou resultado visual em execução.
 

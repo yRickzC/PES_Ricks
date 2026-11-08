@@ -4,8 +4,7 @@
 
   .service-catalog:has(#service-type-websites:checked) [data-service-panel="websites"],
   .service-catalog:has(#service-type-internal-systems:checked) [data-service-panel="internal-systems"],
-  .service-catalog:has(#service-type-mobile-apps:checked) [data-service-panel="mobile-apps"],
-  .service-catalog:has(#service-type-automation:checked) [data-service-panel="automation"] {
+  .service-catalog:has(#service-type-mobile-apps:checked) [data-service-panel="mobile-apps"] {
     display: block;
   }
 }

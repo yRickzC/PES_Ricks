@@ -16,6 +16,10 @@ export interface HeroLayer {
   src: string;
   width: number;
   height: number;
+  widths: readonly number[];
+  sizes: string;
+  quality: number;
+  fetchpriority: "high" | "auto" | "low";
   loading: "eager" | "lazy";
   zIndex: number;
   opacity: number;
@@ -37,6 +41,7 @@ export const heroMotion = {
 export const heroLayers = [
   {
     id: "sky", src: "/images/Hero_Main_Background.webp", width: 1672, height: 941,
+    widths: [320, 480, 640, 960, 1280, 1672], sizes: "calc(100vw + 80px)", quality: 70, fetchpriority: "high",
     loading: "eager",
     zIndex: 0, opacity: 0.82, depth: { pointer: 5, scroll: 20 },
     desktop: { x: "50%", y: "50%", width: "100%" },
@@ -44,6 +49,9 @@ export const heroLayers = [
   },
   {
     id: "moon", src: "/images/Ladding_Hero_Moon.webp", width: 1536, height: 1024,
+    widths: [160, 192, 240, 320, 384, 480, 640, 720],
+    sizes: "(max-width: 395px) 48vw, (max-width: 959px) 190px, (max-width: 1333px) 18vw, 240px",
+    quality: 70, fetchpriority: "low",
     loading: "eager",
     zIndex: 2, opacity: 1, depth: { pointer: 10, scroll: 35 },
     desktop: { x: "50%", y: "0%", width: "clamp(160px, 18vw, 240px)" },
@@ -51,6 +59,9 @@ export const heroLayers = [
   },
   {
     id: "island", src: "/images/Ladding_Hero_Island.webp", width: 1536, height: 1024,
+    widths: [320, 480, 620, 720, 960, 1240, 1440, 1536],
+    sizes: "(max-width: 534px) 116vw, (max-width: 959px) 620px, (max-width: 1439px) 50vw, 720px",
+    quality: 75, fetchpriority: "auto",
     loading: "eager",
     zIndex: 3, opacity: 1, depth: { pointer: 20, scroll: 55 },
     desktop: { x: "50%", y: "48%", width: "min(50vw, 720px)" },
@@ -58,6 +69,7 @@ export const heroLayers = [
   },
   {
     id: "factory", src: "/images/Ladding_Hero_Factory.webp", width: 2172, height: 724,
+    widths: [660, 960, 1440, 1920, 2172], sizes: "(max-width: 659px) 660px, 100vw", quality: 70, fetchpriority: "low",
     loading: "lazy",
     zIndex: 5, opacity: 0.85, depth: { pointer: 8, scroll: 12 },
     desktop: { x: "50%", y: "100%", width: "100%", anchorY: "-100%" },
@@ -65,6 +77,7 @@ export const heroLayers = [
   },
   {
     id: "gears", src: "/images/Ladding_Hero_Gear.webp", width: 2172, height: 724,
+    widths: [360, 480, 640, 960, 1440, 1920, 2172], sizes: "(max-width: 959px) 106vw, 112vw", quality: 70, fetchpriority: "low",
     loading: "lazy",
     zIndex: 6, opacity: 0.9, depth: { pointer: 30, scroll: 22 },
     desktop: { x: "50%", y: "100%", width: "112%", anchorY: "-100%" },

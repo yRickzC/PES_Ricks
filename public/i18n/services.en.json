@@ -132,24 +132,18 @@
     "label": "ERP & systems",
     "summary": "For teams working across spreadsheets and disconnected tools. Centralize information and make everyday processes easier to follow.",
     "offers": [
-      { "title": "Custom ERP", "description": "Bring orders, inventory and day-to-day operations into one system shaped around your workflow." },
+      { "title": "ERP", "description": "Bring orders, inventory and day-to-day operations into one system shaped around your workflow." },
+      { "title": "CRM", "description": "Organize contacts, track opportunities and keep customer conversations in one place so your team can follow up on sales." },
       { "title": "Internal portal", "description": "Give your team a place to manage requests, approvals and reports with the right permissions." }
     ]
   },
   "mobile-apps": {
     "label": "Mobile apps",
-    "summary": "For businesses that need to serve customers on their phones or give field teams a practical work tool.",
+    "summary": "For businesses that want to receive orders, manage bookings and events or sell on mobile, with an experience built for their customers.",
     "offers": [
-      { "title": "Customer app", "description": "Let customers book, place orders or manage their accounts from their phones." },
-      { "title": "Field app", "description": "Help teams record visits, complete checklists and update work orders on the move." }
-    ]
-  },
-  "automation": {
-    "label": "Automation",
-    "summary": "For businesses spending time moving data and repeating tasks. Connect tools and reduce manual steps in your workflow.",
-    "offers": [
-      { "title": "Workflow automation", "description": "Turn repetitive steps into flows that process requests, send alerts and keep records up to date." },
-      { "title": "System integrations", "description": "Connect the tools your business uses so information moves between them without the team entering the same data twice." }
+      { "title": "Delivery apps", "description": "Let customers browse your menu, place orders and track delivery in an app built for your business." },
+      { "title": "Booking and event apps", "description": "Make appointments and event registration easier, with availability, confirmations and useful details together on mobile." },
+      { "title": "Sales apps", "description": "Put your catalog on customers' phones, with product selection, a shopping cart and order tracking in your own shopping experience." }
     ]
   }
 }

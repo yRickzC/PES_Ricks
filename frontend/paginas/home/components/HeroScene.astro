@@ -10,18 +10,19 @@ import SiteImage from "../../../components/site/SiteImage.astro";
       class:list={["hero-layer", `hero-layer--${layer.id}`]}
       style={heroLayerStyle(layer)}
       data-hero-layer={layer.id}
-      data-home-reveal
+      data-home-reveal={layer.id === "sky" ? undefined : true}
     >
       <SiteImage
         src={layer.src}
         width={layer.width}
         height={layer.height}
-        widths={[320, 640, 960, 1440, 1920].filter((width) => width <= layer.width)}
-        sizes={layer.id === "moon" ? "240px" : layer.id === "island" ? "(max-width: 959px) 116vw, 50vw" : "100vw"}
+        widths={[...layer.widths]}
+        sizes={layer.sizes}
+        quality={layer.quality}
         alt=""
         loading={layer.loading}
         decoding="async"
-        fetchpriority={layer.id === "island" ? "high" : "low"}
+        fetchpriority={layer.fetchpriority}
         draggable="false"
       />
     </div>

@@ -9,9 +9,8 @@ const sources = import.meta.glob<ImageMetadata>("/public/images/*.png", { import
 const layers = await Promise.all((biome?.layers ?? []).map(async (layer) => {
   const source = await sources[`/public${layer.src}`]?.();
   if (!source) throw new Error(`Missing biome asset: ${layer.src}`);
-  // Preserve Crystal Cave's original image requests and composition.
-  if (biome!.id === "crystal-cave") return { ...layer, url: withBasePath(layer.src, import.meta.env.BASE_URL), width: source.width, height: source.height, srcset: "" };
-  const image = await getImage({ src: source, width: source.width, widths: [720, 1280, source.width].filter((width) => width <= source.width), format: "webp" });
+  // Derive responsive WebP for every scene, keeping the original PNGs and alpha.
+  const image = await getImage({ src: source, width: source.width, widths: [720, 1280, source.width].filter((width) => width <= source.width), format: "webp", quality: biome?.id === "crystal-cave" ? 85 : undefined });
   return { ...layer, url: withBasePath(image.src, import.meta.env.BASE_URL), width: Number(image.attributes.width), height: Number(image.attributes.height), srcset: image.srcSet.attribute };
 }));
 ---
@@ -21,7 +20,7 @@ const layers = await Promise.all((biome?.layers ?? []).map(async (layer) => {
     {layers.map((layer) => (
       <div class={`project-biome-layer project-biome-layer--${layer.className}`} data-project-biome-layer={layer.id} style={projectLayerStyle(layer)}>
         <div class="project-biome-placement">
-          <img data-biome-src={layer.url} data-biome-srcset={layer.srcset || undefined} sizes="(max-width: 760px) 1200px, 2172px" width={layer.width} height={layer.height} alt="" decoding="async" draggable="false" />
+          <img data-biome-src={layer.url} data-biome-srcset={layer.srcset || undefined} sizes="(max-width: 760px) 1200px, 2172px" width={layer.width} height={layer.height} alt="" decoding="async" fetchpriority={layer.className === "cave-background" ? "auto" : "low"} draggable="false" />
           <noscript><img src={layer.url} srcset={layer.srcset || undefined} sizes="(max-width: 760px) 1200px, 2172px" width={layer.width} height={layer.height} alt="" loading="lazy" /></noscript>
         </div>
       </div>

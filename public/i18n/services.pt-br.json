@@ -132,24 +132,18 @@
     "label": "ERP e sistemas",
     "summary": "Para equipes que trabalham entre planilhas e ferramentas desconectadas. Centralize informações e facilite o acompanhamento da operação.",
     "offers": [
-      { "title": "ERP sob medida", "description": "Reúna pedidos, estoque e rotinas operacionais em um sistema adaptado ao fluxo da sua empresa." },
+      { "title": "ERP", "description": "Reúna pedidos, estoque e rotinas operacionais em um sistema adaptado ao fluxo da sua empresa." },
+      { "title": "CRM", "description": "Organize contatos, acompanhe oportunidades e mantenha o histórico de atendimento para sua equipe dar continuidade às negociações." },
       { "title": "Portal interno", "description": "Dê à equipe um espaço para gerenciar solicitações, aprovações e relatórios com controle de acesso." }
     ]
   },
   "mobile-apps": {
     "label": "Apps mobile",
-    "summary": "Para negócios que precisam atender clientes pelo celular ou oferecer uma ferramenta prática às equipes de campo.",
+    "summary": "Para negócios que querem receber pedidos, organizar agendamentos e eventos ou vender pelo celular, com uma experiência própria para seus clientes.",
     "offers": [
-      { "title": "App para clientes", "description": "Permita que clientes façam reservas, pedidos ou gerenciem a própria conta pelo celular." },
-      { "title": "App para equipes de campo", "description": "Registre visitas, preencha checklists e atualize ordens de serviço durante o trabalho em campo." }
-    ]
-  },
-  "automation": {
-    "label": "Automação",
-    "summary": "Para empresas que gastam tempo copiando dados e repetindo tarefas. Conecte ferramentas e reduza etapas manuais na rotina.",
-    "offers": [
-      { "title": "Automação de rotinas", "description": "Transforme tarefas repetitivas em fluxos que processam solicitações, enviam alertas e atualizam registros." },
-      { "title": "Integração entre sistemas", "description": "Conecte as ferramentas do seu negócio para que as informações circulem entre elas sem a equipe digitar os mesmos dados duas vezes." }
+      { "title": "Apps para delivery", "description": "Permita que seus clientes consultem o cardápio, façam pedidos e acompanhem a entrega em um aplicativo do seu negócio." },
+      { "title": "Apps para agendamentos/eventos", "description": "Facilite a reserva de horários e a inscrição em eventos, com disponibilidade, confirmações e informações reunidas no celular." },
+      { "title": "Apps para vendas", "description": "Leve seu catálogo ao celular dos clientes, com escolha de produtos, carrinho e acompanhamento dos pedidos em uma experiência de compra própria." }
     ]
   }
 }

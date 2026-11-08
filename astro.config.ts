@@ -24,6 +24,9 @@ export default defineConfig({
   base,
   srcDir: "./frontend",
   publicDir: "./public",
+  build: {
+    inlineStylesheets: "always",
+  },
   i18n: {
     locales: [...locales],
     defaultLocale,

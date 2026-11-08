@@ -15,7 +15,7 @@ const machinery = [
 
 <div class="factory-interior">
   <div class="factory-shell" aria-hidden="true" inert>
-    <SiteImage class="factory-wall" src={`${imageRoot}Background1.webp`} alt="" widths={[480, 768, 1280, 1774]} sizes="100vw" loading="lazy" decoding="async" />
+    <SiteImage class="factory-wall" src={`${imageRoot}Background1.webp`} alt="" widths={[480, 768, 1280, 1774]} sizes="100vw" quality={55} loading="lazy" decoding="async" />
     <picture class="factory-hall">
       <source media="(max-width: 767px)" srcset={emptyImage} />
       <SiteImage src={`${imageRoot}Background0.webp`} alt="" widths={[960, 1440, 2172]} sizes="100vw" loading="lazy" decoding="async" />
@@ -29,11 +29,11 @@ const machinery = [
         <SiteImage src={`${imageRoot}${file}.webp`} alt="" widths={widths} sizes={sizes} loading="lazy" decoding="async" />
       </picture>)}
       <div class="factory-steam factory-steam--boiler">
-        <SiteImage src={`${imageRoot}Steam.webp`} alt="" widths={[640, 960]} sizes="(max-width: 767px) 150vw, 960px" loading="lazy" decoding="async" />
+        <SiteImage src={`${imageRoot}Steam.webp`} alt="" widths={[480, 640, 800, 960]} sizes="(max-width: 767px) 150vw, 960px" quality={50} loading="lazy" decoding="async" />
       </div>
       <picture class="factory-steam factory-steam--floor">
         <source media="(max-width: 1099px)" srcset={emptyImage} />
-        <SiteImage src={`${imageRoot}Steam.webp`} alt="" widths={[640, 960]} sizes="960px" loading="lazy" decoding="async" />
+        <SiteImage src={`${imageRoot}Steam.webp`} alt="" widths={[480, 640, 800, 960]} sizes="960px" quality={50} loading="lazy" decoding="async" />
       </picture>
     </div>
     <slot />

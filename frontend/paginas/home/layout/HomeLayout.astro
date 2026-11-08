@@ -23,17 +23,34 @@ const { locale, copy } = Astro.props;
 </Main>
 
 <script>
-  import { mountScrollReveal } from "../../../utils/scroll-reveal";
+  const mounted = new WeakSet<Element>();
+  let generation = 0;
 
-  const home = document.querySelector(".home-layout");
+  async function mountHomeReveal() {
+    const home = document.querySelector(".home-layout");
+    if (!home || mounted.has(home)) return;
 
-  if (home) {
+    const pendingGeneration = generation;
+    const { mountScrollReveal } = await import("../../../utils/scroll-reveal");
+    if (pendingGeneration !== generation || !home.isConnected || mounted.has(home)) return;
+
     const targets = Array.from(home.querySelectorAll<HTMLElement>("[data-home-reveal], [data-home-reveal-group] > *"));
     const footer = home.closest(".site-frame")?.querySelector<HTMLElement>(".site-footer");
     if (footer) targets.push(footer);
 
-    mountScrollReveal(home, targets);
+    // Already visible content stays visible when this enhancement arrives.
+    mountScrollReveal(home, targets.filter((target) => target.getBoundingClientRect().top >= window.innerHeight));
+    mounted.add(home);
   }
+
+  function scheduleHomeReveal() {
+    if (document.readyState === "complete") void mountHomeReveal();
+    else window.addEventListener("load", () => void mountHomeReveal(), { once: true });
+  }
+
+  scheduleHomeReveal();
+  document.addEventListener("astro:page-load", scheduleHomeReveal);
+  document.addEventListener("astro:before-swap", () => { generation += 1; });
 </script>
 
 <style is:global>

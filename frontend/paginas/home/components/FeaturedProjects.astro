@@ -15,6 +15,9 @@ interface Props { projects: ContentEntry[]; copy: Messages; locale: Locale }
 const { projects, copy, locale } = Astro.props;
 const projectsHref = getRelativeLocaleUrl(locale, "projects");
 const cards = Array.from({ length: PROJECT_DECK_SIZE }, (_, index) => projects[index]);
+const firstProject = cards.findIndex((project) => project !== undefined);
+const initialActive = firstProject >= 0 ? firstProject : Math.floor(PROJECT_DECK_SIZE / 2);
+const initialMobileActive = firstProject >= 0 ? firstProject : 0;
 function projectHref({ metadata }: ContentEntry) {
   const link = metadata.links[0];
   if (link) return link.url.startsWith("#") ? `${projectsHref}${link.url}` : withBasePath(link.url, import.meta.env.BASE_URL);
@@ -23,6 +26,14 @@ function projectHref({ metadata }: ContentEntry) {
   return `${projectsHref}#projects-${category?.category ?? "all"}`;
 }
 ---
+
+<noscript>
+  <style is:inline>
+    .project-deck .project-deck-stage { display: flex; overflow-x: auto; padding: var(--deck-card-top) 8px 0; }
+    .project-deck .project-deck-slot,
+    .project-deck .project-deck-slot[data-active="true"] { position: static; transform: none; }
+  </style>
+</noscript>
 
 <section class="home-section" aria-labelledby="home-projects-title">
   <header class="home-section-heading" data-home-reveal>
@@ -34,8 +45,12 @@ function projectHref({ metadata }: ContentEntry) {
       {cards.map((project, index) => {
         const Card = project ? "a" : "button";
         const label = copy.homeProjectSlot.replace("{number}", String(index + 1));
+        const distance = Math.abs(index - initialActive);
+        const initialState = firstProject >= 0 ? String(index === initialActive)
+          : index === initialActive ? "desktop" : index === initialMobileActive ? "mobile" : "false";
+        const slotStyle = `--deck-slot:${index - Math.floor(PROJECT_DECK_SIZE / 2)};--deck-offset:${index - initialMobileActive};--deck-depth:${PROJECT_DECK_SIZE - distance};--deck-mobile-depth:${PROJECT_DECK_SIZE - Math.abs(index - initialMobileActive)};--deck-scale:${index === initialActive ? 1.035 : 0.96 - distance * 0.025}`;
         return (
-          <li class="project-deck-slot" data-deck-slot style={`--deck-slot:${index - Math.floor(PROJECT_DECK_SIZE / 2)}`}>
+          <li class="project-deck-slot" data-deck-slot data-active={initialState} style={slotStyle}>
             <article class:list={["project-deck-card", { "project-deck-card--empty": !project }]}>
               <Card class="project-deck-action" data-deck-card href={project ? projectHref(project) : undefined} type={project ? undefined : "button"} aria-label={`${label}: ${project?.metadata.title ?? copy.homeProjectSlotEmpty}`}>
                 <span class="project-deck-art">
@@ -57,12 +72,12 @@ function projectHref({ metadata }: ContentEntry) {
         );
       })}
     </ul>
-    <div class="project-deck-controls" data-deck-controls hidden>
+    <div class="project-deck-controls" data-deck-controls>
       <button class="project-deck-nav project-deck-nav--previous" type="button" data-deck-previous aria-label={copy.homeProjectPrevious} aria-controls="home-project-deck"><Icon name="arrow" /></button>
       <span class="project-deck-counter" data-deck-counter aria-hidden="true"></span>
       <button class="project-deck-nav" type="button" data-deck-next aria-label={copy.homeProjectNext} aria-controls="home-project-deck"><Icon name="arrow" /></button>
     </div>
-    <p class="project-deck-hint" data-deck-hint hidden>{copy.homeProjectDeckHint}</p>
+    <p class="project-deck-hint">{copy.homeProjectDeckHint}</p>
     <p class="sr-only" data-deck-status role="status" aria-live="polite" aria-atomic="true"></p>
   </div>
 </section>

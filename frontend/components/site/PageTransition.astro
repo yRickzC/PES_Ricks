@@ -12,12 +12,12 @@ const skyUrl = withBasePath("/images/Hero_Main_Background.webp", base);
 
 <div id="page-transition" class="page-transition" data-base={base} aria-hidden="true" hidden>
   <div class="page-transition__sky">
-    <img src={skyUrl} width="1672" height="941" alt="" draggable="false" />
+    <img data-src={skyUrl} width="1672" height="941" alt="" decoding="async" draggable="false" />
     <ShootingStars />
   </div>
   <div class="page-transition__foreground">
-    <div class="page-transition__mark" style={`--page-transition-mark: url("${logoUrl}")`}>
-      <img src={logoUrl} width="448" height="448" alt="" fetchpriority="high" draggable="false" />
+    <div class="page-transition__mark" data-mark={logoUrl}>
+      <img data-src={logoUrl} width="448" height="448" alt="" decoding="async" draggable="false" />
       <div class="page-transition__sheen"></div>
     </div>
   </div>
@@ -26,7 +26,6 @@ const skyUrl = withBasePath("/images/Hero_Main_Background.webp", base);
 <script is:inline>
   (() => {
     const curtain = document.getElementById("page-transition");
-    const artworkReady = Promise.allSettled(Array.from(curtain.querySelectorAll("img"), (image) => image.decode?.()));
     const motion = matchMedia("(prefers-reduced-motion: no-preference)");
     const basePath = curtain.dataset.base.replace(/\/+$/, "");
     const handoffKey = `rickz-page-transition:${basePath}`;
@@ -34,6 +33,19 @@ const skyUrl = withBasePath("/images/Hero_Main_Background.webp", base);
     const maximumWaitMs = 8000;
     let activeRun;
     let deadline;
+    let artworkReady;
+
+    function loadArtwork() {
+      if (artworkReady) return artworkReady;
+      // Hidden transition artwork must not compete with the initial page.
+      const mark = curtain.querySelector("[data-mark]");
+      mark.style.setProperty("--page-transition-mark", `url("${mark.dataset.mark}")`);
+      artworkReady = Promise.allSettled(Array.from(curtain.querySelectorAll("img[data-src]"), (image) => {
+        image.src = image.dataset.src;
+        return image.decode?.();
+      }));
+      return artworkReady;
+    }
 
     function pageKey(url) {
       return url.pathname.replace(/\/+$/, "") + url.search;
@@ -84,28 +96,29 @@ const skyUrl = withBasePath("/images/Hero_Main_Background.webp", base);
       const run = new AbortController();
       const { signal } = run;
       activeRun = run;
+      const artwork = loadArtwork();
       show("hold");
       deadline = setTimeout(() => void exit(run), maximumWaitMs);
 
-      const documentLoaded = document.readyState === "complete" ? Promise.resolve() : new Promise((resolve) => {
-        window.addEventListener("load", resolve, { once: true, signal });
-      });
       const held = new Promise((resolve) => setTimeout(resolve, minimumHoldMs));
 
       async function waitForImages() {
         if (signal.aborted || curtain.dataset.phase === "exit") return;
-        // Only wait for images from the initial page, excluding deferred biomes.
-        const images = Array.from(document.images).filter((image) =>
-          !curtain.contains(image) &&
-          (image.getAttribute("src") || image.getAttribute("srcset")) &&
-          !image.closest("[hidden]") && !image.hasAttribute("data-biome-src"),
-        );
-        const decoded = images.map((image) => {
-          if (image.loading === "lazy") image.loading = "eager";
-          return image.decode?.();
+        // Only the initial viewport can delay the handoff, regardless of loading mode.
+        const images = Array.from(document.images).filter((image) => {
+          if (curtain.contains(image) ||
+              !(image.getAttribute("src") || image.getAttribute("srcset")) ||
+              image.closest("[hidden]") || image.hasAttribute("data-biome-src") ||
+              image.getClientRects().length === 0) return false;
+          const bounds = image.getBoundingClientRect();
+          return bounds.width > 0 && bounds.height > 0 &&
+            bounds.bottom > 0 && bounds.top < innerHeight &&
+            bounds.right > 0 && bounds.left < innerWidth;
         });
-        // Window load covers stylesheet backgrounds. Failed images count as settled.
-        await Promise.allSettled([artworkReady, held, documentLoaded, ...decoded]);
+        const decoded = images.map((image) => image.decode?.());
+        // The initial DOM is available; unrelated downloads must not gate exit.
+        // Failed images count as settled, and the deadline bounds slow resources.
+        await Promise.allSettled([artwork, held, ...decoded]);
         void exit(run);
       }
 
@@ -148,7 +161,7 @@ const skyUrl = withBasePath("/images/Hero_Main_Background.webp", base);
       link.closest("dialog[open]")?.close();
 
       const artworkTimeout = new Promise((resolve) => setTimeout(resolve, 400));
-      await Promise.race([artworkReady, artworkTimeout]);
+      await Promise.race([loadArtwork(), artworkTimeout]);
       if (run.signal.aborted) return;
       show("enter");
       await waitForMotion();
