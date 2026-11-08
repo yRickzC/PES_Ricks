@@ -51,9 +51,9 @@
   text-decoration: none;
   transition: background-color 180ms, border-color 180ms, color 180ms;
 }
-.hero-action--primary { background: #d9c9f2; border-color: #d9c9f2; color: #1b1428; }
+.hero-action--primary { background: #fff; border-color: #fff; color: #1b1428; }
 .hero-action--secondary { background: #100d1c99; color: #d8d1e5; }
-.hero-action--primary:hover { background: #e9ddfb; border-color: #e9ddfb; }
+.hero-action--primary:hover { background: #f2f2f2; border-color: #f2f2f2; }
 .hero-action--secondary:hover { background: #251a3b; border-color: #a791ce77; }
 .hero-action:focus-visible { outline: 2px solid #e1ceff; outline-offset: 5px; }
 @keyframes hero-fog-drift {

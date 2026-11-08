@@ -94,8 +94,8 @@
 .home-services-copy { min-width: 0; max-width: 640px; }
 .home-services h2 { max-width: 17ch; margin-inline: auto; font-size: clamp(32px, 4.5vw, 56px); line-height: 1.08; }
 .home-services p { max-width: 50ch; margin: 20px auto 0; color: var(--color-text-secondary); font-size: 15px; line-height: 1.75; }
-.hero-action.home-services-action { gap: 12px; min-height: 48px; max-width: 100%; margin-top: 8px; padding: 12px 24px; border-color: rgb(197 166 244 / 28%); border-radius: 999px; background: linear-gradient(135deg, #7354bd, #56328b); color: #fff; }
-.hero-action.home-services-action:hover { background: linear-gradient(135deg, #8062c9, #64409b); border-color: rgb(211 185 255 / 50%); }
+.hero-action.home-services-action { gap: 12px; min-height: 48px; max-width: 100%; margin-top: 8px; padding: 12px 24px; border-color: #fff; border-radius: 6px; background: #fff; color: #1b1428; }
+.hero-action.home-services-action:hover { background: #f2f2f2; border-color: #f2f2f2; }
 .home-services-action svg { flex-shrink: 0; }
 
 @media (max-width: 767px) {
