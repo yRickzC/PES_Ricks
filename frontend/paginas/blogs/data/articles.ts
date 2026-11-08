@@ -16,7 +16,7 @@ export function articleDate(date: string | undefined, locale: Locale): string | 
   }).format(new Date(date + "T00:00:00Z"));
 }
 
-export interface ArticlePageProps {
+export type ArticlePageProps = {
   document: ContentDocument;
   html: string;
   locale: Locale;
@@ -30,7 +30,7 @@ export function articlePages(content: PublicContent, locale: Locale, basePath = 
     if (!document) throw new Error("Corpo LU ausente: " + entry.path + ".");
     const languagePaths: ArticlePageProps["languagePaths"] = {};
     for (const language of locales) {
-      if (content.database.get("article:" + entry.metadata.id, language)) {
+      if (content.database.get(`article:${entry.metadata.id}`, language)) {
         languagePaths[language] = articleHref(entry.metadata.id, language, basePath);
       }
     }

@@ -36,7 +36,7 @@ export function mountProjectDeck(root: HTMLElement): () => void {
 
   cards.forEach((card, index) => {
     card.addEventListener("pointerenter", (event) => {
-      if (hover.matches && event.pointerType !== "touch") select(index);
+      if (hover.matches && event instanceof PointerEvent && event.pointerType !== "touch") select(index);
     }, { signal });
     card.addEventListener("pointerdown", () => {
       // O foco do toque chega antes do click: preserve a seleção anterior.
@@ -44,7 +44,7 @@ export function mountProjectDeck(root: HTMLElement): () => void {
     }, { signal });
     card.addEventListener("focus", () => select(index), { signal });
     card.addEventListener("click", (event) => {
-      if (event.detail > 0 && pressed?.index === index && !pressed.wasActive) event.preventDefault();
+      if (event instanceof MouseEvent && event.detail > 0 && pressed?.index === index && !pressed.wasActive) event.preventDefault();
       select(index, card instanceof HTMLButtonElement);
       pressed = undefined;
     }, { signal });

@@ -36,6 +36,8 @@
   "brief": {
     "sectionTitle": "Projetos customizados",
     "messageTitle": "Pedido de orçamento — projeto customizado",
+    "toolDescription": "Prepara um rascunho de orçamento de software para revisão do visitante. Não envia solicitações nem abre o WhatsApp. Qualquer ação externa exige confirmação separada do visitante.",
+    "ideaDescription": "Descreva o projeto de software, seu objetivo, os usuários e as principais funcionalidades.",
     "intro": "Ainda não sabe qual solução escolher? Conte sobre seu negócio em três etapas curtas para conversarmos sobre o escopo e prepararmos uma proposta.",
     "introPhrases": [
       "Ainda não sabe qual solução escolher? Conte sobre seu negócio.",

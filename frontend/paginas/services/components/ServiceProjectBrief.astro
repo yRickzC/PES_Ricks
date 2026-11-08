@@ -24,11 +24,14 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
     <form
       class="service-brief-form"
       method="post"
+      toolname="prepare_software_quote"
+      tooldescription={brief.toolDescription}
       aria-labelledby="service-brief-form-title"
       data-project-brief
       data-whatsapp-url={whatsappHref}
       data-title={brief.messageTitle}
       data-required-text={brief.requiredText}
+      data-prepare-label={brief.prepare}
       hidden
     >
       <h3 id="service-brief-form-title" data-brief-reveal>{brief.title}</h3>
@@ -54,7 +57,7 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
         <div class="service-brief-fields">
           <div data-brief-reveal>
             <label for="service-brief-idea">{brief.idea}</label>
-            <textarea id="service-brief-idea" name="idea" rows="5" maxlength="1000" placeholder={brief.ideaPlaceholder} data-brief-label={brief.idea} required></textarea>
+            <textarea id="service-brief-idea" name="idea" toolparamdescription={brief.ideaDescription} rows="5" maxlength="1000" placeholder={brief.ideaPlaceholder} data-brief-label={brief.idea} required></textarea>
           </div>
           <div data-brief-reveal>
             <label for="service-brief-references">
@@ -85,12 +88,11 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
         </button>
       </div>
       <p class="service-brief-note" data-brief-note data-brief-reveal hidden>{whatsappHref ? brief.review : brief.copyHint}</p>
-      {!whatsappHref && (
-        <div class="service-brief-draft" data-brief-draft data-brief-reveal hidden>
-          <label for="service-brief-draft">{brief.draft}</label>
-          <textarea id="service-brief-draft" rows="6" readonly></textarea>
-        </div>
-      )}
+      <div class="service-brief-draft" data-brief-draft hidden>
+        <label for="service-brief-draft">{brief.draft}</label>
+        <textarea id="service-brief-draft" rows="6" readonly></textarea>
+        {whatsappHref && <a class="service-brief-action" data-brief-confirm hidden>{brief.openWhatsApp}</a>}
+      </div>
     </form>
   </div>
 </section>
@@ -100,6 +102,10 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
 
   type BriefField = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
   type BriefDraft = { step: number; fields: Record<string, string> };
+  type AgentSubmitEvent = SubmitEvent & {
+    agentInvoked?: boolean;
+    respondWith?: (result: Promise<unknown>) => void;
+  };
   const draftKey = "rickz:service-brief:v1";
 
   function mountProjectBrief() {
@@ -118,10 +124,12 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
     const finalLabel = next.dataset.finalLabel ?? nextLabel;
     const draft = form.querySelector<HTMLElement>("[data-brief-draft]");
     const draftText = draft?.querySelector("textarea");
+    const confirm = draft?.querySelector<HTMLAnchorElement>("[data-brief-confirm]");
     const stepFields = steps.map((step) => Array.from(step.querySelectorAll<BriefField>("[data-brief-label]")));
     const fields = stepFields.flat();
     const lastStep = steps.length - 1;
     let activeStep = 0;
+    let agentReview = false;
 
     function saveDraft() {
       try {
@@ -201,14 +209,19 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
 
     form.addEventListener("submit", (event) => {
       event.preventDefault();
-      if (activeStep < lastStep) {
+      const agentEvent = event as AgentSubmitEvent;
+      const preparingForAgent = agentReview || agentEvent.agentInvoked === true;
+      if (!preparingForAgent && activeStep < lastStep) {
         if (validateStep(activeStep)) {
           showStep(activeStep + 1);
           saveDraft();
         }
         return;
       }
-      if (!stepFields.every((_, index) => validateStep(index))) return;
+      if (!stepFields.every((_, index) => validateStep(index))) {
+        if (agentEvent.agentInvoked) agentEvent.respondWith?.(Promise.resolve({ status: "invalid", message: requiredText }));
+        return;
+      }
       saveDraft();
 
       const parts = [title];
@@ -219,7 +232,7 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
       }
 
       const message = parts.join("\n\n");
-      if (whatsappUrl) {
+      if (whatsappUrl && !preparingForAgent) {
         const url = new URL(whatsappUrl);
         url.searchParams.set("text", message);
         window.location.assign(url.href);
@@ -231,13 +244,37 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
         draft.hidden = false;
         draftText.focus();
         draftText.select();
+        if (confirm && whatsappUrl) {
+          const url = new URL(whatsappUrl);
+          url.searchParams.set("text", message);
+          confirm.href = url.href;
+          confirm.hidden = false;
+        }
       }
+      if (agentEvent.agentInvoked) agentEvent.respondWith?.(Promise.resolve({ status: "prepared", message, requiresUserConfirmation: true }));
     });
 
     // Validate only the visible step until the final submission.
     form.noValidate = true;
     showStep(restoreDraft(), false);
     form.hidden = false;
+    // Expose all prefilled steps for human review; tool invocation never navigates externally.
+    const modelContext = (document as Document & { modelContext?: EventTarget }).modelContext;
+    const agentListeners = new AbortController();
+    modelContext?.addEventListener("toolactivated", (event) => {
+      if ((event as Event & { toolName?: string }).toolName !== form.getAttribute("toolname")) return;
+      agentReview = true;
+      steps.forEach((step) => { step.hidden = false; });
+      back.hidden = true;
+      next.textContent = form.dataset.prepareLabel ?? finalLabel;
+      form.scrollIntoView({ block: "center", behavior: "instant" });
+    }, { signal: agentListeners.signal });
+    modelContext?.addEventListener("toolcancel", (event) => {
+      if ((event as Event & { toolName?: string }).toolName !== form.getAttribute("toolname")) return;
+      agentReview = false;
+      showStep(activeStep, false);
+    }, { signal: agentListeners.signal });
+    document.addEventListener("astro:before-swap", () => agentListeners.abort(), { once: true });
     const section = form.closest(".service-brief");
     if (section) mountScrollReveal(section, Array.from(section.querySelectorAll<HTMLElement>("[data-brief-reveal]")));
   }

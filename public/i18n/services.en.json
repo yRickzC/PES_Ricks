@@ -36,6 +36,8 @@
   "brief": {
     "sectionTitle": "Custom projects",
     "messageTitle": "Quote request — custom project",
+    "toolDescription": "Prepare a software project quote draft for the visitor to review. Does not send a request or open WhatsApp. The visitor must confirm any external action separately.",
+    "ideaDescription": "Describe the software project, its goal, intended users and main features.",
     "intro": "Not sure which solution fits? Tell me about your business in three short steps so we can discuss the scope and prepare a proposal.",
     "introPhrases": [
       "Not sure which solution fits? Tell me about your business.",

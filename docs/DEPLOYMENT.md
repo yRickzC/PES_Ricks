@@ -34,6 +34,18 @@ Se o build passar e o deploy ficar em `deployment_queued` ou `updating_pages` at
 
 Para um domínio/caminho diferente, defina **PUBLIC_SITE_URL** e **PUBLIC_BASE_PATH** no ambiente do job de build. Por exemplo, domínio próprio na raiz: **PUBLIC_SITE_URL=https://exemplo.com** e **PUBLIC_BASE_PATH=/**.
 
+## SEO e descoberta por ferramentas de IA
+
+O fallback de `site` é `https://<owner>.github.io`. `PUBLIC_SITE_URL`, quando definido no ambiente do build, deve conter somente uma origem HTTPS; o subcaminho continua em `PUBLIC_BASE_PATH`. Configurações com caminho, query ou credenciais são rejeitadas.
+
+O layout compartilhado `frontend/main.astro` emite um canonical absoluto para o pathname da própria página. O caminho conserva o base, o idioma e a rota individual, sem parâmetros de consulta ou fragmento. No destino atual, os canonicals incluem `https://yrickzc.github.io/PES_Ricks/`, `https://yrickzc.github.io/PES_Ricks/services/` e `https://yrickzc.github.io/PES_Ricks/pt-br/services/`. Foram conferidos os 26 documentos de cada um dos builds com base raiz e `/PES_Ricks`, incluindo os detalhes de serviços. O catálogo não possui artigos publicados para testar uma página real de artigo.
+
+`public/llms.txt` descreve o site e aponta para as páginas principais nos dois idiomas. A integração `backend/seo/integration.ts` adapta seus links à origem/base no build e no desenvolvimento. A publicação esperada é `/PES_Ricks/llms.txt`; o layout fornece `rel="describedby"`. Sua presença não garante recomendações por modelos de IA.
+
+`public/robots.txt` permite o rastreamento, mas sua publicação no subcaminho não substitui `/robots.txt` da origem. Os manifestos `/.well-known/ard.json` e `ai-catalog.json`, relativos à base, contêm `entries: []` válido: não há recursos MCP/A2A/skills publicados. Links no head apresentam ambos aos consumidores. O formulário de orçamento expõe uma ferramenta WebMCP declarativa com revisão humana, sem envio ou navegação externa automática na invocação do agente.
+
+Consulte [SEO.md](SEO.md) para arquivos, URLs, resultados reais, fontes oficiais e instruções exatas para publicar o robots na raiz usando o repositório de usuário. O deploy deste projeto não configura outro repositório ou a raiz do domínio.
+
 ## Cache e auditoria de desempenho
 
 As capturas Lighthouse de 2026-11-08 mostram TTL de dez minutos nos assets publicados no GitHub Pages. O workflow atual envia arquivos estáticos; não configura cabeçalhos HTTP `Cache-Control`. Os nomes com hash em `_astro/` já distinguem versões dos derivados, mas não ampliam o TTL da resposta.
@@ -47,4 +59,4 @@ npm ci
 npm run build
 ~~~
 
-O resultado estático fica em **dist/**. O build não foi executado ao adicionar este setup; a primeira compilação e publicação devem ser acompanhadas na aba **Actions**.
+O resultado estático fica em **dist/**. Em 2026-11-08, check, 116 testes e builds para as duas bases passaram localmente; detalhes em [SEO.md](SEO.md). Nenhum deploy ou Lighthouse foi executado nesta validação; acompanhe a próxima publicação na aba **Actions**.

@@ -4,6 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { defaultLocale, locales } from "./frontend/config/i18n";
 import { pageRoutes } from "./frontend/config/navigation";
 import { contentIntegration } from "./backend/content/node/integration.ts";
+import { discoveryIntegration, siteOrigin } from "./backend/seo/integration.ts";
 
 const [repositoryOwner = "yRickzC", repositoryName = "PES_Ricks"] = (
   process.env.GITHUB_REPOSITORY ?? "yRickzC/PES_Ricks"
@@ -16,7 +17,7 @@ const configuredBasePath = process.env.PUBLIC_BASE_PATH?.trim() || defaultBasePa
 const base = configuredBasePath === "/"
   ? "/"
   : "/" + configuredBasePath.replace(/^\/+|\/+$/gu, "");
-const site = (process.env.PUBLIC_SITE_URL?.trim() || "https://" + repositoryOwner.toLowerCase()).replace(/\/+$/u, "");
+const site = siteOrigin(process.env.PUBLIC_SITE_URL, repositoryOwner);
 
 export default defineConfig({
   output: "static",
@@ -36,6 +37,7 @@ export default defineConfig({
   },
   integrations: [
     contentIntegration(),
+    discoveryIntegration(),
     {
       name: "domain-pages",
       hooks: {

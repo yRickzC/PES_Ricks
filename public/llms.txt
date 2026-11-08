@@ -1,0 +1,23 @@
+# Rickz
+
+> Portfólio e serviços de desenvolvimento de software, sites, aplicativos mobile e sistemas empresariais.
+
+O site está disponível em inglês (idioma padrão) e português do Brasil (`/pt-br/`). Algumas páginas de projetos e serviços estão em construção; consulte o conteúdo publicado para verificar a disponibilidade de cada item.
+
+Serviços oferecidos: sites institucionais, landing pages, lojas virtuais, ERP, CRM, portais internos e aplicativos para delivery, agendamentos/eventos e vendas. O portfólio ainda não publica cases individuais. Solicitações de orçamento podem ser preparadas na página de Serviços; o visitante revisa e confirma o envio no WhatsApp.
+
+## Páginas principais em inglês
+
+- [Home](https://yrickzc.github.io/PES_Ricks/): apresentação e acesso às seções do site.
+- [Services](https://yrickzc.github.io/PES_Ricks/services/): ofertas de sites, aplicativos mobile e sistemas, com formulário para preparar uma solicitação de orçamento pelo WhatsApp.
+- [Projects](https://yrickzc.github.io/PES_Ricks/projects/): área de projetos e experimentos de tecnologia.
+- [Blog](https://yrickzc.github.io/PES_Ricks/blogs/): índice de publicações; pode estar sem artigos publicados.
+- [Project brief](https://yrickzc.github.io/PES_Ricks/services/#quote): preparação de uma solicitação de orçamento, sem envio automático.
+
+## Páginas principais em português
+
+- [Início](https://yrickzc.github.io/PES_Ricks/pt-br/): apresentação e acesso às seções do site.
+- [Serviços](https://yrickzc.github.io/PES_Ricks/pt-br/services/): ofertas e formulário de orçamento.
+- [Projetos](https://yrickzc.github.io/PES_Ricks/pt-br/projects/): área de projetos e experimentos.
+- [Blog](https://yrickzc.github.io/PES_Ricks/pt-br/blogs/): índice de publicações.
+- [Orçamento](https://yrickzc.github.io/PES_Ricks/pt-br/services/#quote): formulário para apresentar uma ideia de projeto.
