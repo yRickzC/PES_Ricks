@@ -1,11 +1,8 @@
 ---
-import { getRelativeLocaleUrl } from "astro:i18n";
 import { contentTaxonomy } from "../../../../backend/content/taxonomy";
-import SiteImage from "../../../components/site/SiteImage.astro";
 import TaxonomyIcon from "../../../components/site/TaxonomyIcon.astro";
 import type { Locale } from "../../../config/i18n";
-import { getServiceCopy, serviceCategoryIds, serviceOfferSlugs } from "../config/catalog";
-import { serviceSkyImage } from "../config/hero";
+import { getServiceCopy, getServiceQuoteUrl, serviceCategoryIds } from "../config/catalog";
 import "../styles/service-catalog.css";
 
 interface Props { locale: Locale }
@@ -36,12 +33,10 @@ const previews: Record<(typeof serviceCategoryIds)[number], readonly string[]> =
 ---
 
 <section class="service-catalog" id="services" aria-labelledby="service-catalog-title">
-  <div class="service-catalog-sky" aria-hidden="true">
-    <SiteImage src={serviceSkyImage} alt="" width={1672} widths={[960, 1672]} sizes="100vw" />
-  </div>
   <div class="service-catalog-selector">
     <fieldset>
       <legend><h2 id="service-catalog-title" data-service-reveal>{copy.chooseType}</h2></legend>
+      <p class="service-catalog-intro" data-service-reveal>{copy.catalogIntro}</p>
       <div class="service-catalog-options">
         {serviceCategoryIds.map((id) => (
           <div class="service-catalog-option" data-service-reveal>
@@ -71,12 +66,13 @@ const previews: Record<(typeof serviceCategoryIds)[number], readonly string[]> =
       aria-labelledby={`service-panel-title-${id}`}
     >
       <h3 id={`service-panel-title-${id}`} data-service-reveal>{copy[id].label}</h3>
+      <p class="service-catalog-summary" data-service-reveal>{copy[id].summary}</p>
       <ul class="service-catalog-cards">
         {copy[id].offers.map(({ title, description }, index) => (
           <li class="service-catalog-item" data-service-reveal>
             <a
               class="service-catalog-card"
-              href={getRelativeLocaleUrl(locale, `services/${serviceOfferSlugs[id][index]}/`)}
+              href={getServiceQuoteUrl(locale, title)}
               aria-labelledby={`service-offer-${id}-${index} service-offer-action-${id}-${index}`}
             >
               <div class="service-catalog-preview" aria-hidden="true">

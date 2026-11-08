@@ -1,0 +1,88 @@
+<!-- Decorative sky layer: its positioned parent owns size, parallax and clipping. -->
+<div class="shooting-stars" aria-hidden="true">
+  <span></span><span></span><span></span><span></span>
+</div>
+
+<style>
+  .shooting-stars {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .shooting-stars span {
+    --star-duration: 5s;
+    --star-delay: -0.6s;
+    --star-travel-x: -65vw;
+    --star-travel-y: 40.6vw;
+    position: absolute;
+    top: 12%;
+    left: 86%;
+    width: clamp(90px, 10vw, 180px);
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(to right, #fff, rgb(214 196 255 / 90%) 18%, transparent);
+    opacity: 0;
+    transform: rotate(-32deg);
+  }
+
+  .shooting-stars span::before {
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 8px 1px rgb(207 183 255 / 65%);
+    content: "";
+  }
+
+  .shooting-stars span:nth-child(2) {
+    --star-duration: 6.5s;
+    --star-delay: -3s;
+    top: 35%;
+    left: 98%;
+  }
+
+  .shooting-stars span:nth-child(3) {
+    --star-duration: 7s;
+    --star-delay: -2s;
+    top: 4%;
+    left: 57%;
+  }
+
+  .shooting-stars span:nth-child(4) {
+    --star-duration: 8s;
+    --star-delay: -5s;
+    top: 8%;
+    left: 34%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .shooting-stars span {
+      animation: shooting-star-pass var(--star-duration) linear var(--star-delay) infinite;
+    }
+  }
+
+  @keyframes shooting-star-pass {
+    0% { opacity: 0; transform: translate3d(0, 0, 0) rotate(-32deg); }
+    4%, 34% { opacity: 1; }
+    42%, 100% {
+      opacity: 0;
+      transform: translate3d(var(--star-travel-x), var(--star-travel-y), 0) rotate(-32deg);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .shooting-stars span {
+      --star-travel-x: -95vw;
+      --star-travel-y: 59.4vw;
+      width: 90px;
+    }
+    .shooting-stars span:nth-child(n + 3) { display: none; }
+  }
+</style>

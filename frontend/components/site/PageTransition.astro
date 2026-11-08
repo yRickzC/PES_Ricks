@@ -2,6 +2,7 @@
 import { getImage } from "astro:assets";
 import logoSource from "../../../public/images/Rick_Logo_Transparent.webp";
 import { withBasePath } from "../../utils/base-path";
+import ShootingStars from "./ShootingStars.astro";
 
 const base = import.meta.env.BASE_URL;
 const logo = await getImage({ src: logoSource, width: 448, format: "webp", quality: 88 });
@@ -12,6 +13,7 @@ const skyUrl = withBasePath("/images/Hero_Main_Background.webp", base);
 <div id="page-transition" class="page-transition" data-base={base} aria-hidden="true" hidden>
   <div class="page-transition__sky">
     <img src={skyUrl} width="1672" height="941" alt="" draggable="false" />
+    <ShootingStars />
   </div>
   <div class="page-transition__foreground">
     <div class="page-transition__mark" style={`--page-transition-mark: url("${logoUrl}")`}>
@@ -64,7 +66,10 @@ const skyUrl = withBasePath("/images/Hero_Main_Background.webp", base);
 
     function waitForMotion() {
       const animations = curtain.getAnimations?.({ subtree: true }) ?? [];
-      return Promise.allSettled(animations.map((animation) => animation.finished));
+      // Ambient loops never finish; only finite curtain animations delay navigation.
+      return Promise.allSettled(animations
+        .filter((animation) => animation.effect?.getComputedTiming().iterations !== Infinity)
+        .map((animation) => animation.finished));
     }
 
     async function exit(run) {

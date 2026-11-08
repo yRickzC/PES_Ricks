@@ -13,6 +13,7 @@ const stepNumber = (index: number) => String(index + 1).padStart(2, "0");
 <section class="service-process" aria-labelledby="service-process-title">
   <div class="service-detail-inner">
     <h2 id="service-process-title" data-service-reveal>{process.title}</h2>
+    <p class="service-process-intro" data-service-reveal>{process.intro}</p>
     <service-roadmap class="service-roadmap">
       <div class="service-roadmap-nav" data-roadmap-nav hidden>
         <button class="service-roadmap-arrow" type="button" data-roadmap-prev data-service-reveal aria-label={process.previousStep}>

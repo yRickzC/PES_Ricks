@@ -3,6 +3,7 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 import type { Locale } from "../../../config/i18n";
 import type { Messages } from "../../../utils/translations";
 import HeroScene from "./HeroScene.astro";
+import { getServiceQuoteUrl } from "../../services/config/catalog";
 import "../styles/hero.css";
 
 interface Props {
@@ -12,6 +13,8 @@ interface Props {
 }
 
 const { copy, locale, id = "home-hero" } = Astro.props;
+const quoteUrl = getServiceQuoteUrl(locale);
+const contactHref = quoteUrl.startsWith("#") ? `${getRelativeLocaleUrl(locale, "services")}${quoteUrl}` : quoteUrl;
 ---
 
 <section class="cinematic-hero" data-cinematic-hero aria-labelledby={`${id}-title`}>
@@ -29,8 +32,8 @@ const { copy, locale, id = "home-hero" } = Astro.props;
         <a class="hero-action hero-action--primary" href={getRelativeLocaleUrl(locale, "projects")} data-home-reveal>
           {copy.heroExploreProjects}<span aria-hidden="true">↗</span>
         </a>
-        <a class="hero-action hero-action--secondary" href={getRelativeLocaleUrl(locale, "blogs")} data-home-reveal>
-          {copy.heroViewNotes}<span aria-hidden="true">↗</span>
+        <a class="hero-action hero-action--secondary" href={contactHref} data-home-reveal>
+          {copy.heroGetInTouch}<span aria-hidden="true">↗</span>
         </a>
       </div>
     </div>

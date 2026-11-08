@@ -1,0 +1,69 @@
+/* Keep the shared sky within the catalog and roadmap, before the project form. */
+.service-environment {
+  position: relative;
+  isolation: isolate;
+  background: var(--color-bg-0);
+}
+
+.service-environment-sky {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+}
+
+.service-environment-sky-viewport {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+}
+
+.service-environment-sky img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 42%;
+  opacity: 0.72;
+}
+
+.service-environment-sky::after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--color-bg-0) 0,
+      transparent clamp(96px, 14vw, 180px),
+      transparent calc(100% - clamp(96px, 14vw, 180px)),
+      var(--color-bg-0) 100%
+    ),
+    rgb(7 7 10 / 18%);
+  content: "";
+}
+
+.service-detail-inner {
+  width: min(calc(100% - 32px), 1120px);
+  margin-inline: auto;
+  padding-block: clamp(56px, 8vw, 104px);
+}
+
+.service-detail-inner h2 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 550;
+  letter-spacing: -0.045em;
+  line-height: 1.07;
+}
+
+.service-detail-inner p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+}
+
+.service-detail-inner .service-process-intro {
+  max-width: 65ch;
+  margin-top: 16px;
+}

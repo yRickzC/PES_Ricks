@@ -1,0 +1,85 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import type { ContentEntry } from "../../../../backend/content/types";
+import { contentCategoryIds } from "../../../../backend/content/taxonomy";
+import type { Locale } from "../../../config/i18n";
+import type { Messages } from "../../../utils/translations";
+import { withBasePath } from "../../../utils/base-path";
+import { projectBiomes } from "../../projects/config/biomes";
+import SiteImage from "../../../components/site/SiteImage.astro";
+import Icon from "../../../components/site/Icon.astro";
+import { PROJECT_DECK_SIZE } from "../config/project-deck";
+import "../styles/project-deck.css";
+
+interface Props { projects: ContentEntry[]; copy: Messages; locale: Locale }
+const { projects, copy, locale } = Astro.props;
+const projectsHref = getRelativeLocaleUrl(locale, "projects");
+const cards = Array.from({ length: PROJECT_DECK_SIZE }, (_, index) => projects[index]);
+function projectHref({ metadata }: ContentEntry) {
+  const link = metadata.links[0];
+  if (link) return link.url.startsWith("#") ? `${projectsHref}${link.url}` : withBasePath(link.url, import.meta.env.BASE_URL);
+  // Projetos ainda não têm rotas individuais: abrir a categoria real da listagem.
+  const category = projectBiomes.find(({ category }) => contentCategoryIds(metadata).includes(category));
+  return `${projectsHref}#projects-${category?.category ?? "all"}`;
+}
+---
+
+<section class="home-section" aria-labelledby="home-projects-title">
+  <header class="home-section-heading" data-home-reveal>
+    <h2 id="home-projects-title">{copy.homeFeaturedProjects}</h2>
+    <a class="home-text-link" href={projectsHref}>{copy.homeAllProjects}<span aria-hidden="true">↗</span></a>
+  </header>
+  <div class="project-deck" data-project-deck data-position-label={copy.homeProjectPosition} data-home-reveal>
+    <ul class="project-deck-stage" id="home-project-deck" aria-label={copy.homeFeaturedProjects}>
+      {cards.map((project, index) => {
+        const Card = project ? "a" : "button";
+        const label = copy.homeProjectSlot.replace("{number}", String(index + 1));
+        return (
+          <li class="project-deck-slot" data-deck-slot style={`--deck-slot:${index - Math.floor(PROJECT_DECK_SIZE / 2)}`}>
+            <article class:list={["project-deck-card", { "project-deck-card--empty": !project }]}>
+              <Card class="project-deck-action" data-deck-card href={project ? projectHref(project) : undefined} type={project ? undefined : "button"} aria-label={`${label}: ${project?.metadata.title ?? copy.homeProjectSlotEmpty}`}>
+                <span class="project-deck-art">
+                  {project ? (
+                    <SiteImage class="project-deck-cover" src={project.metadata.image.src} alt={project.metadata.image.alt} width={640} widths={[320, 480, 640]} sizes="(max-width: 767px) 276px, 300px" />
+                  ) : (
+                    <SiteImage class="project-deck-dog" src="/images/Dog_Sad.webp" alt="" width={200} height={200} widths={[160, 200, 400]} sizes="160px" />
+                  )}
+                </span>
+                <span class="project-deck-copy">
+                  <span class="project-deck-number">{label}</span>
+                  <strong class="project-deck-title">{project?.metadata.title ?? copy.homeProjectSlotEmpty}</strong>
+                  <span class="project-deck-description">{project?.metadata.description ?? copy.comingSoon}</span>
+                  {project && <span class="project-deck-open">{copy.homeViewProject}<Icon name="arrow" size={18} /></span>}
+                </span>
+              </Card>
+            </article>
+          </li>
+        );
+      })}
+    </ul>
+    <div class="project-deck-controls" data-deck-controls hidden>
+      <button class="project-deck-nav project-deck-nav--previous" type="button" data-deck-previous aria-label={copy.homeProjectPrevious} aria-controls="home-project-deck"><Icon name="arrow" /></button>
+      <span class="project-deck-counter" data-deck-counter aria-hidden="true"></span>
+      <button class="project-deck-nav" type="button" data-deck-next aria-label={copy.homeProjectNext} aria-controls="home-project-deck"><Icon name="arrow" /></button>
+    </div>
+    <p class="project-deck-hint" data-deck-hint hidden>{copy.homeProjectDeckHint}</p>
+    <p class="sr-only" data-deck-status role="status" aria-live="polite" aria-atomic="true"></p>
+  </div>
+</section>
+
+<script>
+  import { mountProjectDeck } from "../utils/project-deck";
+
+  const decks = new Map<HTMLElement, () => void>();
+  function mountDecks() {
+    document.querySelectorAll<HTMLElement>("[data-project-deck]").forEach((deck) => {
+      if (!decks.has(deck)) decks.set(deck, mountProjectDeck(deck));
+    });
+  }
+  mountDecks();
+  document.addEventListener("astro:page-load", mountDecks);
+  document.addEventListener("astro:before-swap", () => {
+    decks.forEach((cleanup) => cleanup());
+    decks.clear();
+  });
+</script>

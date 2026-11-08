@@ -1,0 +1,111 @@
+@media (max-width: 959px) {
+  .site-header-inner {
+    position: relative;
+    min-height: 72px;
+    grid-template-columns: 1fr auto;
+    gap: 0;
+  }
+
+  .site-header[data-enhanced] .menu-toggle:not([hidden]) {
+    display: inline-grid;
+  }
+
+  .site-menu-panel {
+    display: flex;
+    padding-block: 12px 20px;
+    grid-column: 1 / -1;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .site-header[data-enhanced] .site-menu-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 16px;
+    left: 16px;
+    max-height: calc(100svh - 96px);
+    padding: 16px;
+    overflow-y: auto;
+    border: 1px solid rgb(255 255 255 / 10%);
+    border-radius: 12px;
+    background: var(--color-bg-1);
+    box-shadow: 0 20px 40px rgb(0 0 0 / 30%);
+  }
+
+  .site-header[data-enhanced]:not([data-menu-open]) .site-menu-panel {
+    display: none;
+  }
+
+  .site-header[data-menu-open] .menu-icon-open {
+    display: none;
+  }
+
+  .site-header[data-menu-open] .menu-icon-close {
+    display: block;
+  }
+
+  .primary-navigation ul {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+
+  .primary-link {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 16px;
+    font-size: 16px;
+  }
+
+  .site-utilities {
+    display: grid;
+    padding-top: 12px;
+    grid-template-columns: minmax(0, 1fr) 44px;
+    align-items: start;
+    border-top: 1px solid rgb(255 255 255 / 8%);
+    gap: 8px;
+  }
+
+  .social-dropdown {
+    grid-column: 1 / -1;
+  }
+
+  .utility-text {
+    display: inline;
+    font-size: 12px;
+  }
+
+  .utility-trigger {
+    padding-inline: 12px;
+    gap: 6px;
+  }
+
+  .utility-divider {
+    display: none;
+  }
+
+  .header-dropdown[open] .dropdown-panel {
+    position: static;
+    width: 100%;
+    margin-top: 8px;
+    box-shadow: none;
+  }
+
+  .language-link {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 380px) {
+  .utility-text {
+    max-width: 86px;
+    line-height: 1.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .primary-link, .utility-trigger, .icon-button, .social-chevron, .search-submit {
+    transition: none;
+  }
+}

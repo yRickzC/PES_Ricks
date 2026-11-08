@@ -1,21 +1,33 @@
 ---
 import HomeLayout from "./layout/HomeLayout.astro";
 import HomeHero from "./components/HomeHero.astro";
-import ContentEmptyState from "../../components/site/ContentEmptyState.astro";
+import FeaturedProjects from "./components/FeaturedProjects.astro";
+import LatestPosts from "./components/LatestPosts.astro";
+import AboutMe from "./components/AboutMe.astro";
+import ServicesCTA from "./components/ServicesCTA.astro";
+import FactoryInterior from "./components/FactoryInterior.astro";
+import { publicDir } from "astro:config/server";
+import { fileURLToPath } from "node:url";
+import { readPublicContent } from "../../../backend/content/node/pipeline";
+import { selectHomeContent } from "./data/content";
 import { getMessages } from "../../utils/translations";
 import { defaultLocale, locales } from "../../config/i18n";
+import "./styles/home.css";
 
 const locale = locales.find((locale) => locale === Astro.currentLocale) ?? defaultLocale;
 const copy = getMessages(locale);
+const { database } = await readPublicContent(fileURLToPath(publicDir));
+const { projects, posts } = selectHomeContent(database, locale, import.meta.env.BASE_URL);
 ---
 
 <HomeLayout locale={locale} copy={copy}>
   <HomeHero copy={copy} locale={locale} />
-  <ContentEmptyState
-    data-home-reveal-group
-    headingLevel="h2"
-    title={copy.homeWorkInProgress}
-    dogSrc="/images/Dog_Worker.webp"
-    dogAlt=""
-  />
+  <div class="home-projects-transition">
+    <FeaturedProjects projects={projects} copy={copy} locale={locale} />
+  </div>
+  <FactoryInterior>
+    <LatestPosts posts={posts} copy={copy} locale={locale} />
+    <AboutMe copy={copy} />
+  </FactoryInterior>
+  <ServicesCTA copy={copy} locale={locale} />
 </HomeLayout>

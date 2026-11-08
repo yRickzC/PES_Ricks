@@ -54,6 +54,24 @@ As capas dos artigos usam `SiteImage.astro`, baseado em `Image` de `astro:assets
 
 O catálogo atual permanece vazio: só serão geradas páginas de artigos realmente cadastrados. Estilos editoriais ficam em `frontend/paginas/blogs/styles/blogs.css` e a composição em `layout/ArticleLayout.astro`. O widget GitHub continua exigindo um snapshot fornecido explicitamente; essa página não busca dados remotos automaticamente.
 
+## Conteúdo na Home
+
+A Home consulta o mesmo catálogo LU e a mesma seleção de idioma/fallback de Projects e Blogs, sem manter cópias dos dados:
+
+- Projetos: marque `featured: true` (ou `destaque: true`) no `$Config`. Até sete aparecem por `featuredOrder`, depois data decrescente e identidade. O primeiro item de `links` é o destino da carta; sem links, abre a categoria existente em Projects, ou a listagem geral se não houver categoria exibível. Não são criadas rotas de detalhe de projetos.
+- Publicações: até três artigos com capa compõem os destaques do mosaico, por data de publicação decrescente. Até oito artigos restantes aparecem como notas somente de texto, sem repetir os destaques. Datas ausentes ficam no final, sem data inventada. Títulos, capas, categorias e URLs usam o adaptador existente do Blog.
+- As seções de projetos destacados e publicações recentes permanecem visíveis quando vazias. Projetos têm sete posições fixas: vagas mostram `Dog_Sad.webp` e aviso localizado, sem criar entradas fictícias no catálogo. No mosaico do Blog, três espaços de imagem mostram o cachorro triste e as notas apresentam avisos localizados. Novos arquivos LU entram na próxima geração/atualização do site; não há busca remota nem atualização em tempo real de uma publicação estática.
+
+O deck de projetos reutiliza `FeaturedProjects.astro`, com estilos em `project-deck.css` e interação em `utils/project-deck.ts`. `config/project-deck.ts` define a capacidade compartilhada pela seleção de dados e renderização. No desktop, as cartas sobrepostas se elevam com hover ou foco; no mobile, setas ou toque selecionam uma carta e um novo toque abre seu projeto. Cartas vazias apenas selecionam. Setas do teclado, Home/End, indicação de posição e foco visível complementam a interação. Sem JavaScript, as sete cartas permanecem em uma lista horizontal rolável. O FadeInUp atua no conjunto, enquanto transições das cartas respeitam movimento reduzido.
+
+O mosaico usa `LatestPosts.astro` e `HomePostCard.astro`, com seleção em `data/posts.ts`, estilos em `styles/home-posts.css` e alternância em `utils/home-news.ts`. `config/home-posts.ts` concentra limites e intervalo. As notas alternam em grupos de três a cada nove segundos, sem faixa inferior de texto, contador ou botões. A troca pausa com mouse sobre a seção, foco de teclado, página oculta ou seção fora da tela; movimento reduzido desativa a alternância. Grupos incompletos recebem espaços vazios, e o catálogo vazio apresenta dois grupos de avisos. Sem JavaScript, permanece o primeiro grupo. Apenas as capas exibidas recebem variantes otimizadas.
+
+O Hero preserva o cenário e o parallax. O contato reutiliza a configuração de orçamento de Services: WhatsApp quando configurado, com fallback para `/services/#quote` no idioma ativo. A Home contém cinco seções: Hero, projetos destacados, publicações recentes, Sobre mim e CTA de Services. Header e rodapé compartilhados não entram na contagem. `AboutMe.astro` apresenta Rick e o propósito do laboratório em textos EN/PT-BR, sem inventar dados biográficos ou duplicar o fluxo comercial de Services; reutiliza o FadeInUp da Home. O Sobre mim tem título centralizado com sublinhado discreto, espaço quadrado reservado para a foto à esquerda e subtítulo violeta com apresentação à direita. Abaixo de 768px, o espaço da foto fica acima do texto, com largura máxima de 280px. O espaço reservado é decorativo e não carrega uma imagem provisória.
+
+O CTA de Services usa composição centralizada com a logo transparente existente, título, descrição e botão arredondado com seta. Ocupa toda a largura disponível, sem bordas, cantos de card ou grade. O fundo usa gradiente vertical de `--color-brand` no topo para preto na base, conectado ao rodapé preto da Home sem margem intermediária. Preserva os textos EN/PT-BR, a rota localizada de Services e o FadeInUp compartilhado, sem imagem ou JavaScript adicional. Os ajustes visuais ficam em `home.css`; a cor do rodapé fica restrita à Home.
+
+`FactoryInterior.astro` desacopla a ambientação industrial do conteúdo: o slot recebe somente Publicações recentes e Sobre mim. Projetos ficam fora do cenário, em `.home-projects-transition`, com fundo preto de ponta a ponta para preservar a transição após o Hero. Uma parede metálica contínua e o salão de entrada compartilham máscaras de transição; tubulações, uma estrutura lateral, duas engrenagens e vapor concentram-se nas bordas dos dois últimos blocos. O Hero e o CTA final ficam fora desse componente. `styles/factory-interior.css` concentra posições, escalas, opacidades, velocidades e breakpoints. As imagens `Ladding_Section_*` reutilizam `SiteImage` com variantes responsivas e lazy loading; fontes vazias em `picture` evitam solicitar máquinas escondidas no mobile/tablet. Mobile mantém parede e uma camada de vapor. Rotação e vapor usam somente transform/opacity e ficam estáticos com movimento reduzido; não há controlador JavaScript. Layer0 foi dispensado para não sobrecarregar o cenário. Aparência, carregamento e comportamento no navegador ainda precisam de validação em execução.
+
 ## Configurações
 
 Os campos usam `chave: valor`, sem chaves de objeto e sem vírgulas ao fim das linhas.
@@ -72,8 +90,8 @@ Os campos usam `chave: valor`, sem chaves de objeto e sem vírgulas ao fim das l
 | `date` / `data` | Data real `AAAA-MM-DD`; obrigatória em changelog. |
 | `updatedAt` / `updated-at` / `atualizado-em` | Opcional, somente Blog: data real `AAAA-MM-DD` da atualização. |
 | `keywords` / `palavras-chave` | Opcional, somente Blog: lista de textos não vazios, separados por vírgula ou entre colchetes. Alimenta a busca da página do Blog. |
-| `featured` / `destaque` | Opcional, somente Blog: `true` destaca o post na descoberta editorial; padrão `false`. |
-| `featuredOrder` / `featured-order` / `ordem-destaque` | Opcional, somente Blog: inteiro não negativo; menor valor aparece primeiro entre destaques. |
+| `featured` / `destaque` | Opcional em artigos e projetos: `true` destaca o post no Blog ou inclui o projeto nos destaques da Home; padrão `false`. |
+| `featuredOrder` / `featured-order` / `ordem-destaque` | Opcional em artigos e projetos: inteiro não negativo; menor valor aparece primeiro entre destaques. |
 | `locale` / `idioma` | `en`, `pt-br` ou `pt_br`; normalmente inferido do nome do arquivo. |
 | `relations` / `relacoes` / `relações` | Chaves separadas por vírgula ou lista; relaciona vários projetos, serviços e locais. |
 | `status` | Somente projetos: IDEA, RESEARCH, PROTOTYPE, BUILDING, ACTIVE, SHIPPED, ARCHIVED. |

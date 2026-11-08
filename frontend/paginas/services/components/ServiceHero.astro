@@ -1,8 +1,8 @@
 ---
-import { getRelativeLocaleUrl } from "astro:i18n";
 import SiteImage from "../../../components/site/SiteImage.astro";
 import type { Locale, Messages } from "../../../utils/translations";
 import { serviceHeroFog, serviceHeroLayers, serviceLayerStyle } from "../config/hero";
+import { getServiceQuoteUrl } from "../config/catalog";
 import "../styles/service-hero.css";
 
 interface Props { locale: Locale; copy: Messages; }
@@ -36,8 +36,8 @@ const { locale, copy } = Astro.props;
     </h1>
     <p class="service-hero-description">{copy.serviceHeroSubtitle}</p>
     <div class="service-hero-actions">
-      <a class="service-hero-primary" href="#services">{copy.serviceExploreServices}</a>
-      <a class="service-hero-secondary" href={getRelativeLocaleUrl(locale, "projects")}>{copy.serviceSelectedWork}</a>
+      <a class="service-hero-primary" href={getServiceQuoteUrl(locale)}>{copy.serviceRequestQuote}</a>
+      <a class="service-hero-secondary" href="#services">{copy.serviceExploreSolutions}</a>
     </div>
   </div>
 </section>

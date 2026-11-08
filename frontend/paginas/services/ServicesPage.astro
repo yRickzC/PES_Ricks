@@ -1,22 +1,54 @@
 ---
 import Main from "../../main.astro";
+import { getRelativeLocaleUrl } from "astro:i18n";
 import { defaultLocale, locales } from "../../config/i18n";
 import { getMessages } from "../../utils/translations";
+import SiteImage from "../../components/site/SiteImage.astro";
 import ServiceHero from "./components/ServiceHero.astro";
 import ServiceCatalog from "./components/ServiceCatalog.astro";
 import ServiceProcess from "./components/ServiceProcess.astro";
 import ServiceProjectBrief from "./components/ServiceProjectBrief.astro";
+import { getServiceCopy } from "./config/catalog";
+import { serviceSkyImage } from "./config/hero";
 import "./styles/service-details.css";
 import "../../styles/scroll-reveal.css";
 
 const locale = locales.find((locale) => locale === Astro.currentLocale) ?? defaultLocale;
 const copy = getMessages(locale);
+const { proof } = getServiceCopy(locale);
 ---
 
 <Main locale={locale} pageId="services" description={copy.servicesDescription}>
   <ServiceHero locale={locale} copy={copy} />
-  <ServiceProcess locale={locale} />
-  <ServiceCatalog locale={locale} />
+  <section class="service-proof" aria-labelledby="service-proof-title">
+    <div class="service-detail-inner service-proof-layout">
+      <div class="service-proof-copy">
+        <h2 id="service-proof-title" data-service-reveal>{proof.title}</h2>
+        <p data-service-reveal>{proof.description}</p>
+        <div class="service-proof-links" data-service-reveal>
+          <a href={getRelativeLocaleUrl(locale, "")}>{proof.siteLink}<span aria-hidden="true"> →</span></a>
+          <a href="https://github.com/yRickzC/PES_Ricks" target="_blank" rel="noopener noreferrer">{proof.sourceLink}<span aria-hidden="true"> ↗</span></a>
+        </div>
+      </div>
+      <dl class="service-proof-details">
+        {proof.details.map(({ title, description }) => (
+          <div data-service-reveal>
+            <dt>{title}</dt>
+            <dd>{description}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+  <div class="service-environment">
+    <div class="service-environment-sky" aria-hidden="true">
+      <div class="service-environment-sky-viewport">
+        <SiteImage src={serviceSkyImage} alt="" width={1672} widths={[960, 1672]} sizes="100vw" />
+      </div>
+    </div>
+    <ServiceCatalog locale={locale} />
+    <ServiceProcess locale={locale} />
+  </div>
   <ServiceProjectBrief locale={locale} />
 </Main>
 

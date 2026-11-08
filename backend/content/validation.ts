@@ -108,8 +108,11 @@ export function parseMetadata(raw: unknown, source: string): ContentMetadata {
     if (typeof date !== "string" || !/^\d{4}-\d{2}-\d{2}$/u.test(date)
       || !Number.isFinite(Date.parse(date)) || new Date(date).toISOString().slice(0, 10) !== date) fail(field, "Use uma data real no formato AAAA-MM-DD.");
   }
-  for (const field of ["updatedAt", "keywords", "featured", "featuredOrder"]) {
+  for (const field of ["updatedAt", "keywords"]) {
     if (raw[field] !== undefined && raw.kind !== "article") fail(field, "Campo editorial exclusivo de artigos do Blog.");
+  }
+  for (const field of ["featured", "featuredOrder"]) {
+    if (raw[field] !== undefined && raw.kind !== "article" && raw.kind !== "project") fail(field, "Destaques são exclusivos de artigos e projetos.");
   }
   if (raw.keywords !== undefined && (!Array.isArray(raw.keywords) || !raw.keywords.every((keyword) => typeof keyword === "string" && keyword.trim()))) fail("keywords", "Informe uma lista de palavras-chave não vazias.");
   if (raw.featured !== undefined && typeof raw.featured !== "boolean") fail("featured", "Use true ou false.");

@@ -1,0 +1,71 @@
+.site-frame {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+}
+
+.site-grid {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.28;
+  background-image: radial-gradient(rgb(255 255 255 / 12%) 0.6px, transparent 0.6px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(to bottom, black, transparent 65%);
+}
+
+.site-content, .home-layout {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.site-content {
+  scroll-margin-top: 100px;
+}
+
+.site-footer {
+  padding: 28px 24px;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  text-align: center;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 12px;
+  left: 16px;
+  padding: 12px 18px;
+  border-radius: 8px;
+  background: var(--color-text-primary);
+  color: var(--color-bg-0);
+  transform: translateY(-180%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+:where(a, button, summary, input):focus-visible {
+  outline: 2px solid var(--color-brand-light);
+  outline-offset: 4px;
+}
+
+button, summary, a, input {
+  -webkit-tap-highlight-color: transparent;
+}

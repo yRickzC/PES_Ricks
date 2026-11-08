@@ -18,7 +18,8 @@ describe("metadados editoriais opcionais do Blog", () => {
     [{ featured: "true" }, "featured"], [{ featuredOrder: -1 }, "featuredOrder"],
     [{ featuredOrder: 1.5 }, "featuredOrder"], [{ keywords: [""] }, "keywords"],
     [{ keywords: "nao-e-lista" }, "keywords"], [{ updatedAt: "2026-02-30" }, "updatedAt"],
-    [{ kind: "project", featured: true }, "featured"], [{ kind: "service", keywords: ["web"] }, "keywords"],
+    [{ kind: "service", featured: true }, "featured"], [{ kind: "service", featuredOrder: 1 }, "featuredOrder"],
+    [{ kind: "project", keywords: ["web"] }, "keywords"], [{ kind: "service", keywords: ["web"] }, "keywords"],
   ])("rejeita configuração editorial inválida %j", (overrides, field) => {
     // parseMetadata validates manifest data; parser additionally allows comma-separated keyword strings.
     const item = { ...metadata(), ...overrides };
@@ -28,5 +29,10 @@ describe("metadados editoriais opcionais do Blog", () => {
   it("mantém compatibilidade com artigos sem configuração editorial", () => {
     const value = parseLu(config(metadata())).metadata;
     for (const field of ["featured", "featuredOrder", "keywords", "updatedAt"]) expect(Object.hasOwn(value, field)).toBe(false);
+  });
+
+  it("permite destaques em projetos sem liberar os campos exclusivos do Blog", () => {
+    const project = entry({ kind: "project", featured: true, featuredOrder: 2 });
+    expect(parseManifest({ version: 1, entries: [project] }).entries[0].metadata).toMatchObject({ kind: "project", featured: true, featuredOrder: 2 });
   });
 });

@@ -46,18 +46,66 @@ inclusive a névoa. Não há filtros animados nem hidratação de framework.
 ## Conteúdo e imagens
 
 As mensagens da hero seguem `Messages` e os catálogos EN/PT-BR. O CTA
-principal aponta para o seletor de serviços em `#services` e o secundário
-leva a Projects no idioma atual.
+principal abre o WhatsApp configurado em `socialLinks`, com uma mensagem de
+pedido de orçamento no idioma atual. O secundário aponta para `#services`,
+com rolagem suave global e movimento reduzido respeitado. Sem WhatsApp
+configurado, o pedido leva ao formulário local em `#quote`.
 
 `ServiceCatalog.astro` usa as categorias da taxonomia e catálogos próprios
 em EN/PT-BR. A seleção usa controles nativos e CSS. Os cards exibem formatos
-de serviço sobre a mesma imagem de céu da hero.
+de serviço sobre a mesma imagem de céu da hero. `ServicesPage.astro` mantém um
+único cenário compartilhado apenas pelo catálogo e pelo roadmap, dentro de
+`.service-environment`. Projetos customizados fica fora desse contêiner e usa
+fundo preto sólido (`--color-bg-0`), sem imagem. O layout global não recebe
+o cenário; o rodapé mantém seu fundo habitual. A imagem otimizada acompanha a viewport com CSS sticky,
+sem esticar pela altura da página, duplicar imagens ou adicionar JavaScript.
+`SiteImage` inclui automaticamente `ShootingStars.astro` sempre que renderiza
+`Hero_Main_Background.webp`, sem adicionar um wrapper à imagem. Assim, a hero de
+Serviços, o catálogo/roadmap e as outras heroes que reutilizam o céu recebem o
+mesmo efeito. A cortina de navegação, que usa uma imagem direta, inclui o componente
+explicitamente; sua espera considera somente animações finitas para não aguardar
+os loops decorativos. Quatro rastros de estrelas atravessam o céu com transform/opacity
+em CSS e ciclos diferentes de 5–8s; no mobile ficam dois. Rastros de 2px, núcleo
+luminoso e brilho estático discreto tornam a passagem perceptível mesmo na camada
+escurecida da hero. Cada passagem ocupa 42% do ciclo. A decoração não recebe
+cliques, fica oculta da árvore acessível e só anima sem preferência por movimento
+reduzido. Os gradientes existentes também cobrem as estrelas. O aviso de formatos
+possíveis abaixo dos cards foi removido nos dois idiomas.
+Catálogo e roadmap são transparentes; painéis e campos mantêm suas superfícies legíveis.
+Gradientes nas extremidades do cenário suavizam a entrada a partir do preto e
+a saída para o formulário preto, sem colocar imagem em Projetos customizados. Resumos por categoria explicam
+o público e os benefícios; os cards iniciam um pedido de orçamento no WhatsApp
+com o nome da solução. `getServiceQuoteUrl`, na configuração existente do
+catálogo, centraliza esses links e sua mensagem localizada. As páginas de
+detalhe em construção permanecem registradas, mas não são o destino dos CTAs
+comerciais.
+
+A sequência da página é hero → exemplo real → soluções → processo → projeto
+customizado. O exemplo real é o próprio portfólio, com links para a Home
+localizada e o repositório confirmado no remoto Git, que abre em nova aba.
+O rótulo de autoria/projeto pessoal foi removido. Não há casos de clientes,
+depoimentos ou métricas inventados. O bloco
+editorial usa os tokens e o FadeInUp compartilhados, sem hidratação adicional.
+
+O roadmap preserva suas cinco ilustrações e navegação, com proposta antes do
+desenvolvimento e manutenção conforme escopo após a entrega. O formulário
+continua em três etapas, mantém o rascunho no navegador e prepara no WhatsApp
+nome, descrição, referências e prazo preenchidos. O parágrafo fixo de convite
+foi removido; as 50 frases animadas em cada idioma convidam a descrever o negócio,
+entender a necessidade e conversar sobre escopo, prazo e proposta. Título do
+formulário e alternativa acessível permanecem disponíveis sem depender da animação.
 
 `SiteImage` prepara variantes responsivas com `astro:assets`; os originais PNG
 estão em `RAW/images/`. As imagens da primeira tela usam eager; somente a lua recebe
 prioridade alta. A geração dos derivados depende de um build futuro.
 
 ## Validação e ajustes pendentes
+
+Em 2026-11-07, a pedido do usuário, a página local de Serviços foi aberta no
+navegador. Rastros visíveis foram observados na hero e no catálogo após aumentar
+espessura, contraste e frequência; animações CSS em execução confirmadas no DOM,
+sem erros no console consultado. O formulário preserva fundo rgb(7, 7, 10).
+Esta verificação desktop não substitui os testes, build ou revisão mobile pendentes.
 
 Inspeção estática dos fontes, imports, assets, idiomas e whitespace. Grafo
 atualizado por AST local, sem modelos ou serviços externos. Conforme CodeMode,

@@ -1,0 +1,131 @@
+.search-result-area {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-surface-2) transparent;
+}
+
+.search-status {
+  margin: 0 4px 12px;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.search-results a {
+  display: flex;
+  min-height: 96px;
+  padding: 16px 12px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-radius: 8px;
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+
+.search-results li + li {
+  border-top: 1px solid rgb(255 255 255 / 5%);
+}
+
+.search-result-copy {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.search-results a:hover, .search-results a:focus-visible {
+  background: var(--color-surface-2);
+}
+
+.search-results a:focus-visible {
+  outline-offset: -2px;
+}
+
+.search-results strong {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.search-result-description {
+  display: block;
+  margin-top: 5px;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.search-result-meta {
+  display: flex;
+  margin-top: 10px;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.search-result-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1px 7px;
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 4px;
+}
+
+.search-results svg {
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+}
+
+.search-empty {
+  padding: 36px 12px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  text-align: center;
+}
+
+.search-empty strong {
+  color: var(--color-text-primary);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.search-empty p {
+  margin: 10px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+@media (max-width: 480px) {
+  .site-search {
+    --search-top: 12px;
+    --search-max-height: calc(100svh - 24px);
+  }
+
+  .search-card {
+    padding: 16px;
+  }
+
+  .search-input-row {
+    grid-template-columns: minmax(0, 1fr) 52px;
+    gap: 8px;
+  }
+
+  .search-field, .search-submit {
+    min-height: 56px;
+  }
+
+  .search-field {
+    padding-inline: 12px;
+  }
+
+  .search-field kbd {
+    display: none;
+  }
+
+  .search-filters {
+    gap: 8px;
+  }
+}

@@ -1,0 +1,16 @@
+/* Keep native radio behavior and only expose the selected panel. */
+@supports selector(:has(*)) {
+  .service-catalog-panel { display: none; }
+
+  .service-catalog:has(#service-type-websites:checked) [data-service-panel="websites"],
+  .service-catalog:has(#service-type-internal-systems:checked) [data-service-panel="internal-systems"],
+  .service-catalog:has(#service-type-mobile-apps:checked) [data-service-panel="mobile-apps"],
+  .service-catalog:has(#service-type-automation:checked) [data-service-panel="automation"] {
+    display: block;
+  }
+}
+
+@supports not selector(:has(*)) {
+  .service-catalog-selector { display: none; }
+  .service-catalog-panel + .service-catalog-panel { margin-top: 48px; }
+}

@@ -22,6 +22,7 @@ export interface ContentMetadata {
   // Metadados editoriais opcionais, exclusivos de artigos do Blog.
   updatedAt?: string;
   keywords?: string[];
+  // Destaques compartilhados por artigos e projetos.
   featured?: boolean;
   featuredOrder?: number;
   status?: ProjectStatus;

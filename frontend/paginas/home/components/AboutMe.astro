@@ -1,0 +1,20 @@
+---
+import type { Messages } from "../../../utils/translations";
+
+interface Props { copy: Messages }
+const { copy } = Astro.props;
+---
+
+<section class="home-section home-about" aria-labelledby="home-about-title">
+  <header class="home-about-heading" data-home-reveal>
+    <h2 id="home-about-title">{copy.homeAboutTitle}</h2>
+  </header>
+  <div class="home-about-body">
+    <div class="home-about-photo" aria-hidden="true" data-home-reveal></div>
+    <div class="home-about-copy" data-home-reveal-group>
+      <h3>{copy.homeAboutHeadline}</h3>
+      <p class="home-about-intro">{copy.homeAboutIntro}</p>
+      <p>{copy.homeAboutDescription}</p>
+    </div>
+  </div>
+</section>

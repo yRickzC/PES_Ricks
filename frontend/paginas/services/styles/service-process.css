@@ -1,0 +1,9 @@
+.service-process .service-detail-inner {
+  padding-block: clamp(40px, 6vw, 72px) clamp(56px, 8vw, 96px);
+}
+
+.service-process h3 {
+  margin: 0 0 6px;
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-weight: 600;
+}

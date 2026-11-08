@@ -1,0 +1,50 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import type { Locale } from "../../../config/i18n";
+import type { Messages } from "../../../utils/translations";
+import type { BlogPost } from "../../blogs/data/explore";
+import { prepareBlogCovers } from "../../blogs/data/explore-images";
+import { selectHomePosts } from "../data/posts";
+import { HOME_IMAGE_POST_LIMIT, HOME_NOTE_PAGE_SIZE } from "../config/home-posts";
+import HomePostCard from "./HomePostCard.astro";
+import "../styles/home-posts.css";
+
+interface Props { posts: BlogPost[]; copy: Messages; locale: Locale }
+const { posts, copy, locale } = Astro.props;
+const selected = selectHomePosts(posts);
+const highlights = await prepareBlogCovers(selected.highlights, import.meta.env.BASE_URL, 1200);
+const images = Array.from({ length: HOME_IMAGE_POST_LIMIT }, (_, index) => highlights[index]);
+const noteCount = selected.notes.length ? Math.ceil(selected.notes.length / HOME_NOTE_PAGE_SIZE) * HOME_NOTE_PAGE_SIZE : HOME_NOTE_PAGE_SIZE * 2;
+const notes = Array.from({ length: noteCount }, (_, index) => selected.notes[index]);
+---
+
+<section class="home-section home-news" aria-labelledby="home-posts-title" data-home-news>
+  <header class="home-section-heading" data-home-reveal>
+    <h2 id="home-posts-title">{copy.homeLatestPosts}</h2>
+    <a class="home-text-link" href={getRelativeLocaleUrl(locale, "blogs")}>{copy.homeAllPosts}<span aria-hidden="true">↗</span></a>
+  </header>
+  <div class="home-news-board" data-home-reveal>
+    {images.map((post, index) => <article class={`home-news-image home-news-image--${index}`}>
+      <HomePostCard post={post} copy={copy} image position={index + 1} />
+    </article>)}
+    {notes.map((post, index) => <article class={`home-news-note home-news-note--${index % HOME_NOTE_PAGE_SIZE}`} data-news-note data-note-page={Math.floor(index / HOME_NOTE_PAGE_SIZE)} hidden={index >= HOME_NOTE_PAGE_SIZE}>
+      <HomePostCard post={post} copy={copy} position={index + 1} />
+    </article>)}
+  </div>
+</section>
+
+<script>
+  import { mountHomeNews } from "../utils/home-news";
+  const cleanups = new Map<HTMLElement, () => void>();
+  function mount() {
+    document.querySelectorAll<HTMLElement>("[data-home-news]").forEach((root) => {
+      if (!cleanups.has(root)) cleanups.set(root, mountHomeNews(root));
+    });
+  }
+  mount();
+  document.addEventListener("astro:page-load", mount);
+  document.addEventListener("astro:before-swap", () => {
+    cleanups.forEach((cleanup) => cleanup());
+    cleanups.clear();
+  });
+</script>
