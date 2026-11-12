@@ -52,7 +52,7 @@ function projectHref({ metadata }: ContentEntry) {
         const distance = Math.abs(index - initialActive);
         const initialState = firstProject >= 0 ? String(index === initialActive)
           : index === initialActive ? "desktop" : index === initialMobileActive ? "mobile" : "false";
-        const slotStyle = `--deck-slot:${index - Math.floor(PROJECT_DECK_SIZE / 2)};--deck-depth:${PROJECT_DECK_SIZE - distance};--deck-scale:${index === initialActive ? 1.035 : 0.96 - distance * 0.025}`;
+        const slotStyle = `--deck-slot:${index - Math.floor(PROJECT_DECK_SIZE / 2)};--deck-depth:${PROJECT_DECK_SIZE - distance};--deck-mobile-depth:${PROJECT_DECK_SIZE - Math.abs(index - initialMobileActive)};--deck-scale:${index === initialActive ? 1.035 : 0.96 - distance * 0.025}`;
         return (
           <li class="project-deck-slot" data-deck-slot data-active={initialState} style={slotStyle}>
             <article class:list={["project-deck-card", { "project-deck-card--empty": !project }]}>
