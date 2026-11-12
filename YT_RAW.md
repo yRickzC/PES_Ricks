@@ -188,3 +188,5 @@ Graphify final desta implementação: AST local com 686 nós/1.616 relações, 3
 2026-11-08 — Pedido final aplicado: Explore Projects branco com texto escuro; Explore Services mantém o roxo e recebe cantos de 6px, substituindo o formato de pílula. Revisão estática e diff sem erros; Graphify AST local atualizado. Sem executar aplicativo, navegador, testes ou build.
 
 2026-11-08 — Explore Services também alterado para branco, com texto escuro e hover neutro, mantendo os cantos de 6px. Graphify AST local atualizado e diff conferido; site, testes e build não executados.
+
+2026-11-12 — Projetos em destaque da Home passam a usar slide horizontal nativo no mobile, com a primeira carta centralizada e encaixe central ao deslizar. Setas, contador, seleção por toque/teclado, redimensionamento e movimento reduzido sincronizados com a rolagem; orientação inferior ocultada no mobile e fallback sem JavaScript preservado. TypeScript do controlador, sintaxe Astro/CSS e diff conferidos sem erros. Aplicativo, navegador, testes e build não executados conforme AGENTS.md; Graphify indisponível neste ambiente.
