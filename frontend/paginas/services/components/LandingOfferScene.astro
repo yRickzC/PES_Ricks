@@ -1,0 +1,37 @@
+---
+import type { LandingCopy } from "../config/landing";
+interface Props { copy: LandingCopy }
+const { copy } = Astro.props;
+---
+
+<figure class="lp-figure">
+  <div class="lp-scene" role="img" aria-label={copy.sceneAlt}>
+    <div class="lp-scene-art" aria-hidden="true">
+      <div class="lp-ambient"></div>
+      <span class="lp-world-label lp-world-label--bad">{copy.before}</span>
+      <div class="lp-interface">
+        <span class="lp-demo-brand">ORBIT® <small>FOCUS KIT / 01</small></span>
+        <strong class="lp-demo-title">{copy.demoTitle}</strong>
+        <span class="lp-demo-description">{copy.demoDescription}</span>
+        <ul class="lp-demo-benefits">{copy.demoBenefits.map(text => <li><span>↗</span> {text}</li>)}</ul>
+        <span class="lp-demo-action">{copy.demoAction} <span>↗</span></span>
+      </div>
+      <div class="lp-good-world">
+        <span class="lp-world-label">{copy.after}</span>
+        <div class="lp-preview"><small>ORBIT® / 01</small><strong>{copy.demoTitle}</strong><span>{copy.demoBenefits[0]}</span><span class="lp-preview-action">{copy.demoAction} ↗</span></div>
+      </div>
+      <div class="lp-diagonal"></div>
+      <div class="lp-product-shadow"></div>
+      <div class="lp-product">
+        <div class="lp-box-side">ORBIT / FOCUS KIT</div>
+        <div class="lp-box-top"></div>
+        <div class="lp-box-front">
+          <span class="lp-box-brand">ORBIT<span>®</span></span>
+          <svg viewBox="0 0 160 160" fill="none"><circle cx="80" cy="80" r="52"/><ellipse cx="80" cy="80" rx="25" ry="70" transform="rotate(35 80 80)"/><circle cx="80" cy="80" r="7" fill="currentColor"/></svg>
+          <span class="lp-box-footer">FOCUS KIT <span>01</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption>{copy.demoNote}</figcaption>
+</figure>

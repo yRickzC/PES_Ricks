@@ -1,0 +1,50 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import type { Locale } from "../../../config/i18n";
+import { getLandingCopy } from "../config/landing";
+import LandingOfferScene from "./LandingOfferScene.astro";
+import "../styles/landing-hero.css";
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const copy = getLandingCopy(locale);
+const quote = `${getRelativeLocaleUrl(locale, "services/")}#quote`;
+---
+
+<section class="lp-hero" data-landing-hero aria-labelledby="landing-title">
+  <div id="landing-transformation" class="lp-demo-anchor" aria-hidden="true"></div>
+  <div class="lp-pin" data-landing-pin>
+    <header class="lp-heading">
+      <p class="lp-eyebrow">{copy.eyebrow}</p>
+      <h1 id="landing-title">{copy.headline}<span>{copy.headlineAccent}</span></h1>
+      <p class="lp-subtitle">{copy.subtitle}</p>
+      <div class="lp-actions"><a class="lp-primary" href={quote}>{copy.primary}<span aria-hidden="true"> ↗</span></a><a class="lp-secondary" href="#landing-transformation">{copy.secondary}<span aria-hidden="true"> ↓</span></a></div>
+    </header>
+    <LandingOfferScene copy={copy} />
+    <div class="lp-narrative" aria-label={copy.staticNote}>
+      <p class="lp-scroll" data-landing-message>{copy.scroll} <span aria-hidden="true">↓</span></p>
+      {copy.messages.map(message => <p data-landing-message>{message}</p>)}
+      <p class="lp-ending" data-landing-message>{copy.closing}</p>
+    </div>
+    <p class="lp-commercial">{copy.price}</p>
+  </div>
+</section>
+<section class="lp-handoff" id="landing-next" data-landing-demo-slot aria-labelledby="landing-next-title">
+  <p class="lp-eyebrow">{copy.handoff}</p>
+  <h2 id="landing-next-title">{copy.closing}</h2>
+  <ul class="lp-goals">{copy.goals.map(goal => <li>{goal}</li>)}</ul>
+  <p>{copy.handoffDescription}</p>
+  <a class="lp-primary" href={quote}>{copy.primary}<span aria-hidden="true"> ↗</span></a>
+</section>
+
+<script>
+  import { mountLandingHero } from "../utils/landing-hero";
+  const mounted = new Map<HTMLElement, () => void>();
+  function mount() {
+    document.querySelectorAll<HTMLElement>("[data-landing-hero]").forEach(root => {
+      if (!mounted.has(root)) mounted.set(root, mountLandingHero(root));
+    });
+  }
+  mount();
+  document.addEventListener("astro:page-load", mount);
+  document.addEventListener("astro:before-swap", () => { mounted.forEach(cleanup => cleanup()); mounted.clear(); });
+</script>

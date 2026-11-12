@@ -3,6 +3,8 @@ import type { GetStaticPaths } from "astro";
 import { getRelativeLocaleUrl } from "astro:i18n";
 import Main from "../../../main.astro";
 import ContentEmptyState from "../../../components/site/ContentEmptyState.astro";
+import LandingHero from "../components/LandingHero.astro";
+import { getLandingCopy } from "../config/landing";
 import type { Locale } from "../../../config/i18n";
 import { getServiceCopy, serviceCategoryIds, serviceOfferSlugs } from "../config/catalog";
 
@@ -28,7 +30,8 @@ const languagePaths = {
 };
 ---
 
-<Main locale={locale} pageId="services" title={title} description={copy.title} languagePaths={languagePaths}>
+<Main locale={locale} pageId="services" title={title} description={id === "landing-page" ? getLandingCopy(locale).subtitle : copy.title} languagePaths={languagePaths}>
+  {id === "landing-page" ? <LandingHero locale={locale} /> : (
   <section class="service-construction" aria-labelledby="service-title">
     <h1 id="service-title">{title}</h1>
     <ContentEmptyState
@@ -43,6 +46,7 @@ const languagePaths = {
       </a>
     </ContentEmptyState>
   </section>
+  )}
 </Main>
 
 <script>
