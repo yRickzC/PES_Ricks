@@ -24,7 +24,7 @@ const notes = Array.from({ length: noteCount }, (_, index) => selected.notes[ind
     <a class="home-text-link" href={getRelativeLocaleUrl(locale, "blogs")}>{copy.homeAllPosts}<span aria-hidden="true">↗</span></a>
   </header>
   <div class="home-news-board" data-home-reveal>
-    {images.map((post, index) => <article class={`home-news-image home-news-image--${index}`}>
+    {images.map((post, index) => <article class={`home-news-image home-news-image--${index}`} data-news-image data-image-active={String(index === 0)}>
       <HomePostCard post={post} copy={copy} image position={index + 1} />
     </article>)}
     {notes.map((post, index) => <article class={`home-news-note home-news-note--${index % HOME_NOTE_PAGE_SIZE}`} data-news-note data-note-page={Math.floor(index / HOME_NOTE_PAGE_SIZE)} hidden={index >= HOME_NOTE_PAGE_SIZE}>
