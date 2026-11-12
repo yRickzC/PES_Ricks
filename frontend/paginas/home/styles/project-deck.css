@@ -102,7 +102,7 @@
   .project-deck-hint { display: none; }
 }
 @media (max-width: 767px) {
-  .project-deck { --deck-card-width: min(276px, calc(100vw - 80px)); --deck-card-height: 430px; --deck-stage-height: 490px; --deck-card-top: 38px; --deck-step: calc(var(--deck-card-width) * .78); }
+  .project-deck { --deck-card-width: min(276px, calc(100vw - 80px)); --deck-card-height: 430px; --deck-stage-height: 490px; --deck-card-top: 38px; --deck-step: calc(var(--deck-card-width) * .78); --deck-duration: 160ms; }
   .project-deck-stage {
     display: flex;
     gap: 0;

@@ -17,16 +17,20 @@ export function mountProjectDeck(root: HTMLElement): () => void {
   const firstProject = cards.findIndex((card) => card instanceof HTMLAnchorElement);
   let active = firstProject >= 0 ? firstProject : mobile.matches ? 0 : Math.floor(cards.length / 2);
   let pressed: { index: number; wasActive: boolean } | undefined;
-  let scrollTimer: ReturnType<typeof setTimeout> | undefined;
+  let scrollFrame: number | undefined;
+  let programmaticScrollLeft: number | undefined;
 
   function centerActive(behavior: ScrollBehavior = "auto") {
     if (!mobile.matches) return;
     const slot = slots[active];
-    stage!.scrollTo({ left: slot.offsetLeft - (stage!.clientWidth - slot.offsetWidth) / 2, behavior });
+    const left = Math.max(0, Math.min(stage!.scrollWidth - stage!.clientWidth,
+      slot.offsetLeft - (stage!.clientWidth - slot.offsetWidth) / 2));
+    // Preserve a seleção feita pelas setas durante a centralização suave.
+    programmaticScrollLeft = behavior === "smooth" && Math.abs(stage!.scrollLeft - left) > 1 ? left : undefined;
+    stage!.scrollTo({ left, behavior });
   }
 
   function select(index: number, announce = false, focus = false, scroll = true) {
-    clearTimeout(scrollTimer);
     active = Math.max(0, Math.min(cards.length - 1, index));
     cards.forEach((card, position) => {
       const distance = Math.abs(position - active);
@@ -45,23 +49,35 @@ export function mountProjectDeck(root: HTMLElement): () => void {
     if (scroll) centerActive(reducedMotion.matches ? "auto" : "smooth");
   }
 
-  // A rolagem nativa cuida do gesto; sincronize a seleção quando o encaixe terminar.
+  // Acompanhe a carta mais próxima do centro durante o gesto, a cada quadro.
   stage.addEventListener("scroll", () => {
-    if (!mobile.matches) return;
-    clearTimeout(scrollTimer);
-    scrollTimer = setTimeout(() => {
+    if (!mobile.matches || scrollFrame !== undefined) return;
+    scrollFrame = requestAnimationFrame(() => {
+      scrollFrame = undefined;
+      if (!mobile.matches) return;
+      if (programmaticScrollLeft !== undefined) {
+        if (Math.abs(stage.scrollLeft - programmaticScrollLeft) <= 1) programmaticScrollLeft = undefined;
+        return;
+      }
       const center = stage.scrollLeft + stage.clientWidth / 2;
       const closest = slots.reduce((nearest, slot, index) =>
         Math.abs(slot.offsetLeft + slot.offsetWidth / 2 - center)
           < Math.abs(slots[nearest].offsetLeft + slots[nearest].offsetWidth / 2 - center) ? index : nearest, 0);
       if (closest !== active) select(closest, true, false, false);
-    }, 120);
+    });
   }, { passive: true, signal });
+  // Um novo gesto assume o controle da seleção imediatamente.
+  const resumeGesture = () => { programmaticScrollLeft = undefined; };
+  stage.addEventListener("pointerdown", resumeGesture, { signal });
+  stage.addEventListener("pointercancel", resumeGesture, { signal });
+  stage.addEventListener("wheel", resumeGesture, { passive: true, signal });
 
   const resizeObserver = new ResizeObserver(() => centerActive());
   resizeObserver.observe(stage);
   mobile.addEventListener("change", () => {
-    clearTimeout(scrollTimer);
+    if (scrollFrame !== undefined) cancelAnimationFrame(scrollFrame);
+    scrollFrame = undefined;
+    programmaticScrollLeft = undefined;
     if (mobile.matches) centerActive();
     else stage.scrollLeft = 0;
   }, { signal });
@@ -97,7 +113,7 @@ export function mountProjectDeck(root: HTMLElement): () => void {
   centerActive();
   root.dataset.deckReady = "true";
   return () => {
-    clearTimeout(scrollTimer);
+    if (scrollFrame !== undefined) cancelAnimationFrame(scrollFrame);
     resizeObserver.disconnect();
     listeners.abort();
     delete root.dataset.deckReady;
