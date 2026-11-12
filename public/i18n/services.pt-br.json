@@ -1,7 +1,7 @@
 {
   "chooseType": "Escolha o tipo de serviço",
   "catalogIntro": "Comece pelo que seu negócio precisa. Cada solução considera quem vai usá-la e as tarefas que ela precisa facilitar.",
-  "viewService": "Solicitar orçamento",
+  "viewService": "Conhecer serviço",
   "quoteMessage": "Olá, Rick! Gostaria de conversar sobre um projeto para meu negócio e solicitar um orçamento.",
   "quoteService": "Solução de interesse",
   "proof": {
@@ -18,7 +18,7 @@
     "title": "Esta página está em construção!",
     "hint": "Estou trabalhando nos detalhes deste serviço. Volte em breve para ver o que está tomando forma.",
     "dogAlt": "Cachorro trabalhando em uma página em construção",
-    "back": "Voltar aos serviços"
+    "back": "Voltar à página anterior"
   },
   "process": {
     "title": "Como funciona",

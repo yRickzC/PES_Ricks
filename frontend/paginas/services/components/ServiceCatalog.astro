@@ -1,8 +1,9 @@
 ---
+import { getRelativeLocaleUrl } from "astro:i18n";
 import { contentTaxonomy } from "../../../../backend/content/taxonomy";
 import TaxonomyIcon from "../../../components/site/TaxonomyIcon.astro";
 import type { Locale } from "../../../config/i18n";
-import { getServiceCopy, getServiceQuoteUrl, serviceCategoryIds } from "../config/catalog";
+import { getServiceCopy, serviceCategoryIds, serviceOfferSlugs } from "../config/catalog";
 import "../styles/service-catalog.css";
 
 interface Props { locale: Locale }
@@ -70,7 +71,7 @@ const previews: Record<(typeof serviceCategoryIds)[number], readonly string[]> =
           <li class="service-catalog-item" data-service-reveal>
             <a
               class="service-catalog-card"
-              href={getServiceQuoteUrl(locale, title)}
+              href={getRelativeLocaleUrl(locale, `services/${serviceOfferSlugs[id][index]}/`)}
               aria-labelledby={`service-offer-${id}-${index} service-offer-action-${id}-${index}`}
             >
               <div class="service-catalog-preview" aria-hidden="true">

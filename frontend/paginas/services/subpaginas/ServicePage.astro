@@ -38,12 +38,25 @@ const languagePaths = {
       dogSrc="/images/Dog_Worker.webp"
       dogAlt={copy.dogAlt}
     >
-      <a class="service-construction-back" href={`${getRelativeLocaleUrl(locale, "services/")}#services`}>
+      <a class="service-construction-back" data-service-back href={`${getRelativeLocaleUrl(locale, "services/")}#services`}>
         <span aria-hidden="true">←</span> {copy.back}
       </a>
     </ContentEmptyState>
   </section>
 </Main>
+
+<script>
+  const back = document.querySelector<HTMLAnchorElement>("[data-service-back]");
+  back?.addEventListener("click", (event) => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (history.length < 2 || !document.referrer) return;
+    // Links diretos e entradas de outros sites usam o catálogo como retorno.
+    const previous = new URL(document.referrer);
+    if (previous.origin !== location.origin) return;
+    event.preventDefault();
+    history.back();
+  });
+</script>
 
 <style>
   .service-construction {

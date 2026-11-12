@@ -74,11 +74,12 @@ possíveis abaixo dos cards foi removido nos dois idiomas.
 Catálogo e roadmap são transparentes; painéis e campos mantêm suas superfícies legíveis.
 Gradientes nas extremidades do cenário suavizam a entrada a partir do preto e
 a saída para o formulário preto, sem colocar imagem em Projetos customizados. Resumos por categoria explicam
-o público e os benefícios; os cards iniciam um pedido de orçamento no WhatsApp
-com o nome da solução. `getServiceQuoteUrl`, na configuração existente do
-catálogo, centraliza esses links e sua mensagem localizada. As páginas de
-detalhe em construção permanecem registradas, mas não são o destino dos CTAs
-comerciais.
+o público e os benefícios; os nove cards encaminham para a página própria de
+cada solução em /services/<slug>/ ou /pt-br/services/<slug>/. Enquanto as landing
+pages são preparadas, essas rotas mostram o nome do serviço, o aviso localizado
+de construção e Dog_Worker.webp. O botão de retorno usa o histórico quando a
+entrada veio de uma página do site; acessos diretos retornam ao catálogo.
+Os CTAs de orçamento das heroes usam `getServiceQuoteUrl` e sua mensagem localizada.
 
 A sequência da página é hero → exemplo real → soluções → processo → projeto
 customizado. O exemplo real é o próprio portfólio, com links para a Home

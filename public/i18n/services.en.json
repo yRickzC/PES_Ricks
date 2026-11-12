@@ -1,7 +1,7 @@
 {
   "chooseType": "Choose a service type",
   "catalogIntro": "Start with what your business needs. Each solution is scoped around the people who will use it and the work it needs to support.",
-  "viewService": "Request a quote",
+  "viewService": "View service",
   "quoteMessage": "Hi, Rick! I'd like to discuss a project for my business and request a quote.",
   "quoteService": "Solution I'm interested in",
   "proof": {
@@ -18,7 +18,7 @@
     "title": "This page is under construction!",
     "hint": "I'm working on the details of this service. Come back soon to see what's taking shape.",
     "dogAlt": "Dog working on a page under construction",
-    "back": "Back to services"
+    "back": "Back to previous page"
   },
   "process": {
     "title": "How it works",
