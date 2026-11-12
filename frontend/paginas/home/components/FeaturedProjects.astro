@@ -8,16 +8,14 @@ import { withBasePath } from "../../../utils/base-path";
 import { projectBiomes } from "../../projects/config/biomes";
 import SiteImage from "../../../components/site/SiteImage.astro";
 import Icon from "../../../components/site/Icon.astro";
-import { PROJECT_DECK_SIZE } from "../config/project-deck";
+import { getProjectDeckMiddle, PROJECT_DECK_SIZE } from "../config/project-deck";
 import "../styles/project-deck.css";
 
 interface Props { projects: ContentEntry[]; copy: Messages; locale: Locale }
 const { projects, copy, locale } = Astro.props;
 const projectsHref = getRelativeLocaleUrl(locale, "projects");
 const cards = Array.from({ length: PROJECT_DECK_SIZE }, (_, index) => projects[index]);
-const firstProject = cards.findIndex((project) => project !== undefined);
-const initialActive = firstProject >= 0 ? firstProject : Math.floor(PROJECT_DECK_SIZE / 2);
-const initialMobileActive = firstProject >= 0 ? firstProject : 0;
+const initialActive = getProjectDeckMiddle(cards.length);
 function projectHref({ metadata }: ContentEntry) {
   const link = metadata.links[0];
   if (link) return link.url.startsWith("#") ? `${projectsHref}${link.url}` : withBasePath(link.url, import.meta.env.BASE_URL);
@@ -31,6 +29,7 @@ function projectHref({ metadata }: ContentEntry) {
   <style is:inline>
     .project-deck .project-deck-controls,
     .project-deck .project-deck-hint { display: none; }
+    .project-deck:not([data-deck-ready="true"]) .project-deck-slot { translate: none; }
     @media (min-width: 768px) {
       .project-deck .project-deck-stage { display: flex; overflow-x: auto; padding: var(--deck-card-top) 8px 0; }
       .project-deck .project-deck-slot,
@@ -44,17 +43,15 @@ function projectHref({ metadata }: ContentEntry) {
     <h2 id="home-projects-title">{copy.homeFeaturedProjects}</h2>
     <a class="home-text-link" href={projectsHref}>{copy.homeAllProjects}<span aria-hidden="true">↗</span></a>
   </header>
-  <div class="project-deck" data-project-deck data-position-label={copy.homeProjectPosition} data-home-reveal>
+  <div class="project-deck" data-project-deck data-position-label={copy.homeProjectPosition} style={`--deck-initial-index:${initialActive}`} data-home-reveal>
     <ul class="project-deck-stage" id="home-project-deck" aria-label={copy.homeFeaturedProjects}>
       {cards.map((project, index) => {
         const Card = project ? "a" : "button";
         const label = copy.homeProjectSlot.replace("{number}", String(index + 1));
         const distance = Math.abs(index - initialActive);
-        const initialState = firstProject >= 0 ? String(index === initialActive)
-          : index === initialActive ? "desktop" : index === initialMobileActive ? "mobile" : "false";
-        const slotStyle = `--deck-slot:${index - Math.floor(PROJECT_DECK_SIZE / 2)};--deck-depth:${PROJECT_DECK_SIZE - distance};--deck-mobile-depth:${PROJECT_DECK_SIZE - Math.abs(index - initialMobileActive)};--deck-scale:${index === initialActive ? 1.035 : 0.96 - distance * 0.025}`;
+        const slotStyle = `--deck-slot:${index - initialActive};--deck-depth:${cards.length - distance};--deck-scale:${index === initialActive ? 1.035 : 0.96 - distance * 0.025}`;
         return (
-          <li class="project-deck-slot" data-deck-slot data-active={initialState} style={slotStyle}>
+          <li class="project-deck-slot" data-deck-slot data-active={String(index === initialActive)} style={slotStyle}>
             <article class:list={["project-deck-card", { "project-deck-card--empty": !project }]}>
               <Card class="project-deck-action" data-deck-card href={project ? projectHref(project) : undefined} type={project ? undefined : "button"} aria-label={`${label}: ${project?.metadata.title ?? copy.homeProjectSlotEmpty}`}>
                 <span class="project-deck-art">

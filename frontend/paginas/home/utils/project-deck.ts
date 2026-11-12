@@ -1,3 +1,5 @@
+import { getProjectDeckMiddle } from "../config/project-deck";
+
 export function mountProjectDeck(root: HTMLElement): () => void {
   const cards = Array.from(root.querySelectorAll<HTMLAnchorElement | HTMLButtonElement>("[data-deck-card]"));
   const slots = Array.from(root.querySelectorAll<HTMLElement>("[data-deck-slot]"));
@@ -14,8 +16,7 @@ export function mountProjectDeck(root: HTMLElement): () => void {
   const hover = matchMedia("(hover: hover) and (pointer: fine)");
   const mobile = matchMedia("(max-width: 767px)");
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
-  const firstProject = cards.findIndex((card) => card instanceof HTMLAnchorElement);
-  let active = firstProject >= 0 ? firstProject : mobile.matches ? 0 : Math.floor(cards.length / 2);
+  let active = getProjectDeckMiddle(cards.length);
   let pressed: { index: number; wasActive: boolean } | undefined;
   let scrollFrame: number | undefined;
   let programmaticScrollLeft: number | undefined;
@@ -110,8 +111,8 @@ export function mountProjectDeck(root: HTMLElement): () => void {
   }, { signal });
 
   select(active, false, false, false);
-  centerActive();
   root.dataset.deckReady = "true";
+  centerActive();
   return () => {
     if (scrollFrame !== undefined) cancelAnimationFrame(scrollFrame);
     resizeObserver.disconnect();
