@@ -46,6 +46,11 @@
 .home-news-note--1 .home-news-copy, .home-news-note--2 .home-news-copy { padding: 18px; gap: 9px; }
 .home-news-note--1 h3, .home-news-note--2 h3 { font-size: 18px; }
 .home-news-open { margin-top: auto; align-self: flex-end; color: var(--color-brand-light); }
+.home-news-pagination { display: none; }
+.home-news-page { display: grid; place-items: center; width: 52px; height: 44px; padding: 0 4px; border: 0; background: none; cursor: pointer; }
+.home-news-page span { display: block; width: 100%; height: 4px; border-radius: 999px; background: rgb(255 255 255 / 24%); }
+.home-news-page[aria-current="true"] span { background: var(--color-brand-light); }
+.home-news-page:focus-visible { outline: 2px solid var(--color-brand-light); outline-offset: 2px; border-radius: 6px; }
 @media (hover: hover) and (pointer: fine) {
   .home-news-card:hover {
     border-color: rgb(197 173 255 / 70%);
@@ -59,13 +64,15 @@
   .home-news-image--0 .home-news-art { height: 230px; }
 }
 @media (max-width: 767px) {
-  .home-news-board { grid-template-areas: "lead lead" "intro note-one" "intro note-two"; }
-  .home-news-image { grid-area: lead; visibility: hidden; pointer-events: none; }
+  .home-news-board { grid-template-areas: "lead lead" "pagination pagination" "intro note-one" "intro note-two"; }
+  .home-news-image { grid-area: lead; visibility: hidden; pointer-events: none; touch-action: pan-y pinch-zoom; }
   .home-news-image[data-image-active="true"] { visibility: visible; pointer-events: auto; }
   .home-news-image .home-news-art { height: 230px; }
+  .home-news-pagination { grid-area: pagination; display: flex; justify-content: center; gap: 4px; }
+  .home-news-pagination[hidden] { display: none; }
 }
 @media (max-width: 539px) {
-  .home-news-board { grid-template-columns: minmax(0, 1fr); grid-template-areas: "lead" "intro" "note-one" "note-two"; gap: 14px; }
+  .home-news-board { grid-template-columns: minmax(0, 1fr); grid-template-areas: "lead" "pagination" "intro" "note-one" "note-two"; gap: 14px; }
   .home-news-image .home-news-art { height: 190px; }
   .home-news-note--0 .home-news-copy { padding: 26px; }
   .home-news-copy { padding: 20px; }

@@ -41,6 +41,9 @@ export interface Messages {
   homeBlogNote: string;
   homeBlogEmptySlot: string;
   homeBlogImageEmpty: string;
+  homeNewsPagination: string;
+  homeNewsSlide: string;
+  homeNewsPosition: string;
   homeAllPosts: string;
   homeAboutTitle: string;
   homeAboutHeadline: string;

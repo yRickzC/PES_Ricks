@@ -18,19 +18,23 @@ const noteCount = selected.notes.length ? Math.ceil(selected.notes.length / HOME
 const notes = Array.from({ length: noteCount }, (_, index) => selected.notes[index]);
 ---
 
-<section class="home-section home-news" aria-labelledby="home-posts-title" data-home-news>
+<section class="home-section home-news" aria-labelledby="home-posts-title" data-home-news data-position-label={copy.homeNewsPosition}>
   <header class="home-section-heading" data-home-reveal>
     <h2 id="home-posts-title">{copy.homeLatestPosts}</h2>
     <a class="home-text-link" href={getRelativeLocaleUrl(locale, "blogs")}>{copy.homeAllPosts}<span aria-hidden="true">↗</span></a>
   </header>
-  <div class="home-news-board" data-home-reveal>
-    {images.map((post, index) => <article class={`home-news-image home-news-image--${index}`} data-news-image data-image-active={String(index === 0)}>
+  <div class="home-news-board" id="home-news-board" data-news-board data-home-reveal>
+    {images.map((post, index) => <article class={`home-news-image home-news-image--${index}`} id={`home-news-image-${index + 1}`} data-news-image data-image-active={String(index === 0)}>
       <HomePostCard post={post} copy={copy} image position={index + 1} />
     </article>)}
+    <div class="home-news-pagination" data-news-pagination role="group" aria-label={copy.homeNewsPagination} hidden>
+      {images.map((_, index) => <button class="home-news-page" data-news-page={index} type="button" aria-label={copy.homeNewsSlide.replace("{number}", String(index + 1))} aria-controls={images.map((_, position) => `home-news-image-${position + 1}`).join(" ")} aria-current={index === 0 ? "true" : "false"}><span aria-hidden="true"></span></button>)}
+    </div>
     {notes.map((post, index) => <article class={`home-news-note home-news-note--${index % HOME_NOTE_PAGE_SIZE}`} data-news-note data-note-page={Math.floor(index / HOME_NOTE_PAGE_SIZE)} hidden={index >= HOME_NOTE_PAGE_SIZE}>
       <HomePostCard post={post} copy={copy} position={index + 1} />
     </article>)}
   </div>
+  <p class="sr-only" data-news-status role="status" aria-live="polite" aria-atomic="true"></p>
 </section>
 
 <script>
