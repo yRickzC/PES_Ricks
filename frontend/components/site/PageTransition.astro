@@ -1,18 +1,24 @@
 ---
-import { getImage } from "astro:assets";
 import logoSource from "../../../public/images/Rick_Logo_Transparent.webp";
 import { withBasePath } from "../../utils/base-path";
+import { getImageVariantPaths, imageVariantSrcSet } from "../../utils/image-variants";
 
 const base = import.meta.env.BASE_URL;
-const logo = await getImage({ src: logoSource, width: 448, format: "webp", quality: 88 });
-const logoUrl = withBasePath(logo.src, base);
+const logoVariants = getImageVariantPaths("/images/Rick_Logo_Transparent.webp", logoSource.width)!;
+const logoUrl = withBasePath(logoVariants.desktop, base);
+const mobileLogo = logoVariants.mobile.find(({ width }) => width >= 480) ?? logoVariants.mobile[logoVariants.mobile.length - 1]!;
+const mobileLogoUrl = withBasePath(mobileLogo.src, base);
+const mobileLogoSrcset = imageVariantSrcSet(logoVariants.mobile, base);
 ---
 
 <div id="page-transition" class="page-transition" data-base={base} aria-hidden="true" hidden>
   <div class="page-transition__backdrop"></div>
   <div class="page-transition__foreground">
-    <div class="page-transition__mark" data-mark={logoUrl}>
-      <img data-src={logoUrl} width="448" height="448" alt="" decoding="async" draggable="false" />
+    <div class="page-transition__mark" data-mark={logoUrl} data-mobile-mark={mobileLogoUrl}>
+      <picture>
+        <source media="(max-width: 767px)" type="image/webp" data-srcset={mobileLogoSrcset} sizes="224px" />
+        <img data-src={logoUrl} width={logoSource.width} height={logoSource.height} alt="" decoding="async" draggable="false" />
+      </picture>
       <div class="page-transition__sheen"></div>
     </div>
   </div>
@@ -34,8 +40,13 @@ const logoUrl = withBasePath(logo.src, base);
       if (artworkReady) return artworkReady;
       // Only the logo needs loading; the backdrop is painted entirely in CSS.
       const mark = curtain.querySelector("[data-mark]");
-      mark.style.setProperty("--page-transition-mark", `url("${mark.dataset.mark}")`);
+      const markUrl = matchMedia("(max-width: 767px)").matches
+        ? mark.dataset.mobileMark ?? mark.dataset.mark
+        : mark.dataset.mark;
+      mark.style.setProperty("--page-transition-mark", `url("${markUrl}")`);
       artworkReady = Promise.allSettled(Array.from(curtain.querySelectorAll("img[data-src]"), (image) => {
+        const source = image.closest("picture")?.querySelector("source[data-srcset]");
+        if (source && !source.getAttribute("srcset")) source.setAttribute("srcset", source.dataset.srcset);
         image.src = image.dataset.src;
         return image.decode?.();
       }));
@@ -236,6 +247,8 @@ const logoUrl = withBasePath(logo.src, base);
     height: auto;
     filter: drop-shadow(0 0 1.25rem rgb(165 138 240 / 32%));
   }
+
+  .page-transition__mark picture { display: block; width: 100%; height: 100%; }
 
   .page-transition__sheen {
     position: absolute;

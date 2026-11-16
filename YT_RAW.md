@@ -279,3 +279,9 @@ Graphify final desta implementação: AST local com 686 nós/1.616 relações, 3
 2026-11-15 — Adicionado “Conheça mais” com seta ao card funcional de Landing page, reutilizando seu link localizado; “Learn more” em EN. Cards em construção preservados. JSONs/diff conferidos e Graphify AST atualizado; sem navegador, testes ou build.
 
 2026-11-15 — Pesquisa: Início removido dos resultados e Landing page disponível indexada com título/descrição reais em PT-BR/EN. Busca local por nome/finalidade, como “site para meu produto” e “site para minha padaria”, aceita erros como “laddingpage”; resultados ordenados por relevância com filtros/teclado preservados. Índice preparado uma vez, sem novas dependências ou rede. Casos de regressão escritos e documentação atualizada. Revisão estática/diff e Graphify AST local concluídos (763 nós/1799 relações; 46 avisos parciais Astro); sem navegador, testes, tipagem ou build.
+
+2026-11-16 — Lighthouse mobile apontou imagens grandes na fábrica, ilha e foto. A pedido do usuário, FFmpeg criou quatro WebPs mobile por imagem; picture/srcset seleciona os novos arquivos até 767px, com base do GitHub Pages e desktop preservados. Revisão estática/diff e Graphify AST concluídos. Sem aplicativo, testes ou build; economia real aguarda nova auditoria Lighthouse.
+
+2026-11-16 — Revisão de CLS encontrou o menu mobile mudando de geometria somente após a chegada do módulo. Estado recolhido antecipado por script inline, reutilizando CSS/controlador e preservando fallback sem JavaScript. Diff e Graphify AST conferidos; sem navegador, testes, build ou nova medição. A causa do CLS publicado continua sem confirmação pelo trecho recebido.
+
+2026-11-16 — FFmpeg criou 65 variantes WebP desktop lossless e 238 variantes mobile otimizadas para as imagens raster do site; SiteImage e fundos/capas selecionam versões responsivas. FFprobe conferiu os 303 arquivos e Graphify foi atualizado localmente.

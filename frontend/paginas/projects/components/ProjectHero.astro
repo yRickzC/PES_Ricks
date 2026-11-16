@@ -1,5 +1,4 @@
 ---
-import { getImage } from "astro:assets";
 import mainForest from "../../../../public/images/Project_Hero_MainFlorest.webp";
 import fog from "../../../../public/images/Project_Hero_Fog.webp";
 import foreground from "../../../../public/images/Project_Hero_Florest.webp";
@@ -9,6 +8,8 @@ import { taxonomyCategories } from "../../../../backend/content/taxonomy";
 import type { Locale } from "../../../config/i18n";
 import type { Messages } from "../../../utils/translations";
 import { projectHeroLayers } from "../config/hero";
+import { getImageVariantPaths, imageVariantSrcSet } from "../../../utils/image-variants";
+import { withBasePath } from "../../../utils/base-path";
 import "../styles/project-hero.css";
 
 interface Props { copy: Messages; locale: Locale }
@@ -16,10 +17,16 @@ const { copy, locale } = Astro.props;
 const projectCategories = taxonomyCategories("project", locale);
 const orbitRadius = 42;
 const assets = { main: mainForest, fog, foreground };
-const scenery = await Promise.all(projectHeroLayers.map(async (layer) => ({
-  ...layer,
-  image: layer.id === "sky" ? layer.src : (await getImage({ src: assets[layer.id], width: 2172, format: "webp" })).src,
-})));
+const scenery = projectHeroLayers.map((layer) => {
+  if (layer.id === "sky") return { ...layer, image: undefined, mobileImage: undefined };
+  const variants = getImageVariantPaths(layer.src, assets[layer.id].width)!;
+  const mobile = variants.mobile[variants.mobile.length - 1]!;
+  return {
+    ...layer,
+    image: withBasePath(variants.desktop, import.meta.env.BASE_URL),
+    mobileImage: withBasePath(mobile.src, import.meta.env.BASE_URL),
+  };
+});
 ---
 
 <section class="project-hero" data-project-hero aria-labelledby="project-hero-title">
@@ -29,7 +36,7 @@ const scenery = await Promise.all(projectHeroLayers.map(async (layer) => ({
         {layer.id === "sky" ? (
           <SiteImage src={layer.src} alt="" width={1672} widths={[960, 1672]} sizes="100vw" loading="eager" decoding="async" draggable="false" />
         ) : (
-          <div class="project-hero-panorama" style={`background-image: url("${layer.image}");`}></div>
+          <div class="project-hero-panorama" style={`--panorama-desktop: url("${layer.image}"); --panorama-mobile: url("${layer.mobileImage}");`}></div>
         )}
       </div>
     ))}

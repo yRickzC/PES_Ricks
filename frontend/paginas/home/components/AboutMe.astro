@@ -12,7 +12,19 @@ const { copy } = Astro.props;
   </header>
   <div class="home-about-body">
     <div class="home-about-photo" data-home-reveal>
-      <SiteImage src="/images/me.jpg" alt="Rick" width={480} height={480} widths={[280, 480, 960]} sizes="(max-width: 767px) 280px, (max-width: 1199px) 40vw, 480px" loading="lazy" />
+      <SiteImage
+        src="/images/me.jpg"
+        alt="Rick"
+        width={480}
+        height={480}
+        widths={[280, 480, 960]}
+        sizes="(max-width: 767px) 280px, (max-width: 1199px) 40vw, 480px"
+        mobile={{
+          sources: [280, 490, 560, 840].map((width) => ({ src: `/images/mobile/me-${width}.webp`, width })),
+          sizes: "280px",
+        }}
+        loading="lazy"
+      />
     </div>
     <div class="home-about-copy" data-home-reveal-group>
       <h3>{copy.homeAboutHeadline}</h3>

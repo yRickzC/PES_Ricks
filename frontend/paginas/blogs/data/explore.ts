@@ -2,7 +2,7 @@ import type { Locale } from "../../../config/i18n";
 
 export const PAGE_SIZE = 10;
 export interface BlogCategory { id: string; label: string }
-export interface BlogCover { src: string; alt: string; srcset?: string; width?: number; height?: number }
+export interface BlogCover { src: string; alt: string; srcset?: string; mobileSrcset?: string; width?: number; height?: number }
 export interface BlogPost {
   id: string;
   title: string;

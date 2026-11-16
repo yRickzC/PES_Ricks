@@ -23,6 +23,10 @@ const languages = [
 ---
 
 <header class="site-header" data-site-header>
+  <script is:inline>
+    // Reserve the collapsed mobile layout before the menu markup is parsed.
+    document.currentScript?.parentElement?.setAttribute("data-enhanced", "");
+  </script>
   <div class="site-header-inner">
     <a class="site-brand" href={getRelativeLocaleUrl(locale, "")} aria-label={copy.homeLabel}>
       <SiteImage class="site-brand-mark" src="/images/Rick_Logo.webp" width={44} height={44} widths={[44, 88]} sizes="44px" alt="" loading="eager" decoding="async" />

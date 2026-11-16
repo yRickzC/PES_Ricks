@@ -19,6 +19,10 @@ export interface HeroLayer {
   widths: readonly number[];
   sizes: string;
   quality: number;
+  mobileImage?: {
+    sources: readonly { src: string; width: number }[];
+    sizes: string;
+  };
   fetchpriority: "high" | "auto" | "low";
   loading: "eager" | "lazy";
   zIndex: number;
@@ -59,6 +63,10 @@ export const heroLayers = [
   },
   {
     id: "island", src: "/images/Ladding_Hero_Island.webp", width: 1536, height: 1024,
+    mobileImage: {
+      sources: [480, 640, 840, 1242].map((width) => ({ src: `/images/mobile/Ladding_Hero_Island-${width}.webp`, width })),
+      sizes: "(max-width: 534px) 116vw, 620px",
+    },
     widths: [320, 480, 620, 720, 960, 1240, 1440, 1536],
     sizes: "(max-width: 534px) 116vw, (max-width: 959px) 620px, (max-width: 1439px) 50vw, 720px",
     quality: 75, fetchpriority: "auto",
@@ -69,6 +77,10 @@ export const heroLayers = [
   },
   {
     id: "factory", src: "/images/Ladding_Hero_Factory.webp", width: 2172, height: 724,
+    mobileImage: {
+      sources: [660, 960, 1164, 1320].map((width) => ({ src: `/images/mobile/Ladding_Hero_Factory-${width}.webp`, width })),
+      sizes: "(max-width: 659px) 660px, 100vw",
+    },
     widths: [660, 960, 1440, 1920, 2172], sizes: "(max-width: 659px) 660px, 100vw", quality: 70, fetchpriority: "low",
     loading: "lazy",
     zIndex: 5, opacity: 0.85, depth: { pointer: 8, scroll: 12 },

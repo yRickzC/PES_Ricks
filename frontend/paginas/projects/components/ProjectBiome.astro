@@ -1,24 +1,34 @@
 ---
 import { projectBiomes, projectLayerStyle } from "../config/biomes";
 import { withBasePath } from "../../../utils/base-path";
+import { getImageVariantPaths, imageVariantSrcSet } from "../../../utils/image-variants";
 interface Props { category: string }
 const biome = projectBiomes.find((item) => item.category === Astro.props.category);
 // The source WebPs are lossless; serve them directly instead of re-encoding them.
 const layers = (biome?.layers ?? []).map((layer) => ({
   ...layer,
-  url: withBasePath(layer.src, import.meta.env.BASE_URL),
+  url: withBasePath(getImageVariantPaths(layer.src, 2172)!.desktop, import.meta.env.BASE_URL),
+  mobileSrcset: imageVariantSrcSet(getImageVariantPaths(layer.src, 2172)!.mobile, import.meta.env.BASE_URL),
   width: 2172,
   height: 724,
 }));
 ---
 {biome && (
   <div class="project-biome-scene" data-project-biome={biome.id} aria-hidden="true">
-    <noscript><style is:inline>.project-biome-scene { opacity: 1; } .project-biome-placement > img[data-biome-src] { display: none; }</style></noscript>
+    <noscript><style is:inline>.project-biome-scene { opacity: 1; } .project-biome-placement > [data-biome-picture] { display: none; }</style></noscript>
     {layers.map((layer) => (
       <div class={`project-biome-layer project-biome-layer--${layer.className}`} data-project-biome-layer={layer.id} style={projectLayerStyle(layer)}>
         <div class="project-biome-placement">
-          <img data-biome-src={layer.url} width={layer.width} height={layer.height} alt="" decoding="async" fetchpriority={layer.className === "cave-background" ? "auto" : "low"} draggable="false" />
-          <noscript><img src={layer.url} width={layer.width} height={layer.height} alt="" loading="lazy" /></noscript>
+          <picture data-biome-picture>
+            <source media="(max-width: 767px)" type="image/webp" data-biome-srcset={layer.mobileSrcset} sizes="200vw" />
+            <img data-biome-src={layer.url} width={layer.width} height={layer.height} alt="" decoding="async" fetchpriority={layer.className === "cave-background" ? "auto" : "low"} draggable="false" />
+          </picture>
+          <noscript>
+            <picture>
+              <source media="(max-width: 767px)" type="image/webp" srcset={layer.mobileSrcset} sizes="200vw" />
+              <img src={layer.url} width={layer.width} height={layer.height} alt="" loading="lazy" />
+            </picture>
+          </noscript>
         </div>
       </div>
     ))}

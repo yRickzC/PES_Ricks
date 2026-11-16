@@ -32,9 +32,16 @@ function mountBlogExplore(root: HTMLElement): () => void {
     // Set sizing before src so the browser can choose a responsive candidate immediately.
     image.sizes = horizontal ? "(max-width: 700px) calc(100vw - 32px), 350px"
       : "(max-width: 700px) calc(100vw - 32px), (max-width: 1000px) 48vw, 720px";
+    const mobileSource = find<HTMLSourceElement>("[data-blog-cover-mobile]");
+    if (mobileSource) {
+      mobileSource.sizes = image.sizes;
+      if (post.cover.mobileSrcset) mobileSource.srcset = post.cover.mobileSrcset;
+      else mobileSource.removeAttribute("srcset");
+    }
     if (post.cover.width) image.width = post.cover.width;
     if (post.cover.height) image.height = post.cover.height;
     if (post.cover.srcset) image.srcset = post.cover.srcset;
+    else image.removeAttribute("srcset");
     image.alt = post.cover.alt;
     image.src = post.cover.src;
     find<HTMLAnchorElement>("[data-blog-image-link]").href = post.href;

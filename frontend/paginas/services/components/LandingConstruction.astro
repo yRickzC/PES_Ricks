@@ -1,15 +1,16 @@
 ---
-import { Image } from "astro:assets";
-import planning from "../../../../public/images/Ladding_Section_Step0.webp";
-import model from "../assets/Ladding_Section_Step1.png";
-import construction from "../assets/Ladding_Section_Step2.png";
-import home from "../assets/Ladding_Section_Step3.png";
+import SiteImage from "../../../components/site/SiteImage.astro";
 import type { LandingCopy } from "../config/landing";
 import "../styles/landing-construction.css";
 
 interface Props { copy: LandingCopy["construction"] }
 const { copy } = Astro.props;
-const photographs = [planning, model, construction, home];
+const photographs = [
+  "/images/Ladding_Section_Step0.webp",
+  "/images/Ladding_Section_Step1.png",
+  "/images/Ladding_Section_Step2.png",
+  "/images/Ladding_Section_Step3.png",
+];
 ---
 
 <section class="lp-build" aria-labelledby="landing-build-title">
@@ -34,18 +35,17 @@ const photographs = [planning, model, construction, home];
           <h3 id={`landing-build-chapter-${index}`}>{chapter.title}</h3>
         </header>
         <figure class="lp-build-photograph">
-          <Image
+          <SiteImage
             class="lp-build-image"
             src={photographs[index]}
             alt={chapter.alt}
-            widths={[400, 640, 900, photographs[index].width]}
+            width={900}
             sizes={index === photographs.length - 1
               ? "(max-width: 767px) calc(100vw - 40px), (max-width: 1519px) 60vw, 864px"
               : "(max-width: 767px) calc(100vw - 40px), (max-width: 1359px) 56vw, 730px"}
-            format="webp"
-            quality={85}
             loading="lazy"
             decoding="async"
+            draggable="false"
           />
         </figure>
         <p class="lp-build-description lp-build-reveal">{chapter.description}</p>

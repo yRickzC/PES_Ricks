@@ -10,7 +10,10 @@ const Card = post ? "a" : "div";
 
 <Card class:list={["home-news-card", { "home-news-card--image": image, "home-news-card--empty": !post }]} href={post?.href}>
   {image && <div class="home-news-art">
-    {post ? <img src={post.cover.src} srcset={post.cover.srcset} width={post.cover.width} height={post.cover.height} alt={post.cover.alt} sizes="(max-width: 639px) 90vw, (max-width: 899px) 50vw, 600px" loading="lazy" decoding="async" />
+    {post ? <picture>
+        {post.cover.mobileSrcset && <source media="(max-width: 767px)" type="image/webp" srcset={post.cover.mobileSrcset} sizes="(max-width: 639px) 90vw, 50vw" />}
+        <img src={post.cover.src} srcset={post.cover.srcset} width={post.cover.width} height={post.cover.height} alt={post.cover.alt} sizes="(max-width: 639px) 90vw, (max-width: 899px) 50vw, 600px" loading="lazy" decoding="async" />
+      </picture>
       : <SiteImage class="home-news-dog" src="/images/Dog_Sad.webp" alt="" width={180} height={180} widths={[180, 360]} sizes="180px" />}
   </div>}
   <div class="home-news-copy">

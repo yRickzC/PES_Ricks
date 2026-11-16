@@ -3,6 +3,8 @@ import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import type { HTMLAttributes } from "astro/types";
 import ShootingStars from "./ShootingStars.astro";
+import { withBasePath } from "../../utils/base-path";
+import { getImageVariantPaths, imageVariantSrcSet } from "../../utils/image-variants";
 
 type Props = Omit<HTMLAttributes<"img">, "src" | "width" | "height"> & {
   src: string;
@@ -11,21 +13,46 @@ type Props = Omit<HTMLAttributes<"img">, "src" | "width" | "height"> & {
   height?: number;
   widths?: number[];
   quality?: number;
+  mobile?: {
+    sources: readonly { src: string; width: number }[];
+    sizes: string;
+  };
 };
 
-const { src, loading = "lazy", ...attributes } = Astro.props;
+const { src, mobile, loading = "lazy", width, height, widths, quality, sizes, ...attributes } = Astro.props;
 const images = import.meta.glob<ImageMetadata>("/public/**/*.{avif,gif,jpeg,jpg,png,svg,webp,AVIF,GIF,JPEG,JPG,PNG,SVG,WEBP}", { import: "default" });
 const loadImage = images[`/public${src}`];
 const localImage = loadImage ? await loadImage() : undefined;
-if (src.startsWith("/") && !localImage) {
+const variantPaths = getImageVariantPaths(src, localImage?.width ?? 0);
+const loadDesktopVariant = variantPaths ? images[`/public${variantPaths.desktop}`] : undefined;
+const desktopImage = loadDesktopVariant ? await loadDesktopVariant() : undefined;
+const mobileVariants = mobile?.sources ?? variantPaths?.mobile ?? [];
+const availableMobileVariants = mobileVariants.filter((variant) => images[`/public${variant.src}`]);
+const mobileSrcset = imageVariantSrcSet(availableMobileVariants, import.meta.env.BASE_URL);
+const desktopSrc = desktopImage ? withBasePath(variantPaths!.desktop, import.meta.env.BASE_URL) : undefined;
+const displayWidth = width ?? desktopImage?.width;
+const displayHeight = height ?? (width && desktopImage
+  ? Math.round(width * desktopImage.height / desktopImage.width)
+  : desktopImage?.height);
+if (src.startsWith("/") && !localImage && !desktopImage) {
   throw new Error(`Imagem local não encontrada em public: ${src}`);
 }
 ---
 
-{localImage ? (
-  <Image src={localImage} loading={loading} {...attributes} />
+{desktopImage ? (
+  <picture>
+    {mobileSrcset && <source
+      media="(max-width: 767px)"
+      type="image/webp"
+      srcset={mobileSrcset}
+      sizes={mobile?.sizes ?? sizes}
+    />}
+    <img src={desktopSrc} width={displayWidth} height={displayHeight} loading={loading} {...attributes} />
+  </picture>
+) : localImage ? (
+  <Image src={localImage} width={width} height={height} widths={widths} quality={quality} sizes={sizes} loading={loading} {...attributes} />
 ) : (
-  <Image src={src} inferSize loading={loading} {...attributes} />
+  <Image src={src} inferSize widths={widths} quality={quality} sizes={sizes} loading={loading} {...attributes} />
 )}
 
 {/* This shared sky always carries its decoration, without wrapping the image or changing its layout. */}

@@ -12,6 +12,8 @@ export function mountProjectBiome(scene: HTMLElement): () => void {
   async function loadImage(image: HTMLImageElement) {
     if (disposed) return;
     if (!image.hasAttribute("src")) {
+      const source = image.closest("picture")?.querySelector<HTMLSourceElement>("source[data-biome-srcset]");
+      if (source) source.srcset = source.dataset.biomeSrcset!;
       image.src = image.dataset.biomeSrc!;
     }
     try {
