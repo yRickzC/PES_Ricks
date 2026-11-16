@@ -2,19 +2,14 @@
 import { getImage } from "astro:assets";
 import logoSource from "../../../public/images/Rick_Logo_Transparent.webp";
 import { withBasePath } from "../../utils/base-path";
-import ShootingStars from "./ShootingStars.astro";
 
 const base = import.meta.env.BASE_URL;
 const logo = await getImage({ src: logoSource, width: 448, format: "webp", quality: 88 });
 const logoUrl = withBasePath(logo.src, base);
-const skyUrl = withBasePath("/images/Hero_Main_Background.webp", base);
 ---
 
 <div id="page-transition" class="page-transition" data-base={base} aria-hidden="true" hidden>
-  <div class="page-transition__sky">
-    <img data-src={skyUrl} width="1672" height="941" alt="" decoding="async" draggable="false" />
-    <ShootingStars />
-  </div>
+  <div class="page-transition__backdrop"></div>
   <div class="page-transition__foreground">
     <div class="page-transition__mark" data-mark={logoUrl}>
       <img data-src={logoUrl} width="448" height="448" alt="" decoding="async" draggable="false" />
@@ -37,7 +32,7 @@ const skyUrl = withBasePath("/images/Hero_Main_Background.webp", base);
 
     function loadArtwork() {
       if (artworkReady) return artworkReady;
-      // Hidden transition artwork must not compete with the initial page.
+      // Only the logo needs loading; the backdrop is painted entirely in CSS.
       const mark = curtain.querySelector("[data-mark]");
       mark.style.setProperty("--page-transition-mark", `url("${mark.dataset.mark}")`);
       artworkReady = Promise.allSettled(Array.from(curtain.querySelectorAll("img[data-src]"), (image) => {
@@ -205,29 +200,24 @@ const skyUrl = withBasePath("/images/Hero_Main_Background.webp", base);
     }
   }
 
-  .page-transition__sky,
+  .page-transition__backdrop,
   .page-transition__foreground {
     position: absolute;
     inset: 0;
   }
 
-  .page-transition__sky {
-    background: #0d0819;
+  .page-transition__backdrop {
+    --page-transition-edge: clamp(3rem, 12vh, 8rem);
+    /* Keep both fades outside the viewport while the curtain is closed. */
+    inset-block: calc(-1 * var(--page-transition-edge));
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      #000 var(--page-transition-edge),
+      #000 calc(100% - var(--page-transition-edge)),
+      transparent
+    );
     pointer-events: auto;
-  }
-
-  .page-transition__sky img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: .7;
-  }
-
-  .page-transition__sky::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at center, transparent 20%, rgb(7 7 10 / 65%) 100%);
   }
 
   .page-transition__foreground {
@@ -263,7 +253,7 @@ const skyUrl = withBasePath("/images/Hero_Main_Background.webp", base);
     transform: translateY(-110%);
   }
 
-  [data-phase="enter"] .page-transition__sky {
+  [data-phase="enter"] .page-transition__backdrop {
     animation: transition-drop-in 720ms var(--page-transition-fall) both;
   }
 
@@ -275,7 +265,7 @@ const skyUrl = withBasePath("/images/Hero_Main_Background.webp", base);
     animation: transition-scan 1250ms linear infinite;
   }
 
-  [data-phase="exit"] .page-transition__sky {
+  [data-phase="exit"] .page-transition__backdrop {
     animation: transition-drop-out 900ms var(--page-transition-fall) both;
   }
 

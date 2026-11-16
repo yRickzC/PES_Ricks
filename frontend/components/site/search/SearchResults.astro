@@ -10,7 +10,7 @@ const { copy, records } = Astro.props;
 <p class="search-status" id="site-search-status" role="status" aria-live="polite" aria-atomic="true">{copy.searchHint}</p>
 <ul class="search-results" id="site-search-results" aria-label={copy.searchResultsLabel}>
   {records.map((record) => (
-    <li data-search-entry data-search-text={record.searchText} data-search-type={record.type} data-search-categories={JSON.stringify(record.categories.map(({ value, label, type }) => ({ value, label, type })))}>
+    <li data-search-entry data-search-text={record.searchText} data-search-title={record.title} data-search-intent={record.searchIntent} data-search-type={record.type} data-search-categories={JSON.stringify(record.categories.map(({ value, label, type }) => ({ value, label, type })))}>
       <a href={record.href}>
         <span class="search-result-copy">
           <strong>{record.title}</strong>

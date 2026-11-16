@@ -27,6 +27,9 @@
   font-weight: 600;
 }
 
+.service-brief-package { margin-bottom: 24px; }
+.service-brief-package .service-brief-note { margin: 10px 0 0; }
+
 .service-brief-progress {
   display: flex;
   gap: clamp(6px, 1.5vw, 12px);

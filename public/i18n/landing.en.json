@@ -1,17 +1,99 @@
 {
+  "faq": {
+    "title": "Everything you need to know.",
+    "subtitle": "Transparency at every step, from hiring to launch.",
+    "items": [
+      {
+        "question": "How much does a landing page with Rickz cost?",
+        "answer": "With the Professional plan, development costs R$ 800 as a one-time payment. Hosting, support and maintenance cost R$ 200 per month during the initial 6-month contract, bringing the total to R$ 2,000 for that period. The domain is purchased and paid for separately. The other packages and their prices are listed in the investment section."
+      },
+      {
+        "question": "What does the R$ 200 monthly fee include?",
+        "answer": "The Professional plan's monthly fee includes hosting, technical support, preventive maintenance, fixes for issues that are Rickz's responsibility and minor updates within the agreed limits."
+      },
+      {
+        "question": "Do I have to keep paying after the 6 months?",
+        "answer": "No. Once the initial 6-month contract has been fulfilled, renewal is optional. You decide whether to continue with hosting, support and maintenance."
+      },
+      {
+        "question": "Will I lose my landing page if I cancel support?",
+        "answer": "No. After fulfilling the six months, you can request the files needed to publish your landing page with another hosting provider at no additional cost, subject to applicable rights and licenses. Setting up the new hosting may be charged separately. Service will end on the agreed date, with the transition period communicated in advance."
+      },
+      {
+        "question": "How long will it take to build my landing page?",
+        "answer": "The estimated delivery time is 7 to 30 calendar days, depending on the project's complexity and receipt of the required materials."
+      },
+      {
+        "question": "Can I request changes after launch?",
+        "answer": "Yes. The monthly fee includes up to three simple requests per month, limited to 30 minutes each. Unused requests do not roll over. New features and larger changes are charged separately. Fixes for bugs that are Rickz's responsibility do not count towards this allowance."
+      },
+      {
+        "question": "Will the domain be registered in my name?",
+        "answer": "The domain is purchased separately and should preferably be registered in your name, so you retain control of that address."
+      },
+      {
+        "question": "Will my landing page guarantee more sales?",
+        "answer": "There is no sales guarantee. Your page will be structured to present the offer clearly, highlight its benefits and make conversions easier. Results also depend on the audience, product, price and traffic reaching the page."
+      }
+    ]
+  },
+  "pricing": {
+    "title": "A page for every stage of your business.",
+    "recommended": "Recommended",
+    "development": "Development · one-time payment",
+    "perMonth": "/ month",
+    "initialTotal": "Total for the first 6 months:",
+    "excludingExternal": "Development + monthly fees. External costs excluded.",
+    "action": "Choose this plan",
+    "whatsappMessage": "Hi, Rick! I'm interested in the {plan} plan for my landing page. Development: {development} + {monthly}/month. Initial 6-month total: {total}, excluding external costs. I'd like to discuss getting started.",
+    "selectedPlan": "Landing Page package",
+    "customProject": "I prefer a custom project",
+    "plans": {
+      "essential": {
+        "name": "Essential",
+        "description": "For a simple digital presence that introduces your offer clearly.",
+        "features": ["Responsive landing page", "Product or service presentation", "WhatsApp button", "Basic technical SEO", "Hosting, support and basic maintenance", "Free *.pages.dev subdomain (Cloudflare Pages)"],
+        "scope": "No animations or custom domain. A straightforward starting point for your online presence."
+      },
+      "professional": {
+        "name": "Professional",
+        "description": "For a distinctive brand presentation and a clear path from interest to contact.",
+        "features": ["Custom responsive design", "Conversion strategy", "Cinematic website", "Basic copywriting", "WhatsApp or form integration", "Hosting, support and maintenance"],
+        "scope": "Custom domain registered and paid for separately. Content and interactions shaped around your offer."
+      },
+      "advanced": {
+        "name": "Advanced",
+        "description": "For presenting your offer, managing content and accepting purchases on your website.",
+        "features": ["Everything in Professional", "Backend with 1 GB RAM", "Content management page", "Dynamic content", "Payment-provider integration"],
+        "scope": "Domain, external services, transaction fees and additional infrastructure are charged separately when applicable. More complex features require a separate quote."
+      }
+    }
+  },
   "eyebrow": "RICKZ / LANDING PAGES",
   "headline": "Without direction, interest fades.",
   "headlineAccent": "With the right page, it moves forward.",
   "subtitle": "Your offer deserves a page designed to present, persuade and convert.",
-  "scroll": "Scroll to see the transformation.",
-  "messages": ["Having something good to offer is only the beginning.", "Without structure, interest has nowhere to go.", "Every detail begins to serve a purpose.", "Now, interest knows where to go."],
   "closing": "Now see how this can work for you.",
   "primary": "I want my landing page",
   "secondary": "View demonstration",
-  "price": "R$ 800 development + R$ 200/month for 6 months, including hosting, support and maintenance. Domain billed separately.",
-  "before": "Without direction",
-  "after": "With direction",
-  "sceneAlt": "One ORBIT package moves through two environments. The same scattered presentation is reorganized: the headline, benefits and call to action gain hierarchy, while the product stays the same.",
+  "sceneAlt": "A fictional three-stage stationery store demonstration. First, an isolated WhatsApp offer appears beside an organized storefront, with the customer still hidden. Scrolling reveals a confused person using a phone and asking for a catalog, what the kit includes, other options and how to buy. Further scrolling shows the person happily using a computer while the site scrolls on both desktop and mobile, revealing the collection. This is not a real conversation or evidence of sales results.",
+  "visitorThoughts": "I want to know more. Where do I start?",
+  "visitorQuestions": ["Hi! Do you have a catalog?", "What comes in this kit?", "Are there other models or products?", "And how do I buy it?"],
+  "chatOffer": "Discover our stationery kit.",
+  "chatPlaceholder": "Message",
+  "storeName": "Stationery",
+  "productLabel": "Stationery kit",
+  "storeCollection": "Collection",
+  "storeDiscover": "Find your next essential.",
+  "storeDescription": "Discover the details and explore more ways to organize your ideas.",
+  "storeDetails": "View details",
+  "storeCustomer": "Everything in view. At my own pace.",
+  "storeProducts": [
+    { "name": "Stationery kit", "description": "A set that makes room for your ideas." },
+    { "name": "Ideas notebook", "description": "From the first sketch to your next project." },
+    { "name": "Weekly planner", "description": "A clearer view of your plans." },
+    { "name": "Focus cards", "description": "One priority at a time." }
+  ],
   "demoTitle": "More focus. Fewer distractions.",
   "demoDescription": "A kit to organize your ideas and make room for what matters.",
   "demoBenefits": ["Organize your ideas", "Find your rhythm", "Create with intention"],
@@ -20,5 +102,60 @@
   "handoff": "A page starts with your goal.",
   "goals": ["Attract customers", "Sell a product"],
   "handoffDescription": "From first impressions to the next action, every choice can work for your offer. Let's talk about what you want to achieve.",
-  "staticNote": "The product stays the same. Hierarchy, benefits and a clear next step make the offer easier to understand."
+  "process": {
+    "title": "From idea to launch",
+    "subtitle": "You bring your idea. We take care of the steps to get your landing page online.",
+    "steps": [
+      {
+        "title": "Briefing",
+        "message": "Tell us what you want to sell",
+        "description": "We understand your offer, your audience and your business objective. You don't need technical knowledge: we start with what your business needs."
+      },
+      {
+        "title": "Structure",
+        "message": "We organize the message",
+        "description": "We plan the content, visual hierarchy and path to an inquiry or purchase, so your offer comes across clearly."
+      },
+      {
+        "title": "Development",
+        "message": "Your landing page takes shape",
+        "description": "We create a custom, responsive page aligned with your business identity, with attention to navigation across different screens."
+      },
+      {
+        "title": "Launch",
+        "message": "Your page is ready for the world",
+        "description": "We publish your page, configure the domain and start the hosting, support and maintenance included in your agreement. We guide you through the next steps."
+      }
+    ],
+    "delivery": "Delivery: 7 to 30 calendar days, depending on project complexity and receipt of the required materials."
+  },
+  "construction": {
+    "title": "Nothing is built by chance.",
+    "lead": "A good experience begins long before the first click.",
+    "context": "Like a house, your landing page needs planning, structure and a purpose.",
+    "chapters": [
+      {
+        "title": "It all starts with a plan.",
+        "description": "We understand your business, audience and goals before defining the structure of the page.",
+        "alt": "Planning a contemporary house: a hand draws a floor plan on a desk with sketches, rulers and a small architectural model."
+      },
+      {
+        "title": "The idea takes shape.",
+        "description": "We turn the plan into a visual presentation that highlights your offer and conveys professionalism.",
+        "alt": "An architectural model of the house with concrete, stone and timber volumes and illuminated rooms, on the design desk."
+      },
+      {
+        "title": "Beauty also needs to work.",
+        "description": "We build responsive, optimized pages with attention to speed, stability and the browsing experience.",
+        "alt": "A hand holds the house model in front of the concrete structure of a building under construction."
+      },
+      {
+        "title": "Every path needs a destination.",
+        "description": "We organize information and calls to action to make the next step easier for interested visitors.",
+        "alt": "The completed contemporary house at dusk, with concrete, stone and timber and an illuminated path leading to the open front door."
+      }
+    ],
+    "closing": "A good page is not just built to be seen.",
+    "closingAccent": "It is built to be used."
+  }
 }

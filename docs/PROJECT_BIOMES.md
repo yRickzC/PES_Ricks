@@ -2,7 +2,7 @@
 
 O Hero original permanece com floresta, logo e órbita. Os seis ambientes são seções abaixo dele, com projetos consultados no catálogo LU existente e estado vazio compartilhado com o Blog. Não há projetos fictícios na publicação.
 
-| Ordem | Categoria / ID | Bioma | Prefixo dos PNGs |
+| Ordem | Categoria / ID | Bioma | Prefixo dos assets |
 |---|---|---|---|
 | 1 | Web / `web` | Crystal Cave existente | `Service_Crystal` |
 | 2 | Game Dev / `game-dev` | Volcanic Cave | `Project_GameDev` |
@@ -15,7 +15,7 @@ A ordem das seções vem da configuração de biomas. A taxonomia mantém sua or
 
 ## Assets e direção de arte
 
-Os 25 PNGs novos foram gerados individualmente com image_gen a partir dos [prompts originais](art/PROJECT_BIOME_PROMPTS.md), mantendo a mesma direção de luz, perspectiva 2D e centro aberto. Cada arquivo mede 2172 × 724. Os cinco Background são RGB opacos; os vinte Small, Fog, Medium e Top têm alpha real. Os PNGs em `public/images` são os originais sem perdas. O renderer configura variantes WebP de 720, 1280 e largura original para todos os biomas, incluindo Crystal Cave desde 2026-11-08. Crystal usa qualidade 85, com alpha e originais preservados; os demais mantêm a qualidade padrão do serviço. Os derivados serão gerados no próximo build; tamanho, transparência e composição precisam de validação nessa saída.
+Os 25 PNGs novos foram gerados individualmente com image_gen a partir dos [prompts originais](art/PROJECT_BIOME_PROMPTS.md), mantendo a mesma direção de luz, perspectiva 2D e centro aberto. Cada arquivo mede 2172 × 724. Os cinco Background são RGB opacos; os vinte Small, Fog, Medium e Top têm alpha real. Desde 2026-11-14, os 30 PNGs de Projects e Crystal Cave ficam preservados em `RAW/images`; `public/images` contém os derivados WebP lossless, codificados pelo FFmpeg e servidos diretamente, sem variantes reencodadas pelo Astro. A comparação dos pixels decodificados confirmou dimensões, alfa e cores visíveis idênticos. O tamanho e a apresentação das novas imagens ainda precisam de validação em execução.
 
 A paleta é preta/índigo/violeta. Obsidiana fissurada, basalto hexagonal, margens erodidas com água, formações minerais e raízes/fungos distinguem os novos ambientes. Não há neon, partículas, bibliotecas 3D ou filtros animados.
 
@@ -35,7 +35,7 @@ A névoa move somente transform, com duração de 130–150s conforme a cena. No
 
 O fade de cada ambiente usa o preto do site, com extensão de 56–100px conforme a viewport, dentro da cena e abaixo dos textos. Não existe um separador de altura adicional entre cavernas. A navegação mantém `#projects-<id>` e `#projects-all`.
 
-Os caminhos dos novos PNGs e derivados respeitam o base path do GitHub Pages. Os originais ficam publicados para manutenção; o navegador solicita os derivados responsivos quando cada ambiente é necessário.
+Os caminhos dos WebPs respeitam o base path do GitHub Pages. As fontes PNG ficam preservadas em `RAW/images`; o navegador solicita as camadas lossless quando cada ambiente é necessário.
 
 ## Validação anterior à otimização de 2026-11-08
 

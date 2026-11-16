@@ -1,0 +1,109 @@
+---
+import { Image } from "astro:assets";
+import planning from "../../../../public/images/Ladding_Section_Step0.webp";
+import model from "../assets/Ladding_Section_Step1.png";
+import construction from "../assets/Ladding_Section_Step2.png";
+import home from "../assets/Ladding_Section_Step3.png";
+import type { LandingCopy } from "../config/landing";
+import "../styles/landing-construction.css";
+
+interface Props { copy: LandingCopy["construction"] }
+const { copy } = Astro.props;
+const photographs = [planning, model, construction, home];
+---
+
+<section class="lp-build" aria-labelledby="landing-build-title">
+  <header class="lp-build-opening lp-build-width">
+    <h2 id="landing-build-title" class="lp-build-reveal">{copy.title}</h2>
+    <div class="lp-build-intro lp-build-reveal">
+      <p class="lp-build-lead">{copy.lead}</p>
+      <p>{copy.context}</p>
+    </div>
+  </header>
+
+  <div class="lp-build-chapters">
+    {copy.chapters.map((chapter, index) => (
+      <article
+        class:list={["lp-build-chapter", "lp-build-width", {
+          "lp-build-reverse": index % 2 === 1,
+          "lp-build-finale": index === photographs.length - 1,
+        }]}
+        aria-labelledby={`landing-build-chapter-${index}`}
+      >
+        <header class="lp-build-chapter-heading lp-build-reveal">
+          <h3 id={`landing-build-chapter-${index}`}>{chapter.title}</h3>
+        </header>
+        <figure class="lp-build-photograph">
+          <Image
+            class="lp-build-image"
+            src={photographs[index]}
+            alt={chapter.alt}
+            widths={[400, 640, 900, photographs[index].width]}
+            sizes={index === photographs.length - 1
+              ? "(max-width: 767px) calc(100vw - 40px), (max-width: 1519px) 60vw, 864px"
+              : "(max-width: 767px) calc(100vw - 40px), (max-width: 1359px) 56vw, 730px"}
+            format="webp"
+            quality={85}
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <p class="lp-build-description lp-build-reveal">{chapter.description}</p>
+      </article>
+    ))}
+  </div>
+
+  <footer class="lp-build-ending lp-build-width">
+    <p class="lp-build-reveal">{copy.closing}<span>{copy.closingAccent}</span></p>
+  </footer>
+</section>
+
+<script>
+  const mounted = new Map<HTMLElement, () => void>();
+
+  function mount() {
+    document.querySelectorAll<HTMLElement>(".lp-build").forEach(root => {
+      if (mounted.has(root) || !("IntersectionObserver" in window)) return;
+      const mobile = matchMedia("(max-width: 767px)");
+      const motion = matchMedia("(prefers-reduced-motion: reduce)");
+      const targets = [...root.querySelectorAll<HTMLElement>(".lp-build-reveal, .lp-build-photograph")];
+      let observer: IntersectionObserver | undefined;
+
+      function reset() {
+        observer?.disconnect();
+        targets.forEach(target => target.removeAttribute("data-build-fade"));
+      }
+
+      function sync() {
+        reset();
+        if (motion.matches || (!mobile.matches && CSS.supports("animation-timeline", "view()"))) return;
+        // A viewport band works even for portrait photographs taller than the screen.
+        observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            (entry.target as HTMLElement).dataset.buildFade = entry.isIntersecting ? "visible" : "hidden";
+          });
+        }, { rootMargin: "-8% 0px -8% 0px", threshold: 0 });
+        targets.forEach(target => {
+          target.dataset.buildFade = "hidden";
+          observer!.observe(target);
+        });
+      }
+
+      mobile.addEventListener("change", sync);
+      motion.addEventListener("change", sync);
+      sync();
+      mounted.set(root, () => {
+        reset();
+        mobile.removeEventListener("change", sync);
+        motion.removeEventListener("change", sync);
+      });
+    });
+  }
+
+  mount();
+  document.addEventListener("astro:page-load", mount);
+  document.addEventListener("astro:before-swap", () => {
+    mounted.forEach(cleanup => cleanup());
+    mounted.clear();
+  });
+</script>

@@ -1,6 +1,6 @@
 # Pesquisa local
 
-O diálogo existente continua responsável por abertura, Escape, Ctrl/Cmd+K e retorno de foco. A composição fica em `frontend/components/site/SiteSearch.astro`, dividida em `search/SearchInput.astro`, `SearchFilters.astro` e `SearchResults.astro`. O controlador permanece em `frontend/utils/site-search.ts`; filtros e normalização ficam em `backend/search/search.ts`.
+O diálogo existente continua responsável por abertura, Escape, Ctrl/Cmd+K e retorno de foco. A composição fica em `frontend/components/site/SiteSearch.astro`, dividida em `search/SearchInput.astro`, `SearchFilters.astro` e `SearchResults.astro`. O controlador permanece em `frontend/utils/site-search.ts`; filtros e normalização ficam em `backend/search/search.ts`, e a descoberta com relevância e tolerância a erros em `backend/search/discovery.ts`.
 
 A apresentação usa dois cards separados por um espaço transparente: título, busca e filtros no superior; resultados e sua rolagem no inferior. Ambos pertencem ao mesmo diálogo nativo. O texto de instruções do rodapé foi removido; os atalhos continuam disponíveis.
 
@@ -8,13 +8,13 @@ Tipo e Categoria ficam lado a lado também no mobile, com rótulos apenas para l
 
 ## Fonte e extensão
 
-`search/catalog.ts` monta o índice durante a geração estática, usando as seções de `frontend/config/navigation.ts` e os artigos do mesmo catálogo LU utilizado pelo blog. A seleção de idioma e seus fallbacks seguem `database.list`. Artigos mantêm a ordem recente fornecida pelo catálogo; seções principais aparecem primeiro. Nenhum corpo LU ou nova API é carregado pelo navegador para pesquisar.
+`search/catalog.ts` monta o índice durante a geração estática, usando a navegação principal sem Home, os artigos do mesmo catálogo LU utilizado pelo blog e a oferta disponível de Landing page. Título e descrição desse serviço vêm do catálogo localizado existente. A seleção de idioma e seus fallbacks seguem `database.list`. Sem consulta, aparecem primeiro a Landing page e as seções, seguidas dos artigos disponíveis. Nenhum corpo LU, catálogo de tradução adicional ou nova API é carregado pelo navegador para pesquisar.
 
-Cada registro contém título, descrição, tipo, categorias, tags, URL, texto pesquisável, prioridade e destaque. Apenas artigos têm rotas individuais publicadas atualmente. Para adicionar outros conteúdos, estenda o adaptador com a fonte e a rota reais. Não crie links para detalhes ainda inexistentes.
+Cada registro contém título, descrição, tipo, categorias, tags, URL, texto pesquisável, prioridade e destaque. A Landing page também declara sua intenção de busca e termos comerciais equivalentes em PT-BR/EN. Apenas ela entra como serviço individual: os oito cards em construção não são promovidos como destinos disponíveis. Para adicionar outros conteúdos, estenda o adaptador com a fonte e a rota reais.
 
-O seletor de tipos contém Todos, Blogs, Projetos e Serviços. Início continua como sugestão geral, sem opção própria no seletor. Tipos e categorias vêm de `backend/content/taxonomy.ts`, independentemente da quantidade de publicações. Em Todos, aparecem as categorias agregadas dos três domínios; ao escolher um tipo, somente suas categorias permanecem. Uma seleção incompatível volta para Todas as categorias; uma seleção válida é preservada. O controle fica desabilitado somente se o cadastro daquele tipo estiver vazio.
+O seletor de tipos contém Todos, Blogs, Projetos e Serviços. Início foi retirado dos resultados, preservando sua navegação fora da pesquisa. Tipos e categorias vêm de `backend/content/taxonomy.ts`, independentemente da quantidade de publicações. Em Todos, aparecem as categorias agregadas dos três domínios; ao escolher um tipo, somente suas categorias permanecem. Uma seleção incompatível volta para Todas as categorias; uma seleção válida é preservada. O controle fica desabilitado somente se o cadastro daquele tipo estiver vazio.
 
-As quatro seções principais são resultados de navegação. Cada seção de conteúdo representa suas categorias cadastradas e leva à página principal; isso não significa que exista uma publicação em cada categoria. O catálogo de artigos atual está vazio; novos artigos LU válidos entrarão na pesquisa após a geração do site. Projetos e serviços individuais ainda dependem das futuras listagens/rotas reais e não são inventados pelo adaptador.
+Blogs, Projetos e Serviços são resultados de navegação. Cada seção de conteúdo representa suas categorias cadastradas e leva à página principal; isso não significa que exista uma publicação em cada categoria. Novos artigos LU válidos entrarão na pesquisa após a geração do site. A Landing page leva a `/services/landing-page/` ou `/pt-br/services/landing-page/`, com o prefixo de publicação aplicado uma única vez, inclusive `/PES_Ricks/`. Projetos individuais ainda dependem de futuras listagens/rotas reais.
 
 Nos artigos, `categories` referencia IDs do cadastro, enquanto `tags` continua livre e pesquisável, sem criar novas categorias automaticamente. Para LU antigos sem `categories`, o formato padrão é artigo, ou YouTube quando há `youtube` nos metadados. Uma lista explícita, inclusive vazia, tem precedência. Os valores de filtro incluem o tipo (`project:systems`), permanecem iguais entre idiomas e não colidem com categorias de outro domínio.
 
@@ -39,12 +39,16 @@ Serviços usam nomes voltados ao cliente (sistemas para empresas, sites e lojas 
 
 ## Interação
 
-Texto, tipo e categoria filtram juntos, em tempo real. A busca ignora caixa e acentos e exige todos os termos em título, descrição, tipo, categorias, tags ou URL/ID. Sem filtros, aparecem seções sugeridas e artigos recentes disponíveis.
+Texto, tipo e categoria filtram juntos, em tempo real. A busca ignora caixa, acentos, pontuação e palavras de ligação comuns em PT-BR/EN. Nome exato e termos do título recebem prioridade; os demais termos procuram título, descrição, tipo, categorias, tags, URL/ID e equivalentes comerciais. Aceita um erro por palavra (inserção, exclusão, substituição ou troca de letras vizinhas), exigindo no mínimo quatro letras em ambas as palavras para aproximá-las. Exemplos: `laddingpage`, `landig page`, `divugar meu produto`.
+
+Consultas com intenção de criar ou usar uma página, como `site para meu produto`, `site para minha padaria` e `website for my bakery`, podem encontrar a Landing page sem exigir o nome do negócio no índice. Essa alternativa se aplica somente à oferta marcada como Landing page e continua respeitando tipo/categoria. Não é interpretação por IA nem garante qualquer recurso solicitado. Buscas sem essa intenção continuam exigindo correspondência de todos os termos relevantes. A busca textual do banco LU mantém seu comportamento anterior.
+
+O navegador prepara texto e palavras de cada resultado uma vez, ao inicializar o diálogo; prepara a consulta uma vez por alteração do input. Não há dependências novas, chamadas externas ou decodificação de conteúdos. A aproximação verifica no máximo palavras de 48 caracteres; consultas acima de 512 caracteres ou 16 termos relevantes não produzem resultados. A ordem do DOM acompanha a relevância, com desempate estável e movimentação somente quando a posição muda.
 
 Os selects usam teclado e interface nativos. No input, Enter ou o botão de busca leva o foco ao primeiro resultado visível; Enter em um resultado abre seu link. Setas para cima/baixo percorrem os resultados, sem interferir nos selects. Tab preserva a navegação entre os controles. Escape fecha o diálogo e devolve o foco ao acionador.
 
 ## Validação pendente
 
-Foram escritos casos em `backend/search/search.test.ts` e `backend/content/taxonomy.test.ts` para busca textual, filtros combinados, isolamento por domínio, IDs entre idiomas, categorias independentes de publicações, validação LU, compatibilidade e consultas. Aplicativo, testes, check e build não foram executados nesta alteração, conforme CodeMode.
+Além dos casos existentes em `backend/search/search.test.ts` e `backend/content/taxonomy.test.ts`, `search/catalog.test.ts` cobre exclusão da Home, oferta disponível, nomes/finalidades/erros em PT-BR/EN, consultas sem correspondência, ranking, limites, filtros e URLs com e sem `/PES_Ricks/`, incluindo artigos. Revisão estática dos fontes e diff realizada. Aplicativo, testes, check e build não foram executados nesta alteração, conforme CodeMode.
 
 Na validação em execução, conferir teclado completo, Escape/retorno de foco, mudança de categoria após trocar tipo, estado vazio, idiomas, rolagem e telas estreitas/com pouca altura. Conferir também um artigo LU real publicado, incluindo categorias explícitas, tags e fallback de idioma.

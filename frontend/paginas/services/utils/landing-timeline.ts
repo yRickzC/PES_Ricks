@@ -4,15 +4,12 @@ const smooth = (value: number) => { const t = clamp(value); return t * t * (3 - 
 /** Pure, reversible timeline. No state or time-dependent interpolation. */
 export function landingTimeline(progress: number) {
   const p = clamp(progress);
-  const morph = smooth((p - .5) / .25);
-  const takeover = smooth((p - .15) / .2);
-  const messages = [
-    1 - smooth((p - .11) / .04),
-    smooth((p - .15) / .03) * (1 - smooth((p - .31) / .04)),
-    smooth((p - .35) / .03) * (1 - smooth((p - .46) / .04)),
-    smooth((p - .5) / .03) * (1 - smooth((p - .72) / .03)),
-    smooth((p - .75) / .03) * (1 - smooth((p - .88) / .03)),
-    smooth((p - .91) / .04),
-  ];
-  return { morph, cut: 58 + takeover * 65, preview: 1 - takeover, camera: 1 - smooth((p - .9) / .1) * .035, messages };
+  // Compare, reveal the unanswered chat, then browse the same collection.
+  const takeover = smooth((p - .18) / .12);
+  const morph = smooth((p - .59) / .15);
+  const approach = smooth(p / .12) * (1 - morph);
+  const pain = smooth((p - .26) / .08) * (1 - morph);
+  const questions = [.31, .36, .41, .46].map(start => smooth((p - start) / .05));
+  const browse = smooth((p - .77) / .19);
+  return { morph, approach, pain, takeover, browse, questions, preview: 1 - takeover };
 }

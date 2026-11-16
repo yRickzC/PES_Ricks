@@ -1,7 +1,8 @@
 {
   "chooseType": "Choose a service type",
   "catalogIntro": "Start with what your business needs. Each solution is scoped around the people who will use it and the work it needs to support.",
-  "viewService": "View service",
+  "viewService": "Learn more",
+  "preparingFuture": "Preparing for the future",
   "quoteMessage": "Hi, Rick! I'd like to discuss a project for my business and request a quote.",
   "quoteService": "Solution I'm interested in",
   "proof": {

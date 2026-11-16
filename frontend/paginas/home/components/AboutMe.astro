@@ -1,5 +1,6 @@
 ---
 import type { Messages } from "../../../utils/translations";
+import SiteImage from "../../../components/site/SiteImage.astro";
 
 interface Props { copy: Messages }
 const { copy } = Astro.props;
@@ -10,7 +11,9 @@ const { copy } = Astro.props;
     <h2 id="home-about-title">{copy.homeAboutTitle}</h2>
   </header>
   <div class="home-about-body">
-    <div class="home-about-photo" aria-hidden="true" data-home-reveal></div>
+    <div class="home-about-photo" data-home-reveal>
+      <SiteImage src="/images/me.jpg" alt="Rick" width={480} height={480} widths={[280, 480, 960]} sizes="(max-width: 767px) 280px, (max-width: 1199px) 40vw, 480px" loading="lazy" />
+    </div>
     <div class="home-about-copy" data-home-reveal-group>
       <h3>{copy.homeAboutHeadline}</h3>
       <p class="home-about-intro">{copy.homeAboutIntro}</p>

@@ -1,0 +1,73 @@
+---
+import type { LandingCopy } from "../config/landing";
+import "../styles/landing-process.css";
+
+interface Props { copy: LandingCopy["process"] }
+const { copy } = Astro.props;
+---
+
+<section class="lp-process" data-landing-process aria-labelledby="landing-process-title">
+  <svg class="lp-process-map" viewBox="0 0 1440 1600" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <g class="lp-process-map-contours" fill="none" stroke="currentColor" stroke-width="1">
+      <path d="M-130 80C80-70 250 30 305 180S190 425 330 550 530 635 510 820 270 1010 305 1190 530 1410 410 1670" />
+      <path d="M-95 115C75-10 215 65 260 195S150 425 290 570 485 650 465 820 225 1020 260 1205 475 1425 365 1650" />
+      <path d="M-60 155C70 45 175 105 215 210S115 430 250 590 440 670 420 825 180 1035 215 1220 420 1440 320 1640" />
+      <path d="M-35 200C60 100 140 145 170 230S80 440 210 610 395 690 375 835 135 1055 170 1240 365 1460 275 1630" />
+      <path d="M-20 255C55 160 100 185 125 255S50 455 170 635 350 710 330 850 90 1080 125 1265 310 1480 230 1620" />
+      <path d="M1020-100C820 100 1120 215 1010 405S795 585 885 785 1200 995 1100 1205 1170 1455 1465 1510" />
+      <path d="M1080-90C890 100 1170 220 1060 425S850 590 935 775 1250 995 1150 1225 1215 1410 1470 1460" />
+      <path d="M1140-80C960 105 1220 225 1110 445S905 595 985 765 1300 995 1200 1245 1260 1365 1475 1410" />
+      <path d="M1200-70C1030 110 1270 230 1160 465S960 600 1035 755 1350 995 1250 1265 1305 1320 1480 1360" />
+      <path d="M1260-60C1100 115 1320 235 1210 485S1015 605 1085 745 1400 995 1300 1285 1350 1275 1485 1310" />
+      <path d="M560 240C475 310 505 440 620 465S815 405 780 320 645 175 560 240Z" />
+      <path d="M585 275C525 325 545 405 625 425S765 390 740 330 645 225 585 275Z" />
+      <path d="M610 310C575 340 585 375 635 385S715 370 700 340 645 280 610 310Z" />
+      <path d="M640 1100C515 1130 490 1300 610 1370S860 1375 875 1260 765 1070 640 1100Z" />
+      <path d="M650 1145C555 1170 540 1280 630 1330S815 1330 830 1255 745 1120 650 1145Z" />
+      <path d="M665 1190C605 1205 590 1260 650 1290S770 1290 780 1250 725 1175 665 1190Z" />
+    </g>
+    <g class="lp-process-map-routes" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 12" stroke-linecap="round">
+      <path d="M-40 910C175 780 310 1040 535 920S790 760 1000 900 1250 1070 1480 890" />
+      <path d="M850-40C660 210 980 520 710 740S375 1115 500 1640" />
+    </g>
+  </svg>
+  <div class="lp-process-width">
+    <header class="lp-process-heading">
+      <h2 id="landing-process-title">{copy.title}</h2>
+      <p>{copy.subtitle}</p>
+    </header>
+    <div class="lp-process-timeline" data-process-timeline>
+      <span class="lp-process-track" aria-hidden="true"><span data-process-fill></span></span>
+      <ol class="lp-process-steps" role="list">
+        {copy.steps.map(step => (
+          <li class="lp-process-step" data-process-step>
+            <h3>{step.title}</h3>
+            <span class="lp-process-marker" data-process-marker aria-hidden="true"></span>
+            <div class="lp-process-copy">
+              <p class="lp-process-message">{step.message}</p>
+              <p class="lp-process-description">{step.description}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+    <p class="lp-process-delivery">{copy.delivery}</p>
+  </div>
+</section>
+
+<script>
+  import { mountLandingProcess } from "../utils/landing-process";
+
+  const mounted = new Map<HTMLElement, () => void>();
+  function mount() {
+    document.querySelectorAll<HTMLElement>("[data-landing-process]").forEach(root => {
+      if (!mounted.has(root)) mounted.set(root, mountLandingProcess(root));
+    });
+  }
+  mount();
+  document.addEventListener("astro:page-load", mount);
+  document.addEventListener("astro:before-swap", () => {
+    mounted.forEach(cleanup => cleanup());
+    mounted.clear();
+  });
+</script>

@@ -1,16 +1,16 @@
 import type { ContentType, TaxonomyCategory, TaxonomyIcon } from "../content/taxonomy.ts";
 
-function normalize(value: string): string {
+export function normalizeSearchText(value: string): string {
   return value.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().trim();
 }
 
 // Todos os termos precisam aparecer; caixa e acentos não afetam a busca.
 export function matchesSearch(text: string, query: string): boolean {
-  const haystack = normalize(text);
-  return normalize(query).split(/\s+/u).every((term) => haystack.includes(term));
+  const haystack = normalizeSearchText(text);
+  return normalizeSearchText(query).split(/\s+/u).every((term) => haystack.includes(term));
 }
 
-export type SearchType = ContentType | "home";
+export type SearchType = ContentType;
 export type SearchTypeFilter = ContentType | "all";
 export type SearchCategory = Pick<TaxonomyCategory, "value" | "label" | "type">;
 
@@ -18,6 +18,7 @@ export interface SearchableEntry {
   type: SearchType;
   categories: readonly SearchCategory[];
   searchText: string;
+  searchIntent?: "landing-page";
 }
 
 export interface SearchRecord extends SearchableEntry {

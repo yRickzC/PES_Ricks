@@ -204,3 +204,78 @@ Graphify final desta implementação: AST local com 686 nós/1.616 relações, 3
 2026-11-12 — Cards das nove soluções de Serviços agora abrem a página própria de cada oferta, com URLs localizadas, em vez do WhatsApp. Rotas de construção existentes reaproveitadas com Dog_Worker.webp, título do serviço e aviso EN/PT-BR. Ação dos cards alterada para Conhecer serviço/View service; botão da página usa histórico para retornar à página anterior e catálogo como fallback para acessos diretos. Documentação atualizada. TypeScript do retorno, sintaxe Astro, paridade dos textos, correspondência de nove slugs/18 rotas e diff conferidos sem erros. Aplicativo, navegador, testes e build locais não executados conforme AGENTS.md; Graphify indisponível.
 
 2026-11-12 — Hero cinematográfica implementada exclusivamente no serviço landing-page, em EN/PT-BR: embalagem ORBIT única em CSS 3D, divisão diagonal, domínio da apresentação ruim e reorganização dos mesmos elementos DOM até uma oferta profissional. Timeline pura vinculada ao scroll, painel sticky responsivo, RAF centralizado, observers e limpeza no ciclo Astro. Copy comercial aprovada, CTAs reais e integração imediata da futura demonstração incluídos. Fallback estático sem JS/com redução de movimento. TypeScript, parsers Astro/CSS, paridade de tradução e marcos numéricos revisados; app, build, suíte e navegador não executados conforme AGENTS.md. Usuário confirmou a rota, sem autorizar prévia. Desempenho e enquadramento ainda não observados. Documentação em docs/LANDING_HERO.md.
+
+2026-11-14 — Regenerados via FFmpeg/CMD os 30 WebPs de RAW (29 PNGs + SVG), em modo lossless; o SVG foi rasterizado a 1800 × 1200 com Sharp antes da codificação. FFprobe e comparação RGBA confirmaram dimensões, alfa e cores visíveis; RAW preservado. Sem executar app, testes, build ou deploy.
+
+2026-11-14 — Usuário pediu uma transição mais leve: céu WebP e meteoros da cortina substituídos por div preta com gradientes CSS no topo e embaixo. Logo, brilho e navegação preservados; nenhum download de fundo pela cortina. Check e build /PES_Ricks aprovados; Chrome confirmou navegação animada e movimento reduzido em mobile EN/desktop PT-BR, cobertura preta e apenas o logo na cortina. Captura mobile conferida; Graphify atualizado por AST local. Sem Lighthouse, nova medição CLS ou deploy.
+
+2026-11-14 — Foto me.jpg colocada no espaço de Sobre mim com SiteImage responsivo/lazy, mantendo moldura e animação existentes. Arquivo visualizado, fontes e diff conferidos; Graphify AST local atualizado. Sem executar site, testes ou build.
+
+2026-11-14 — PNGs dos biomas movidos de public/images para RAW/images e convertidos em WebP lossless via FFmpeg/CMD. 30 arquivos: 26.585.120 → 17.449.804 bytes; dimensões, alfa e RGB visível idênticos. Renderer alterado para servir WebP direto, evitando reencodificação com perdas. Sem executar site, testes ou build.
+2026-11-14 — Sobre mim recebeu o título Criar é transformar ideias em realidade e os dois parágrafos autorais fornecidos pelo usuário, com tradução EN nas mesmas chaves. Foto e apresentação preservadas. Revisão estática/diff e Graphify local; sem executar site, testes ou build.
+
+2026-11-14 — Resolvido o bloqueio do pull: oito commits de origin/main integrados por fast-forward até b74333da, preservando o trabalho local em backup stash. Traduções EN/PT-BR combinadas e conflito de YT_RAW resolvido mantendo os dois históricos. Imagens, foto, biomas WebP e cortina CSS preservados. Check: 126 arquivos sem diagnósticos; 116 testes aprovados; build /PES_Ricks: 26 páginas e 118 variantes de imagem. Aviso Vite de import misto do logo mantido. Graphify atualizado por AST local; sem teste visual, commit, push ou deploy.
+
+2026-11-14 — Animação ORBIT promovida ao hero inteiro de landing-page em EN/PT-BR: largura total e altura disponível abaixo do menu, sem moldura ou apresentação acima. Copy comercial e preço descem para o bloco seguinte; narrativa sobreposta, timeline por scroll e fallback estático mantidos. Revisão estática e diff sem erros; Graphify atualizado por AST local. Sem executar aplicativo, navegador, testes ou build. Enquadramento ampliado pendente de observação visual.
+
+2026-11-14 — Hero da Landing Page refinado em três etapas: comparação sem/com landing page, apresentação confusa ocupando a tela com dúvidas de quem visita e solução organizada com cursor chegando ao CTA. Removidos os rótulos superiores Sem direção/Com direção; mensagens EN/PT-BR e pausas ajustadas, mantendo o produto fictício e sem inventar vendas. Revisão estática/diff sem erros e Graphify atualizado por AST local (725 nós/1687 relações; 42 avisos parciais Astro). Sem executar aplicativo, navegador, testes ou build; resultado visual ainda não observado.
+
+2026-11-14 — Hero landing-page ganhou narrativa visual de compra: comparação WhatsApp/vitrine com cliente oculto, cliente com celular e dúvidas progressivas, depois cliente no computador e coleção rolando em desktop/mobile. Cenas SVG/HTML, quatro produtos fictícios, EN/PT-BR, scroll reversível e fallback estático preservados; overflow medido também na conversa para telas menores. Revisão estática das fontes; Graphify AST local atualizado (722 nós/1684 relações; 42 avisos parciais Astro). Sem executar aplicativo, navegador, parsers, testes, typecheck ou build; resultado visual ainda não observado.
+
+2026-11-14 — Hero landing-page: ORBIT substituído por papelaria genérica em EN/PT-BR, com desenhos de caderno/lápis e iluminação índigo/violeta alinhada ao Hero_Main_Background. Removida a faixa narrativa inferior e o aviso de rolagem, incluindo código e traduções exclusivos; preservados os três capítulos visuais. Revisão estática e diff sem erros; Graphify AST local atualizado (722 nós/1684 relações; 42 avisos parciais Astro). Sem executar aplicativo, navegador, parsers, testes, typecheck ou build; aparência pendente de observação visual.
+
+2026-11-15 — RAW/images/Ladding_Section_Step0.png convertido para public/images/Ladding_Section_Step0.webp via FFmpeg/libwebp lossless. FFprobe: 1122×1402; hash SHA-256 dos pixels RGB idêntico. RAW mantido; sem executar app, testes ou build.
+
+2026-11-15 — Comparação inicial da Landing Page ganhou flutuação discreta, pausada fora da tela/aba, e resposta ao começo do scroll. No mobile, WhatsApp acima e vitrine abaixo com divisão horizontal central, dispositivos e textos ampliados. Revisão estática/diff e Graphify AST local (723 nós/1687 relações); sem executar site, navegador, parsers, testes ou build. Aparência pendente de observação.
+
+2026-11-15 — Implementada a seção 02 Por trás da transformação logo após a Hero da Landing Page: planejamento, maquete, construção e casa pronta em quatro capítulos editoriais EN/PT-BR. Fotos grandes alternadas no desktop e sequência título/foto/descrição no mobile; encerramento tipográfico, scroll CSS reversível e fallback estático sem novo JS. Step0 usa o WebP existente; Step1–3 encontrados em PNG foram copiados do RAW para assets e configurados para saída WebP responsiva/lazy pelo Astro. Revisão estática e diff sem erros; Graphify AST local atualizado (726 nós/1693 relações, 43 avisos parciais Astro). Sem executar site, navegador, parsers, testes ou build; geração das imagens, responsividade visual e desempenho ainda não observados.
+
+2026-11-15 — Removidos dos quatro capítulos arquitetônicos os rótulos como 03 / PERFORMANCE em EN/PT-BR, incluindo chaves e estilos sem uso. Títulos, fotos e descrições mantidos. Revisão estática/diff e Graphify AST local; sem executar site, navegador, testes ou build.
+
+2026-11-15 — Capítulos arquitetônicos receberam transição vertical vinculada ao scroll: fotos reveladas de cima para baixo, títulos/descrições com descida suave e intensidade menor no mobile. Mantidos estados estáticos e movimento reduzido. Revisão estática/diff e Graphify AST local (726 nós/1693 relações; 43 avisos parciais Astro); sem executar site, navegador, testes ou build.
+
+2026-11-15 — Removida a identificação numerada da abertura arquitetônica em EN/PT-BR e seu CSS exclusivo. Revisão estática e atualização Graphify por AST local; sem executar site, testes ou build.
+
+2026-11-15 — Ajustado fade-in das etapas arquitetônicas: fotos e textos surgem de opacidade 0 a 1 com o scroll, mantendo transição vertical e movimento reduzido. Revisão estática e Graphify AST local; sem executar site, testes ou build.
+
+2026-11-15 — Adicionado fade-out de fotos e textos das etapas arquitetônicas ao sair da viewport, reversível ao subir e preservando fade-in/movimento reduzido. Revisão estática e Graphify AST local; sem executar site, testes ou build.
+
+2026-11-15 — Fade-in/out mobile das etapas implementado via IntersectionObserver e transições de 550ms, com fallback para navegadores sem view timelines, limpeza Astro e respeito a movimento reduzido. Revisão estática/diff; Graphify AST local (728 nós/1698 relações). Sem executar site, testes ou build.
+
+2026-11-15 — Adicionada timeline Da ideia à publicação após a narrativa arquitetônica, antes do investimento: quatro etapas EN/PT-BR, layout editorial desktop/mobile, progresso reversível pelos centros reais dos círculos, RAF sob demanda e fallback estático acessível. Astro check sem diagnósticos e build de 26 páginas concluídos (aviso Vite de importação do logo). Chrome headless: 1440/768/390/320px, avanço/retorno, alinhamento e ausência de overflow; capturas desktop/mobile inspecionadas, movimento reduzido e conteúdo sem JS nos dois idiomas confirmados. Graphify AST local atualizado: 735 nós/1709 relações; sem métricas de FPS/CLS/Lighthouse.
+
+2026-11-15 — Timeline recebeu fundo roxo escuro da identidade Rickz e mapa topográfico SVG discreto, com curvas de nível, rotas pontilhadas e transição preta nas bordas. SVG decorativo validado como XML; revisão estática/diff e Graphify AST local (737 nós/1711 relações). Sem executar navegador, testes ou build nesta alteração visual.
+
+2026-11-15 — Intensificados os roxos do fundo da timeline com a paleta da Hero e gradientes de nebulosa; mapa mais visível, mantendo as transições pretas. Revisão estática/diff e Graphify AST local atualizado (738 nós/1712 relações). Sem nova validação no navegador, testes ou build.
+
+2026-11-15 — Etapas da timeline agora revelam apenas os textos ativos com fade e movimento vertical na entrada/saída; pontos inativos apagados. Desktop/mobile compartilham o estado existente, com conteúdo visível sem JS, movimento reduzido e impressão. Revisão estática/diff e Graphify AST local; sem navegador, testes ou build.
+
+2026-11-15 — Landing Page recebeu preços Essencial, Profissional e Avançado em EN/PT-BR, com destaque intermediário, condições de seis meses e totais calculados. Escolha segue ao formulário existente, persiste no rascunho e entra na mensagem do WhatsApp. Dados tipados e estilos da identidade reutilizados; sem backend ou novas dependências. Revisão estática/JSON/diff e Graphify AST local (739 nós/1722 relações; 45 avisos parciais Astro). Sem app, navegador, check, build ou testes nesta mudança.
+
+2026-11-15 — Pacotes ajustados em PT-BR/EN: site cinematográfico, backend com 512 MB de RAM e página de controle de conteúdo. Removidos subtítulo comercial e bloco “Clareza antes de começar”. Preços e contratação preservados. Revisão estática/JSON/paridade/whitespace e Graphify AST local (740 nós/1723 relações); sem navegador, testes ou build.
+
+2026-11-15 — Backend do pacote Avançado atualizado para 1 GB de RAM em PT-BR/EN. JSON conferido e Graphify AST atualizado; sem build ou testes.
+
+2026-11-15 — FAQ da Landing Page adicionado entre investimento e contratação: oito perguntas PT-BR/EN, accordion nativo acessível com transições, iluminação roxa CSS e CTA existente preservado. Parsing JSON/paridade/revisão estática/diff realizados; Graphify AST atualizado (745 nós/1732 relações, 46 avisos parciais Astro). Sem navegador, testes, tipagem ou build.
+
+2026-11-15 — Removidos o convite após o FAQ e todo o encerramento comercial da Landing Page solicitado pelo usuário. Página termina no FAQ; título acessível da Hero preservado. JSON e diff conferidos, Graphify AST atualizado (747 nós/1734 relações); sem navegador, testes ou build.
+
+2026-11-15 — Fade no início do fundo roxo do FAQ via máscara CSS responsiva, preservando o texto. Diff conferido e Graphify AST atualizado; sem navegador, testes ou build.
+
+2026-11-15 — Botões dos três planos da Landing Page direcionam diretamente ao WhatsApp com pacote e valores na mensagem, em PT-BR/EN. Configuração existente reutilizada; JSON/diff conferidos e Graphify AST atualizado. Sem navegador, testes, build ou envio de mensagens.
+
+2026-11-15 — Links de contratação dos planos abrem em nova guia com noopener noreferrer. Revisão estática e Graphify AST concluídos; sem navegador, testes ou build.
+
+2026-11-15 — Corrigidos os SVGs dos clientes na transição da Hero: contornos de corpo/braços/mãos separados, preenchimentos angulares removidos e detalhes dos celulares acompanhando a rotação. XML dos dois SVGs e diff conferidos; Graphify AST atualizado. Sem navegador, testes ou build.
+
+2026-11-15 — Redesenhada a mão do cliente com dúvidas: dedos curvos envolvendo o celular, punho alinhado ao braço e aparelho sem linhas atravessando a pegada. SVG isolado renderizado e inspecionado; XML/diff conferidos e Graphify AST atualizado. Sem navegador, testes ou build.
+
+
+2026-11-15 — Catálogo: removidos Site institucional e Loja virtual. Sistemas/apps mantêm os seis cards e títulos, agora com cachorro construtor, descrição “Preparando pro futuro” (PT-BR/EN) e sem links. Texto “Conhecer serviço” removido do catálogo; Landing page continua clicável. JSON/diff conferidos e Graphify AST atualizado; sem navegador, testes ou build.
+
+
+2026-11-15 — Corrigida a interpretação anterior: Site institucional e Loja virtual voltaram ao catálogo, com títulos preservados, cachorro construtor e “Preparando pro futuro”, sem links, iguais aos demais serviços em construção. Apenas Landing page segue disponível. Revisão estática/diff e Graphify AST; sem navegador, testes ou build.
+
+2026-11-15 — Adicionado “Conheça mais” com seta ao card funcional de Landing page, reutilizando seu link localizado; “Learn more” em EN. Cards em construção preservados. JSONs/diff conferidos e Graphify AST atualizado; sem navegador, testes ou build.
+
+2026-11-15 — Pesquisa: Início removido dos resultados e Landing page disponível indexada com título/descrição reais em PT-BR/EN. Busca local por nome/finalidade, como “site para meu produto” e “site para minha padaria”, aceita erros como “laddingpage”; resultados ordenados por relevância com filtros/teclado preservados. Índice preparado uma vez, sem novas dependências ou rede. Casos de regressão escritos e documentação atualizada. Revisão estática/diff e Graphify AST local concluídos (763 nós/1799 relações; 46 avisos parciais Astro); sem navegador, testes, tipagem ou build.

@@ -2,12 +2,15 @@
 import type { Locale } from "../../../config/i18n";
 import { socialLinks } from "../../../config/social";
 import { getServiceCopy } from "../config/catalog";
+import { getLandingCopy, getLandingPlans } from "../config/landing";
 import ServiceBriefPhrases from "./ServiceBriefPhrases.astro";
 import "../../../styles/scroll-reveal.css";
 
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const { brief } = getServiceCopy(locale);
+const { pricing } = getLandingCopy(locale);
+const landingPlans = getLandingPlans(locale);
 const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
 ---
 
@@ -35,6 +38,18 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
       hidden
     >
       <h3 id="service-brief-form-title" data-brief-reveal>{brief.title}</h3>
+      <div class="service-brief-package" data-brief-package hidden>
+        <label for="service-brief-package">{pricing.selectedPlan}</label>
+        <select id="service-brief-package" name="landingPlan" data-brief-plan data-brief-label={pricing.selectedPlan}>
+          <option value="">{pricing.customProject}</option>
+          {landingPlans.map((plan) => (
+            <option value={plan.id} data-brief-value={`${plan.name} — ${plan.developmentPrice} + ${plan.monthlyPrice} ${pricing.perMonth}. ${pricing.initialTotal} ${plan.initialTotal}.`}>
+              {plan.name}
+            </option>
+          ))}
+        </select>
+        <p class="service-brief-note" data-brief-plan-summary></p>
+      </div>
       <ol class="service-brief-progress" role="list" aria-label={brief.progressLabel}>
         {brief.stepLabels.map((label, index) => (
           <li data-brief-progress data-brief-reveal aria-current={index === 0 ? "step" : undefined}>
@@ -126,7 +141,10 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
     const draftText = draft?.querySelector("textarea");
     const confirm = draft?.querySelector<HTMLAnchorElement>("[data-brief-confirm]");
     const stepFields = steps.map((step) => Array.from(step.querySelectorAll<BriefField>("[data-brief-label]")));
-    const fields = stepFields.flat();
+    const plan = form.querySelector<HTMLSelectElement>("[data-brief-plan]");
+    const packagePanel = form.querySelector<HTMLElement>("[data-brief-package]");
+    const packageSummary = form.querySelector<HTMLElement>("[data-brief-plan-summary]");
+    const fields: BriefField[] = [...(plan ? [plan] : []), ...stepFields.flat()];
     const lastStep = steps.length - 1;
     let activeStep = 0;
     let agentReview = false;
@@ -198,6 +216,18 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
     for (const field of fields) {
       field.addEventListener("input", () => field.setCustomValidity(""));
     }
+    function showPackage() {
+      if (!plan || !packagePanel || !packageSummary) return;
+      if (plan.value) packagePanel.hidden = false;
+      packageSummary.textContent = plan.selectedOptions[0]?.dataset.briefValue ?? "";
+    }
+    plan?.addEventListener("change", () => {
+      showPackage();
+      const url = new URL(window.location.href);
+      if (plan.value) url.searchParams.set("landingPlan", plan.value);
+      else url.searchParams.delete("landingPlan");
+      window.history.replaceState(window.history.state, "", url);
+    });
     form.addEventListener("input", saveDraft);
     form.addEventListener("change", saveDraft);
 
@@ -227,7 +257,9 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
       const parts = [title];
       for (const field of fields) {
         if (!field.value.trim()) continue;
-        const value = field instanceof HTMLSelectElement ? field.selectedOptions[0]?.label : field.value.trim();
+        const value = field instanceof HTMLSelectElement
+          ? field.selectedOptions[0]?.dataset.briefValue ?? field.selectedOptions[0]?.label
+          : field.value.trim();
         if (value) parts.push(`${field.dataset.briefLabel}: ${value}`);
       }
 
@@ -256,7 +288,14 @@ const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
 
     // Validate only the visible step until the final submission.
     form.noValidate = true;
-    showStep(restoreDraft(), false);
+    const restoredStep = restoreDraft();
+    const requestedPlan = new URLSearchParams(window.location.search).get("landingPlan");
+    if (plan && requestedPlan && Array.from(plan.options).some((option) => option.value === requestedPlan)) {
+      plan.value = requestedPlan;
+    }
+    showPackage();
+    showStep(restoredStep, false);
+    if (requestedPlan && plan?.value === requestedPlan) saveDraft();
     form.hidden = false;
     // Expose all prefilled steps for human review; tool invocation never navigates externally.
     const modelContext = (document as Document & { modelContext?: EventTarget }).modelContext;

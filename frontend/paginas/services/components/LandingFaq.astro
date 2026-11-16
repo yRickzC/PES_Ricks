@@ -1,0 +1,46 @@
+---
+import type { LandingCopy } from "../config/landing";
+import "../styles/landing-faq.css";
+import "../../../styles/scroll-reveal.css";
+
+interface Props { copy: LandingCopy["faq"] }
+const { copy } = Astro.props;
+---
+
+<section class="lp-faq" id="landing-faq" data-landing-faq aria-labelledby="landing-faq-title">
+  <div class="lp-faq-inner">
+    <header class="lp-faq-heading" data-faq-reveal>
+      <h2 id="landing-faq-title">{copy.title}</h2>
+      <p>{copy.subtitle}</p>
+    </header>
+    <div class="lp-faq-list" data-faq-reveal>
+      {copy.items.map((item, index) => (
+        <details class="lp-faq-item" name="landing-faq">
+          <summary aria-controls={`landing-faq-answer-${index}`}>
+            <h3>{item.question}</h3>
+            <span class="lp-faq-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="lp-faq-answer" id={`landing-faq-answer-${index}`}>
+            <p>{item.answer}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { mountLandingFaq } from "../utils/landing-faq";
+  const mounted = new Map<HTMLElement, () => void>();
+  function mount() {
+    document.querySelectorAll<HTMLElement>("[data-landing-faq]").forEach((root) => {
+      if (!mounted.has(root)) mounted.set(root, mountLandingFaq(root));
+    });
+  }
+  mount();
+  document.addEventListener("astro:page-load", mount);
+  document.addEventListener("astro:before-swap", () => {
+    mounted.forEach((cleanup) => cleanup());
+    mounted.clear();
+  });
+</script>

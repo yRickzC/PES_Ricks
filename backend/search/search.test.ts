@@ -21,7 +21,6 @@ const article: SearchRecord = {
 const entries = [
   { ...article, searchText: searchRecordText(article) },
   { type: "project" as const, categories: [web], searchText: "Aplicações web" },
-  { type: "home" as const, categories: [], searchText: "Início" },
 ];
 
 describe("busca local", () => {
@@ -75,12 +74,6 @@ describe("busca local", () => {
     const entry = { type: "service" as const, categories: [serviceCategory], searchText: "Sistema interno" };
     expect(matchesSearchFilters(entry, { query: "sistema", type: "all", category: web.value })).toBe(false);
     expect(matchesSearchFilters(entry, { query: "sistema", type: "service", category: serviceCategory.value })).toBe(true);
-  });
-
-  it("mantém Home nas sugestões gerais sem criar uma opção de tipo Home", () => {
-    expect(taxonomyTypes("en").map(({ id }) => id)).toEqual(["blog", "project", "service"]);
-    expect(matchesSearchFilters(entries[2]!, { query: "", type: "all", category: "all" })).toBe(true);
-    expect(matchesSearchFilters(entries[2]!, { query: "", type: "blog", category: "all" })).toBe(false);
   });
 
   it("não transforma tags livres em categorias registradas", () => {

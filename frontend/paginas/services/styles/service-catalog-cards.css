@@ -49,13 +49,13 @@
   text-decoration: none;
 }
 
-.service-catalog-card:focus-visible {
+a.service-catalog-card:focus-visible {
   outline: 2px solid var(--color-brand-light);
   outline-offset: 3px;
 }
 
 @media (hover: hover) {
-  .service-catalog-card:hover {
+  a.service-catalog-card:hover {
     border-color: rgb(177 149 248 / 64%);
     box-shadow:
       0 var(--service-card-depth) 0 #594079,
@@ -64,18 +64,18 @@
   }
 }
 
-.service-catalog-card:active { --service-card-depth: 2px; }
+a.service-catalog-card:active { --service-card-depth: 2px; }
 
 @media (prefers-reduced-motion: no-preference) {
-  .service-catalog-card {
+  a.service-catalog-card {
     transition: transform 180ms ease-out, border-color 180ms ease-out, box-shadow 180ms ease-out;
   }
 
   @media (hover: hover) {
-    .service-catalog-card:hover { transform: translateY(-6px); }
+    a.service-catalog-card:hover { transform: translateY(-6px); }
   }
 
-  .service-catalog-card:active {
+  a.service-catalog-card:active {
     transform: translateY(4px);
     transition-duration: 90ms;
   }
@@ -91,6 +91,27 @@
 }
 
 .service-catalog-preview svg { width: min(100%, 300px); }
+
+.service-catalog-panel h3 + .service-catalog-cards { margin-top: 28px; }
+
+.service-catalog-preview-pending {
+  aspect-ratio: auto;
+  min-height: 240px;
+  padding: 24px;
+}
+
+.service-catalog-preview-pending img {
+  display: block;
+  width: min(100%, 220px);
+  height: auto;
+  max-height: 220px;
+  object-fit: contain;
+}
+
+@media (max-width: 700px) {
+  .service-catalog-preview-pending { min-height: 210px; }
+  .service-catalog-preview-pending img { width: min(100%, 170px); }
+}
 
 .service-catalog-card-copy {
   display: flex;
@@ -113,20 +134,18 @@
   line-height: 1.6;
 }
 
+.service-catalog-option { --scroll-reveal-offset: 6px; }
+
 .service-catalog-card-action {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   margin-top: auto;
-  padding-top: 16px;
+  padding-top: 24px;
   color: var(--color-brand-light);
   font-size: 0.875rem;
   font-weight: 600;
 }
-
-.service-catalog-card-action svg { flex: none; }
-
-.service-catalog-option { --scroll-reveal-offset: 6px; }
 
 .service-catalog-option:nth-child(2),
 .service-catalog-item:nth-child(2) { --scroll-reveal-delay: 70ms; }

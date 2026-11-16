@@ -68,7 +68,8 @@
 .home-about-heading h2 { color: var(--home-about-accent); }
 .home-about-heading::after { content: ""; display: block; width: 48px; height: 2px; margin: 16px auto 0; background: var(--home-about-accent); opacity: 0.65; }
 .home-about-body { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: center; gap: clamp(28px, 5vw, 64px); }
-.home-about-photo { width: 100%; aspect-ratio: 1; background: var(--color-surface-0); border: 1px solid rgb(255 255 255 / 9%); border-radius: 8px; }
+.home-about-photo { width: 100%; aspect-ratio: 1; overflow: hidden; background: var(--color-surface-0); border: 1px solid rgb(255 255 255 / 9%); border-radius: 8px; }
+.home-about-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .home-about-copy { min-width: 0; max-width: var(--home-about-width); margin-inline: auto; }
 .home-about-copy h3 { margin: 0 0 20px; color: var(--home-about-accent); font-size: clamp(22px, 2.6vw, 30px); font-weight: 500; line-height: 1.3; letter-spacing: -0.03em; text-wrap: balance; }
 .home-about-copy p { margin: 16px 0 0; color: var(--color-text-secondary); font-size: 16px; line-height: 1.8; }

@@ -1,0 +1,220 @@
+.lp-build {
+  --build-gutter: clamp(20px, 5vw, 80px);
+  --build-copy-offset: -24px;
+  --build-photo-offset: -40px;
+  --build-photo-scale: 1.04;
+  --build-photo-reveal: 24%;
+  background: var(--color-bg-0, #07070a);
+  color: var(--color-text-primary, #f4f4f6);
+  padding-block: clamp(64px, 9vw, 144px) 0;
+}
+
+.lp-build-width {
+  width: calc(100% - var(--build-gutter) * 2);
+  max-width: 1280px;
+  margin-inline: auto;
+}
+
+.lp-build-opening h2 {
+  max-width: 15ch;
+  margin: 0;
+  font-size: clamp(40px, 6.5vw, 88px);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -.055em;
+  text-wrap: balance;
+}
+
+.lp-build-intro {
+  max-width: 46ch;
+  margin: 36px 0 0 42%;
+  color: var(--color-text-secondary, #a5a7b0);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.lp-build-intro p { margin: 0; }
+.lp-build-intro p + p { margin-top: 18px; }
+.lp-build-intro .lp-build-lead {
+  color: var(--color-text-primary, #f4f4f6);
+  font-size: clamp(20px, 2.2vw, 28px);
+  line-height: 1.45;
+  text-wrap: balance;
+}
+
+.lp-build-chapters {
+  display: grid;
+  gap: clamp(88px, 12vw, 192px);
+  margin-top: clamp(64px, 8vw, 128px);
+}
+
+/* One reading order in HTML; only the desktop composition alternates. */
+.lp-build-chapter {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+  grid-template-rows: 1fr auto auto 1fr;
+  column-gap: clamp(32px, 6vw, 96px);
+}
+
+.lp-build-chapter-heading {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+}
+
+.lp-build-chapter h3 {
+  max-width: 15ch;
+  margin: 0;
+  font-size: clamp(30px, 3.3vw, 48px);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -.04em;
+  text-wrap: balance;
+}
+
+.lp-build-description {
+  grid-column: 2;
+  grid-row: 3;
+  max-width: 37ch;
+  margin: 24px 0 0;
+  color: var(--color-text-secondary, #a5a7b0);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.lp-build-photograph {
+  grid-column: 1;
+  grid-row: 1 / -1;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  background: var(--color-bg-1, #0c0d12);
+}
+
+.lp-build-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.lp-build-reverse { grid-template-columns: minmax(0, 1fr) minmax(0, 1.65fr); }
+.lp-build-reverse .lp-build-photograph { grid-column: 2; }
+.lp-build-reverse .lp-build-chapter-heading,
+.lp-build-reverse .lp-build-description { grid-column: 1; }
+
+/* The finished house opens the grid, without cropping its entrance or path. */
+.lp-build-finale { max-width: 1440px; grid-template-columns: minmax(0, 1fr) minmax(0, 1.85fr); }
+.lp-build-finale .lp-build-chapter-heading { align-self: end; }
+
+.lp-build-ending {
+  padding-block: clamp(80px, 12vw, 192px) clamp(64px, 8vw, 128px);
+}
+
+.lp-build-ending p {
+  max-width: 25ch;
+  margin: 0;
+  font-size: clamp(30px, 4.4vw, 64px);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -.045em;
+  text-wrap: balance;
+}
+
+.lp-build-ending span { display: block; margin-top: .65em; }
+
+@media (max-width: 1023px) {
+  .lp-build-chapter { column-gap: 32px; }
+  .lp-build-chapter h3 { font-size: clamp(28px, 3.8vw, 40px); }
+}
+
+@media (max-width: 767px) {
+  .lp-build {
+    --build-gutter: 20px;
+    --build-copy-offset: -12px;
+    --build-photo-offset: -20px;
+    --build-photo-scale: 1.02;
+    --build-photo-reveal: 12%;
+  }
+  .lp-build-intro { margin: 28px 0 0; }
+  .lp-build-chapter { display: flex; flex-direction: column; }
+  .lp-build-chapter h3 { max-width: 19ch; font-size: clamp(30px, 7.5vw, 44px); }
+  .lp-build-photograph { margin-top: 28px; }
+  .lp-build-description { max-width: 48ch; margin-top: 24px; }
+  .lp-build-finale .lp-build-chapter-heading { align-self: auto; }
+}
+
+/* Native view timelines are reversible and add no JS scroll listeners.
+   Unsupported browsers, reduced motion and print retain the visible layout. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .lp-build-reveal {
+      animation: lp-build-copy linear both, lp-build-fade-out linear forwards;
+      animation-timeline: view(), view();
+      animation-range: entry 0% entry 80%, exit 20% exit 100%;
+    }
+
+    .lp-build-description {
+      animation-range: entry 10% entry 90%, exit 20% exit 100%;
+    }
+
+    .lp-build-photograph {
+      view-timeline-name: --build-photo;
+      view-timeline-axis: block;
+      animation: lp-build-unfold linear both, lp-build-fade-out linear forwards;
+      animation-timeline: --build-photo, --build-photo;
+      animation-range: entry 0% entry 85%, exit 20% exit 100%;
+    }
+    .lp-build-image {
+      animation: lp-build-camera linear both;
+      animation-timeline: --build-photo;
+      animation-range: entry 0% entry 85%;
+    }
+  }
+}
+
+@keyframes lp-build-copy {
+  from { opacity: 0; transform: translateY(var(--build-copy-offset)); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* A restrained top-to-bottom reveal connects the photographic chapters.
+   The timeline follows the layout box, which transforms do not move. */
+@keyframes lp-build-unfold {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 var(--build-photo-reveal) 0);
+    transform: translateY(var(--build-photo-offset));
+  }
+  to { opacity: 1; clip-path: inset(0); transform: translateY(0); }
+}
+
+@keyframes lp-build-camera {
+  from { transform: scale(var(--build-photo-scale)); }
+  to { transform: scale(1); }
+}
+
+/* Forward-only fill leaves the entrance opacity in control before exit. */
+@keyframes lp-build-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Mobile and browsers without view timelines use reversible observer fades. */
+@media (prefers-reduced-motion: no-preference) {
+  .lp-build [data-build-fade] {
+    animation: none;
+    opacity: 0;
+    transform: translateY(var(--build-copy-offset));
+    transition: opacity 550ms ease, transform 550ms ease;
+  }
+  .lp-build [data-build-fade="visible"] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .lp-build [data-build-fade] .lp-build-image { animation: none; }
+}
+
+@media print {
+  .lp-build-reveal, .lp-build-photograph, .lp-build-image { animation: none; }
+  .lp-build [data-build-fade] { opacity: 1; transform: none; transition: none; }
+}

@@ -1,0 +1,36 @@
+.lp-pricing { padding: clamp(80px, 9vw, 144px) 24px; background: var(--color-bg-0); color: var(--color-text-primary); }
+.lp-pricing-inner { max-width: 1200px; margin-inline: auto; }
+.lp-pricing-heading { max-width: 850px; margin: 0 auto 64px; text-align: center; }
+.lp-pricing-heading h2 { margin: 0; font-size: clamp(2rem, 4.2vw, 3.75rem); font-weight: 550; line-height: 1.08; letter-spacing: -.045em; text-wrap: balance; }
+.lp-pricing-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; align-items: stretch; }
+.lp-plan { position: relative; display: flex; flex-direction: column; min-width: 0; padding: 32px 28px 28px; border: 1px solid color-mix(in srgb, var(--color-text-secondary) 22%, transparent); border-radius: 18px; background: var(--color-bg-1); transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease; }
+.lp-plan-recommended { border-color: var(--color-brand); background: var(--color-surface-1); box-shadow: 0 16px 48px color-mix(in srgb, var(--color-brand) 10%, transparent); }
+.lp-plan-badge { position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); padding: 7px 16px; border: 1px solid var(--color-brand); border-radius: 999px; background: var(--color-surface-1); color: var(--color-brand-light); font-size: .75rem; font-weight: 600; white-space: nowrap; }
+.lp-plan-heading { min-height: 134px; }
+.lp-plan-heading h3 { margin: 0 0 12px; font-size: 1.4rem; font-weight: 550; letter-spacing: -.025em; }
+.lp-plan-heading p { margin: 0; color: var(--color-text-secondary); font-size: .9rem; line-height: 1.65; }
+.lp-plan-price { padding-top: 24px; }
+.lp-plan-label { color: var(--color-text-secondary); font-size: .75rem; }
+.lp-plan-amount { margin: 6px 0 8px; font-size: clamp(2.6rem, 3.5vw, 3.4rem); font-weight: 600; line-height: 1.1; letter-spacing: -.055em; font-variant-numeric: tabular-nums; }
+.lp-plan-monthly { margin: 0; color: var(--color-text-secondary); font-size: .9rem; }
+.lp-plan-monthly strong { color: var(--color-text-primary); font-size: 1.1rem; font-weight: 500; }
+.lp-plan-total { margin: 24px 0; padding-top: 18px; border-top: 1px solid color-mix(in srgb, var(--color-text-secondary) 22%, transparent); font-size: .78rem; line-height: 1.7; color: var(--color-text-secondary); }
+.lp-plan-total strong { color: var(--color-text-primary); white-space: nowrap; }
+.lp-plan-total span { display: block; font-size: .7rem; }
+.lp-plan-action { display: flex; justify-content: center; align-items: center; gap: 12px; min-height: 48px; padding: 12px 16px; border: 1px solid color-mix(in srgb, var(--color-text-secondary) 22%, transparent); border-radius: 8px; background: var(--color-surface-2); color: var(--color-text-primary); font-size: .85rem; font-weight: 600; text-decoration: none; transition: background 180ms ease, border-color 180ms ease; }
+.lp-plan-recommended .lp-plan-action { background: color-mix(in srgb, var(--color-brand) 78%, var(--color-bg-0)); border-color: var(--color-brand); }
+.lp-plan-action:hover { background: var(--color-surface-1); border-color: var(--color-brand-light); }
+.lp-plan-recommended .lp-plan-action:hover { background: color-mix(in srgb, var(--color-brand) 85%, var(--color-bg-0)); }
+.lp-plan-action:focus-visible { outline: 2px solid var(--color-brand-light); outline-offset: 5px; }
+.lp-plan-features { display: grid; gap: 13px; margin: 28px 0; padding: 0; list-style: none; }
+.lp-plan-features li { display: flex; align-items: flex-start; gap: 10px; font-size: .84rem; line-height: 1.6; }
+.lp-plan-features svg { flex: 0 0 16px; width: 16px; height: 20px; stroke: var(--color-brand-light); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.lp-plan-scope { margin: auto 0 0; padding-top: 20px; border-top: 1px solid color-mix(in srgb, var(--color-text-secondary) 22%, transparent); color: var(--color-text-secondary); font-size: .76rem; line-height: 1.75; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) { .lp-plan:hover { transform: translateY(-5px); border-color: var(--color-brand-soft); box-shadow: 0 18px 44px color-mix(in srgb, var(--color-bg-0) 75%, transparent); } }
+@media (max-width: 1023px) {
+  .lp-pricing-grid { grid-template-columns: 1fr; max-width: 580px; margin-inline: auto; gap: 32px; }
+  .lp-plan-heading { min-height: 0; }
+  .lp-plan-amount { font-size: 3rem; }
+}
+@media (max-width: 480px) { .lp-pricing { padding-inline: 18px; } .lp-plan { padding: 30px 22px 24px; } .lp-pricing-heading { margin-bottom: 48px; } }
+@media (prefers-reduced-motion: reduce) { .lp-plan, .lp-plan-action { transition: none; } }

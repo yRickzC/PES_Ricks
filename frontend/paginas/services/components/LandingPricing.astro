@@ -1,0 +1,58 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import type { Locale } from "../../../config/i18n";
+import { socialLinks } from "../../../config/social";
+import { getLandingCopy, getLandingPlans } from "../config/landing";
+import "../styles/landing-pricing.css";
+
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const { pricing } = getLandingCopy(locale);
+const plans = getLandingPlans(locale);
+const quote = getRelativeLocaleUrl(locale, "services/");
+const whatsappHref = socialLinks.find(({ id }) => id === "whatsapp")?.href;
+function planHref(plan: (typeof plans)[number]) {
+  if (!whatsappHref) return `${quote}?landingPlan=${plan.id}#quote`;
+  const url = new URL(whatsappHref);
+  url.searchParams.set("text", pricing.whatsappMessage
+    .replace("{plan}", plan.name)
+    .replace("{development}", plan.developmentPrice)
+    .replace("{monthly}", plan.monthlyPrice)
+    .replace("{total}", plan.initialTotal));
+  return url.href;
+}
+---
+
+<section class="lp-pricing" id="investment" aria-labelledby="landing-pricing-title">
+  <div class="lp-pricing-inner">
+    <header class="lp-pricing-heading">
+      <h2 id="landing-pricing-title">{pricing.title}</h2>
+    </header>
+    <div class="lp-pricing-grid">
+      {plans.map((plan) => (
+        <article class:list={["lp-plan", { "lp-plan-recommended": plan.recommended }]} aria-labelledby={`landing-plan-${plan.id}`}>
+          {plan.recommended && <span class="lp-plan-badge">{pricing.recommended}</span>}
+          <header class="lp-plan-heading">
+            <h3 id={`landing-plan-${plan.id}`}>{plan.name}</h3>
+            <p>{plan.description}</p>
+          </header>
+          <div class="lp-plan-price">
+            <span class="lp-plan-label">{pricing.development}</span>
+            <p class="lp-plan-amount">{plan.developmentPrice}</p>
+            <p class="lp-plan-monthly">+ <strong>{plan.monthlyPrice}</strong> {pricing.perMonth}</p>
+            <p class="lp-plan-total">{pricing.initialTotal} <strong>{plan.initialTotal}</strong><span>{pricing.excludingExternal}</span></p>
+          </div>
+          <a class="lp-plan-action" href={planHref(plan)} target="_blank" rel="noopener noreferrer" aria-label={`${pricing.action}: ${plan.name}`}>
+            {pricing.action}<span aria-hidden="true">↗</span>
+          </a>
+          <ul class="lp-plan-features" role="list">
+            {plan.features.map((feature) => (
+              <li><svg viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false"><path d="m4 10 4 4 8-8" /></svg><span>{feature}</span></li>
+            ))}
+          </ul>
+          <p class="lp-plan-scope">{plan.scope}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

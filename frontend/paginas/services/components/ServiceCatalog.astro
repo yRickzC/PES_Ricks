@@ -2,6 +2,7 @@
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { contentTaxonomy } from "../../../../backend/content/taxonomy";
 import TaxonomyIcon from "../../../components/site/TaxonomyIcon.astro";
+import SiteImage from "../../../components/site/SiteImage.astro";
 import type { Locale } from "../../../config/i18n";
 import { getServiceCopy, serviceCategoryIds, serviceOfferSlugs } from "../config/catalog";
 import "../styles/service-catalog.css";
@@ -11,24 +12,8 @@ const { locale } = Astro.props;
 const copy = getServiceCopy(locale);
 const definitions = contentTaxonomy.service.categories;
 
-// Decorative wireframes illustrate each format without presenting client work.
-const previews: Record<(typeof serviceCategoryIds)[number], readonly string[]> = {
-  websites: [
-    "M48 22h204v88H48z M48 37h204 M60 30h16 M68 55h65m-65 10h49m-49 16h28 M160 50h70v43h-70z M164 88l19-18 13 10 15-20 16 18",
-    "M48 22h204v88H48z M48 37h204 M60 30h16 M99 56h102m-90 12h78m-65 8h52 M131 88h38v10h-38z",
-    "M48 22h204v88H48z M48 37h204 M60 30h16 M68 52h44v30H68z M128 52h44v30h-44z M188 52h44v30h-44z M68 92h26m34 0h26m34 0h26",
-  ],
-  "internal-systems": [
-    "M48 22h204v88H48z M48 37h204 M60 30h16 M91 37v73 M60 52h19m-19 12h19m-19 12h19 M109 52h33v16h-33z M153 52h33v16h-33z M197 52h33v16h-33z M109 98h121m-118-8 24-10 24 7 26-8 34-6",
-    "M48 22h204v88H48z M48 37h204 M60 30h16 M65 50h45m15 0h45m15 0h45 M65 60h45v34H65z M125 60h45v21h-45z M185 60h45v34h-45z M74 70h27m-27 9h18m35-10h27m33 1h27m-27 9h18",
-    "M48 22h204v88H48z M48 37h204 M60 30h16 M91 37v73 M60 52h19m-19 12h19m-19 12h19 M107 53h123m-123 15h123m-123 15h123m-123 15h123 M209 53v45",
-  ],
-  "mobile-apps": [
-    "M83 20h52v92H83z M165 20h52v92h-52z M102 29h14m68 0h14 M92 40h34v22H92z M99 46h20m-20 9h13 M92 72h34m-34 10h23 M92 93h34v8H92z M174 43h9v14h16v19h9 M174 39v8m34 25v8 M174 92h34m-34 8h23",
-    "M83 20h52v92H83z M165 20h52v92h-52z M102 29h14m68 0h14 M92 44h34v34H92z M92 54h34m-27-15v10m20-10v10 M99 61h3m7 0h3m7 0h3m-23 9h3m7 0h3 M92 91h34v9H92z M176 58a15 15 0 1 0 30 0a15 15 0 1 0-30 0 M191 49v10l7 4 M174 88h34m-34 10h23",
-    "M83 20h52v92H83z M165 20h52v92h-52z M102 29h14m68 0h14 M92 41h13v17H92z M113 41h13v17h-13z M92 66h13v17H92z M113 66h13v17h-13z M92 95h34 M174 42h5l5 24h18l5-17h-26 M186 76h1m13 0h1 M174 89h34v11h-34z",
-  ],
-};
+// Decorative preview for the available landing-page service.
+const landingPreview = "M48 22h204v88H48z M48 37h204 M60 30h16 M99 56h102m-90 12h78m-65 8h52 M131 88h38v10h-38z";
 ---
 
 <section class="service-catalog" id="services" aria-labelledby="service-catalog-title">
@@ -65,31 +50,49 @@ const previews: Record<(typeof serviceCategoryIds)[number], readonly string[]> =
       aria-labelledby={`service-panel-title-${id}`}
     >
       <h3 id={`service-panel-title-${id}`} data-service-reveal>{copy[id].label}</h3>
-      <p class="service-catalog-summary" data-service-reveal>{copy[id].summary}</p>
+      {id === "websites" && <p class="service-catalog-summary" data-service-reveal>{copy[id].summary}</p>}
       <ul class="service-catalog-cards">
-        {copy[id].offers.map(({ title, description }, index) => (
+        {copy[id].offers.map((offer, index) => ({ ...offer, slug: serviceOfferSlugs[id][index] }))
+          .map(({ title, description, slug }) => (
           <li class="service-catalog-item" data-service-reveal>
+            {slug !== "landing-page" ? (
+              <div class="service-catalog-card service-catalog-card-pending">
+                <div class="service-catalog-preview service-catalog-preview-pending">
+                  <SiteImage
+                    src="/images/Dog_Worker.webp"
+                    alt={copy.construction.dogAlt}
+                    width={240}
+                    widths={[180, 240, 480]}
+                    sizes="(max-width: 700px) 170px, 220px"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div class="service-catalog-card-copy">
+                  <h4>{title}</h4>
+                  <p>{copy.preparingFuture}</p>
+                </div>
+              </div>
+            ) : (
             <a
               class="service-catalog-card"
-              href={getRelativeLocaleUrl(locale, `services/${serviceOfferSlugs[id][index]}/`)}
-              aria-labelledby={`service-offer-${id}-${index} service-offer-action-${id}-${index}`}
+              href={getRelativeLocaleUrl(locale, `services/${slug}/`)}
+              aria-labelledby={`service-offer-${slug}`}
             >
               <div class="service-catalog-preview" aria-hidden="true">
                 <svg viewBox="0 0 300 132" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" focusable="false">
-                  <path d={previews[id][index]} />
+                  <path d={landingPreview} />
                 </svg>
               </div>
               <div class="service-catalog-card-copy">
-                <h4 id={`service-offer-${id}-${index}`}>{title}</h4>
+                <h4 id={`service-offer-${slug}`}>{title}</h4>
                 <p>{description}</p>
-                <span class="service-catalog-card-action" id={`service-offer-action-${id}-${index}`}>
-                  {copy.viewService}
-                  <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M3 8h9m-4-4 4 4-4 4" />
-                  </svg>
+                <span class="service-catalog-card-action">
+                  {copy.viewService}<span aria-hidden="true">→</span>
                 </span>
               </div>
             </a>
+            )}
           </li>
         ))}
       </ul>

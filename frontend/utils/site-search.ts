@@ -1,4 +1,5 @@
-import { matchesSearchFilters, searchCategories, type SearchCategory, type SearchType, type SearchTypeFilter } from "../../backend/search/search";
+import { prepareSearchEntry, prepareSearchQuery, searchEntryScore } from "../../backend/search/discovery";
+import { searchCategories, type SearchCategory, type SearchType, type SearchTypeFilter } from "../../backend/search/search";
 
 export function initializeSiteSearch(): void {
   const dialog = document.querySelector<HTMLDialogElement>("[data-site-search]");
@@ -10,15 +11,17 @@ export function initializeSiteSearch(): void {
   const category = dialog?.querySelector<HTMLSelectElement>("[data-search-category]");
   if (!dialog || !input || !status || !empty || !form || !type || !category) return;
 
-  const entries = [...dialog.querySelectorAll<HTMLElement>("[data-search-entry]")].flatMap((element) => {
+  const entries = [...dialog.querySelectorAll<HTMLElement>("[data-search-entry]")].flatMap((element, order) => {
     const link = element.querySelector<HTMLAnchorElement>("a");
     if (!link) return [];
-    return [{
-      element, link,
+    return [prepareSearchEntry({
+      element, link, order,
+      title: element.dataset.searchTitle ?? "",
+      searchIntent: element.dataset.searchIntent === "landing-page" ? "landing-page" as const : undefined,
       type: element.dataset.searchType as SearchType,
       categories: JSON.parse(element.dataset.searchCategories ?? "[]") as SearchCategory[],
       searchText: element.dataset.searchText ?? "",
-    }];
+    })];
   });
   const allCategoriesLabel = category.options[0]?.text ?? "";
   const categoryCatalog: SearchCategory[] = [...category.options].flatMap((option) => {
@@ -26,6 +29,7 @@ export function initializeSiteSearch(): void {
     return type ? [{ value: option.value, label: option.text, type }] : [];
   });
   let previousFocus: HTMLElement | null = null;
+  let visibleEntries = entries;
 
   function updateCategories(): void {
     if (!dialog || !type || !category) return;
@@ -38,13 +42,22 @@ export function initializeSiteSearch(): void {
 
   function filter(): void {
     if (!dialog || !input || !status || !empty || !type || !category) return;
-    const filters = { query: input.value, type: type.value as SearchTypeFilter, category: category.value };
-    let count = 0;
-    for (const entry of entries) {
-      const matches = matchesSearchFilters(entry, filters);
-      entry.element.hidden = !matches;
-      if (matches) count++;
+    const query = prepareSearchQuery(input.value);
+    const filters = { type: type.value as SearchTypeFilter, category: category.value };
+    const ranked = entries.map((entry) => ({ entry, score: searchEntryScore(entry, query, filters) }))
+      .sort((a, b) => b.score - a.score || a.entry.order - b.entry.order);
+    visibleEntries = [];
+    for (const { entry, score } of ranked) {
+      entry.element.hidden = score === 0;
+      if (score > 0) visibleEntries.push(entry);
     }
+    // Keep DOM, Tab, arrow navigation and submit focus in the same relevance order.
+    const list = entries[0]?.element.parentElement;
+    for (let index = 0; list && index < ranked.length; index++) {
+      const element = ranked[index]!.entry.element;
+      if (list.children[index] !== element) list.insertBefore(element, list.children[index] ?? null);
+    }
+    const count = visibleEntries.length;
     empty.hidden = count > 0;
     status.textContent = input.value.trim() || type.value !== "all" || category.value !== "all"
       ? (dialog.dataset.resultTemplate ?? "{count}").replace("{count}", String(count))
@@ -69,7 +82,7 @@ export function initializeSiteSearch(): void {
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     filter();
-    entries.find(({ element }) => !element.hidden)?.link.focus();
+    visibleEntries[0]?.link.focus();
   });
 
   dialog.addEventListener("keydown", (event) => {
@@ -77,7 +90,7 @@ export function initializeSiteSearch(): void {
     if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
     const active = document.activeElement;
     if (active !== input && !entries.some(({ link }) => link === active)) return;
-    const visible = entries.filter(({ element }) => !element.hidden);
+    const visible = visibleEntries;
     if (!visible.length) return;
     event.preventDefault();
     const index = visible.findIndex(({ link }) => link === active);

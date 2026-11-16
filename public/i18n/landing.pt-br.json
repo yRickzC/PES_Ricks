@@ -1,17 +1,99 @@
 {
+  "faq": {
+    "title": "Tudo o que você precisa saber.",
+    "subtitle": "Transparência em cada etapa, da contratação à publicação.",
+    "items": [
+      {
+        "question": "Quanto custa criar uma landing page com o Rickz?",
+        "answer": "No plano Profissional, o desenvolvimento custa R$ 800, pagos uma única vez. Hospedagem, suporte e manutenção custam R$ 200 mensais durante o contrato inicial de 6 meses, totalizando R$ 2.000 nesse período. O domínio é contratado e pago separadamente. Os demais pacotes e seus valores estão apresentados na seção de investimento."
+      },
+      {
+        "question": "O que está incluído na mensalidade de R$ 200?",
+        "answer": "A mensalidade do plano Profissional inclui hospedagem, suporte técnico, manutenção preventiva, correções de problemas sob responsabilidade do Rickz e pequenas atualizações dentro dos limites contratados."
+      },
+      {
+        "question": "Sou obrigado a continuar pagando após os 6 meses?",
+        "answer": "Não. Após cumprir o contrato inicial de 6 meses, a renovação é opcional. Você escolhe se deseja continuar com a hospedagem, o suporte e a manutenção."
+      },
+      {
+        "question": "Se eu cancelar o suporte, perco minha landing page?",
+        "answer": "Não. Após cumprir os seis meses, você poderá solicitar gratuitamente os arquivos necessários para publicar sua landing page em outra hospedagem, respeitando os direitos e as licenças aplicáveis. A configuração da nova hospedagem poderá ser cobrada separadamente. O encerramento ocorrerá na data acordada, com prazo de transição previamente informado."
+      },
+      {
+        "question": "Em quanto tempo minha landing page fica pronta?",
+        "answer": "O prazo estimado é de 7 a 30 dias corridos, dependendo da complexidade do projeto e do recebimento dos materiais necessários."
+      },
+      {
+        "question": "Posso solicitar alterações depois da publicação?",
+        "answer": "Sim. A mensalidade inclui até três solicitações simples por mês, limitadas a 30 minutos cada. As solicitações não utilizadas não se acumulam. Novas funcionalidades e alterações maiores são cobradas separadamente. Correções de bugs sob responsabilidade do Rickz não consomem essa franquia."
+      },
+      {
+        "question": "O domínio ficará no meu nome?",
+        "answer": "O domínio é contratado separadamente e deve ser registrado preferencialmente no seu nome. Assim, você mantém o controle sobre esse endereço."
+      },
+      {
+        "question": "Minha landing page vai garantir mais vendas?",
+        "answer": "Não existe garantia de vendas. Sua página será estruturada para apresentar a oferta com clareza, destacar os benefícios e facilitar conversões. Os resultados também dependem do público, do produto, do preço e do tráfego que chega à página."
+      }
+    ]
+  },
+  "pricing": {
+    "title": "Uma página para cada etapa do seu negócio.",
+    "recommended": "Recomendado",
+    "development": "Desenvolvimento · pagamento único",
+    "perMonth": "/ mês",
+    "initialTotal": "Total nos primeiros 6 meses:",
+    "excludingExternal": "Desenvolvimento + mensalidades. Custos externos à parte.",
+    "action": "Escolher este plano",
+    "whatsappMessage": "Olá, Rick! Tenho interesse no plano {plan} para minha landing page. Desenvolvimento: {development} + {monthly}/mês. Total inicial de 6 meses: {total}, sem custos externos. Gostaria de conversar sobre a contratação.",
+    "selectedPlan": "Pacote de Landing Page",
+    "customProject": "Prefiro um projeto personalizado",
+    "plans": {
+      "essential": {
+        "name": "Essencial",
+        "description": "Para começar com uma presença digital simples e apresentar sua oferta com clareza.",
+        "features": ["Landing page responsiva", "Apresentação do produto ou serviço", "Botão de WhatsApp", "SEO técnico básico", "Hospedagem, suporte e manutenção básica", "Subdomínio gratuito *.pages.dev (Cloudflare Pages)"],
+        "scope": "Sem animações e sem domínio personalizado. Uma estrutura direta para quem precisa dar o primeiro passo."
+      },
+      "professional": {
+        "name": "Profissional",
+        "description": "Para valorizar sua marca e criar um caminho claro entre o interesse e o contato.",
+        "features": ["Design personalizado e responsivo", "Estratégia de conversão", "Site cinematográfico", "Copywriting básico", "Integração com WhatsApp ou formulário", "Hospedagem, suporte e manutenção"],
+        "scope": "Domínio personalizado contratado e pago separadamente. Conteúdo e interações alinhados à sua oferta."
+      },
+      "advanced": {
+        "name": "Avançado",
+        "description": "Para apresentar sua oferta, gerenciar conteúdos e permitir compras pelo próprio site.",
+        "features": ["Todos os benefícios do Profissional", "Backend com 1 GB de RAM", "Página de controle de conteúdo", "Conteúdo dinâmico", "Integração com provedores de pagamento"],
+        "scope": "Domínio, serviços externos, taxas de transação e infraestrutura adicional à parte, quando aplicável. Funcionalidades mais complexas recebem orçamento próprio."
+      }
+    }
+  },
   "eyebrow": "RICKZ / LANDING PAGES",
   "headline": "Sem direção, o interesse se perde.",
   "headlineAccent": "Com a página certa, ele avança.",
   "subtitle": "Sua oferta merece uma página pensada para apresentar, convencer e converter.",
-  "scroll": "Role para ver a transformação.",
-  "messages": ["Ter algo bom para oferecer é só o começo.", "Sem estrutura, o interesse não sabe para onde ir.", "Cada detalhe começa a ter um propósito.", "Agora, o interesse sabe para onde ir."],
   "closing": "Agora veja como isso pode funcionar para você.",
   "primary": "Quero minha landing page",
   "secondary": "Ver demonstração",
-  "price": "R$ 800 de desenvolvimento + R$ 200/mês por 6 meses, incluindo hospedagem, suporte e manutenção. Domínio à parte.",
-  "before": "Sem direção",
-  "after": "Com direção",
-  "sceneAlt": "Uma única embalagem ORBIT atravessa dois ambientes. A mesma apresentação dispersa é reorganizada: título, benefícios e chamada para ação ganham hierarquia, enquanto o produto permanece o mesmo.",
+  "sceneAlt": "Demonstração fictícia de uma loja de papelaria em três etapas. Primeiro, uma oferta isolada no WhatsApp ao lado de uma vitrine organizada, com o cliente ainda oculto. Ao rolar, aparece uma pessoa confusa usando o celular e perguntando se há catálogo, o que vem no kit, quais são as outras opções e como comprar. Com mais scroll, a pessoa aparece satisfeita no computador, enquanto o site rola no monitor e no celular, mostrando os produtos da coleção. Não representa uma conversa real nem resultados comprovados de vendas.",
+  "visitorThoughts": "Quero conhecer o produto. Por onde começo?",
+  "visitorQuestions": ["Oi! Vocês têm um catálogo?", "O que vem nesse kit?", "Tem outros modelos ou produtos?", "E como faço para comprar?"],
+  "chatOffer": "Conheça nosso kit de papelaria.",
+  "chatPlaceholder": "Mensagem",
+  "storeName": "Papelaria",
+  "productLabel": "Kit de papelaria",
+  "storeCollection": "Coleção",
+  "storeDiscover": "Encontre o seu próximo essencial.",
+  "storeDescription": "Conheça os detalhes e explore outras formas de organizar suas ideias.",
+  "storeDetails": "Ver detalhes",
+  "storeCustomer": "Tudo à vista. No meu ritmo.",
+  "storeProducts": [
+    { "name": "Kit de papelaria", "description": "Um conjunto para dar espaço às suas ideias." },
+    { "name": "Caderno de ideias", "description": "Do primeiro esboço ao próximo projeto." },
+    { "name": "Planner semanal", "description": "Seus planos, com uma visão mais clara." },
+    { "name": "Cards de foco", "description": "Uma prioridade de cada vez." }
+  ],
   "demoTitle": "Mais foco. Menos distração.",
   "demoDescription": "Um kit para organizar suas ideias e dar espaço ao que importa.",
   "demoBenefits": ["Organize suas ideias", "Encontre seu ritmo", "Crie com intenção"],
@@ -20,5 +102,60 @@
   "handoff": "Uma página começa pelo seu objetivo.",
   "goals": ["Atrair clientes", "Vender um produto"],
   "handoffDescription": "Da primeira impressão à próxima ação, cada escolha pode trabalhar pela sua oferta. Vamos conversar sobre o que você quer alcançar.",
-  "staticNote": "O produto é o mesmo. A hierarquia, os benefícios e o caminho para agir tornam a oferta mais clara."
+  "process": {
+    "title": "Da ideia à publicação",
+    "subtitle": "Você apresenta sua ideia. Nós cuidamos do caminho até sua landing page estar no ar.",
+    "steps": [
+      {
+        "title": "Briefing",
+        "message": "Você conta o que quer vender",
+        "description": "Entendemos sua oferta, seu público e seu objetivo comercial. Você não precisa entender de tecnologia: começamos pelo que seu negócio precisa."
+      },
+      {
+        "title": "Estrutura",
+        "message": "Organizamos a mensagem",
+        "description": "Planejamos os conteúdos, a hierarquia visual e o caminho até o contato ou a compra, para apresentar sua oferta com clareza."
+      },
+      {
+        "title": "Desenvolvimento",
+        "message": "Sua landing page ganha forma",
+        "description": "Criamos uma página personalizada, responsiva e alinhada à identidade do seu negócio, com atenção à navegação em diferentes telas."
+      },
+      {
+        "title": "Publicação",
+        "message": "Sua página está pronta para o mundo",
+        "description": "Publicamos sua página, configuramos o domínio e iniciamos a hospedagem, o suporte e a manutenção contratados. Orientamos você sobre os próximos passos."
+      }
+    ],
+    "delivery": "Prazo de entrega: 7 a 30 dias corridos, dependendo da complexidade do projeto e do recebimento dos materiais necessários."
+  },
+  "construction": {
+    "title": "Nada é construído por acaso.",
+    "lead": "Uma boa experiência começa muito antes do primeiro clique.",
+    "context": "Assim como uma casa, sua landing page precisa de planejamento, estrutura e um propósito.",
+    "chapters": [
+      {
+        "title": "Tudo começa com um plano.",
+        "description": "Entendemos seu negócio, seu público e seus objetivos antes de definir a estrutura da página.",
+        "alt": "Planejamento de uma casa contemporânea: mão desenhando a planta sobre uma mesa com croquis, réguas e uma pequena maquete."
+      },
+      {
+        "title": "A ideia ganha forma.",
+        "description": "Transformamos o planejamento em uma apresentação visual que valoriza sua oferta e transmite profissionalismo.",
+        "alt": "Maquete arquitetônica da casa, com volumes de concreto, pedra e madeira e ambientes iluminados, sobre a mesa de projeto."
+      },
+      {
+        "title": "Beleza também precisa funcionar.",
+        "description": "Construímos páginas responsivas e otimizadas, com atenção à velocidade, à estabilidade e à experiência de navegação.",
+        "alt": "Mão segurando a maquete da casa diante da estrutura de concreto de uma construção ao fundo."
+      },
+      {
+        "title": "Todo caminho precisa levar a algum lugar.",
+        "description": "Organizamos as informações e as chamadas para ação para facilitar o próximo passo de quem se interessou.",
+        "alt": "Casa contemporânea finalizada ao entardecer, com concreto, pedra, madeira e um caminho iluminado levando até a porta aberta."
+      }
+    ],
+    "closing": "Uma boa página não é apenas construída para ser vista.",
+    "closingAccent": "É construída para ser usada."
+  }
 }

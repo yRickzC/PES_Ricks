@@ -36,7 +36,6 @@ const gradientId = `meteor-${crypto.randomUUID()}`;
     if (!document.hidden) {
       for (const [sky, ratio] of skies) {
         if (ratio <= 0) continue;
-        if (sky.closest(".page-transition:not([hidden])")) { active = sky; break; }
         if (ratio > largest) { active = sky; largest = ratio; }
       }
     }
